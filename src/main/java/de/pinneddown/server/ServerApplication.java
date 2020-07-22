@@ -14,71 +14,37 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.net.InetAddress;
+import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class ServerApplication implements ApplicationListener<ApplicationReadyEvent> {
-	@Autowired
-	private Environment environment;
-
-	@Autowired
-	private DiscoveryClient discoveryClient;
-
-	Logger logger = LoggerFactory.getLogger(ServerApplication.class);
-
+@EnableScheduling
+public class ServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
 	}
 
-	@Override
-	public void onApplicationEvent(ApplicationReadyEvent event) {
-		List<ServiceInstance> instances = this.discoveryClient.getInstances("open-game-backend-matchmaking");
+	@Bean
+	public HttpHeaders httpHeaders() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-		if (instances.isEmpty()) {
-			logger.error("Unable to connect to matchmaking service.");
-		} else {
-			ServiceInstance instance = instances.get(0);
+		List<MediaType> acceptedTypes = new ArrayList<>();
+		acceptedTypes.add(MediaType.APPLICATION_JSON);
+		httpHeaders.setAccept(acceptedTypes);
 
-			logger.info("Found " + instance.getServiceId() + " at " + instance.getUri());
-
-			RestTemplate restTemplate = new RestTemplate();
-
-			HttpHeaders headers = new HttpHeaders();
-			headers.setContentType(MediaType.APPLICATION_JSON);
-
-			List<MediaType> acceptedTypes = new ArrayList<>();
-			acceptedTypes.add(MediaType.APPLICATION_JSON);
-			headers.setAccept(acceptedTypes);
-
-			String version = "0.1";
-			String gameMode = "PD";
-			String region = "EU";
-			String ipV4Address = "localhost";
-
-			int port = 0;
-			try {
-				port = Integer.parseInt(environment.getProperty("local.server.port"));
-			} catch (NumberFormatException e) {
-				logger.error(e.toString());
-			}
-
-			int maxPlayers = 2;
-
-			ServerRegisterRequest serverRegisterRequest = new ServerRegisterRequest
-					(version, gameMode, region, ipV4Address, port, maxPlayers);
-
-			HttpEntity<ServerRegisterRequest> request =
-					new HttpEntity<ServerRegisterRequest>(serverRegisterRequest, headers);
-			String response =
-					restTemplate.postForObject(instance.getUri() + "/server/register", request, String.class);
-		}
+		return httpHeaders;
 	}
 }
