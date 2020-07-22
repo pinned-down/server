@@ -1,5 +1,7 @@
 package de.pinneddown.server;
 
+import de.opengamebackend.matchmaking.model.requests.ServerRegisterRequest;
+import de.opengamebackend.matchmaking.model.responses.ServerRegisterResponse;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
@@ -18,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 @EnableDiscoveryClient
@@ -39,33 +42,43 @@ public class ServerApplication implements ApplicationListener<ApplicationReadyEv
 	public void onApplicationEvent(ApplicationReadyEvent event) {
 		List<ServiceInstance> instances = this.discoveryClient.getInstances("open-game-backend-matchmaking");
 
-		for (ServiceInstance instance : instances) {
+		if (instances.isEmpty()) {
+			logger.error("Unable to connect to matchmaking service.");
+		} else {
+			ServiceInstance instance = instances.get(0);
+
 			logger.info("Found " + instance.getServiceId() + " at " + instance.getUri());
 
+			RestTemplate restTemplate = new RestTemplate();
 
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+
+			List<MediaType> acceptedTypes = new ArrayList<>();
+			acceptedTypes.add(MediaType.APPLICATION_JSON);
+			headers.setAccept(acceptedTypes);
+
+			String version = "0.1";
+			String gameMode = "PD";
+			String region = "EU";
+			String ipV4Address = "localhost";
+
+			int port = 0;
 			try {
-				RestTemplate restTemplate = new RestTemplate();
-
-				HttpHeaders headers = new HttpHeaders();
-				headers.setContentType(MediaType.APPLICATION_JSON);
-				JSONObject gameServer = new JSONObject();
-
-				gameServer.put("version", "0.1");
-				gameServer.put("gameMode", "PD");
-				gameServer.put("region", "EU");
-				gameServer.put("ipV4Address", "localhost");
-				gameServer.put("port", environment.getProperty("local.server.port"));
-
-				logger.info(gameServer.toString());
-
-				HttpEntity<String> request =  new HttpEntity<String>(gameServer.toString(), headers);
-				String result =	restTemplate.postForObject(instance.getUri() + "/register", request, String.class);
-
-				logger.info(result);
-
-			} catch (JSONException e) {
+				port = Integer.parseInt(environment.getProperty("local.server.port"));
+			} catch (NumberFormatException e) {
 				logger.error(e.toString());
 			}
+
+			int maxPlayers = 2;
+
+			ServerRegisterRequest serverRegisterRequest = new ServerRegisterRequest
+					(version, gameMode, region, ipV4Address, port, maxPlayers);
+
+			HttpEntity<ServerRegisterRequest> request =
+					new HttpEntity<ServerRegisterRequest>(serverRegisterRequest, headers);
+			String response =
+					restTemplate.postForObject(instance.getUri() + "/server/register", request, String.class);
 		}
 	}
 }
