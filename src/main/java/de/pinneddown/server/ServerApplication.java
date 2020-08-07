@@ -47,4 +47,9 @@ public class ServerApplication {
 
 		return httpHeaders;
 	}
+
+	@Bean
+	public PlayerManager playerManager() {
+		return new PlayerManager();
+	}
 }
