@@ -2,9 +2,11 @@ package de.pinneddown.server;
 
 import com.google.common.base.Strings;
 import de.opengamebackend.matchmaking.model.requests.ServerDeregisterRequest;
+import de.opengamebackend.matchmaking.model.requests.ServerNotifyPlayerJoinedRequest;
 import de.opengamebackend.matchmaking.model.requests.ServerRegisterRequest;
 import de.opengamebackend.matchmaking.model.requests.ServerSendHeartbeatRequest;
 import de.opengamebackend.matchmaking.model.responses.ServerDeregisterResponse;
+import de.opengamebackend.matchmaking.model.responses.ServerNotifyPlayerJoinedResponse;
 import de.opengamebackend.matchmaking.model.responses.ServerRegisterResponse;
 import de.opengamebackend.matchmaking.model.responses.ServerSendHeartbeatResponse;
 import org.slf4j.Logger;
@@ -106,6 +108,21 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
                 sendRequest("/server/sendHeartbeat", request, ServerSendHeartbeatResponse.class);
 
         logger.info("Sent heartbeat for: " + response.getUpdatedId());
+    }
+
+    public void notifyPlayerJoined(String playerId) {
+        if (!isInitialized()) {
+            return;
+        }
+
+        ServerNotifyPlayerJoinedRequest request = new ServerNotifyPlayerJoinedRequest();
+        request.setServerId(serverId);
+        request.setPlayerId(playerId);
+
+        ServerNotifyPlayerJoinedResponse response =
+                sendRequest("/server/notifyPlayerJoined", request, ServerNotifyPlayerJoinedResponse.class);
+
+        logger.info("Player joined: " + playerId);
     }
 
     private boolean isInitialized() {
