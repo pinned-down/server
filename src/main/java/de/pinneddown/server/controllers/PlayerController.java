@@ -1,14 +1,17 @@
-package de.pinneddown.server;
+package de.pinneddown.server.controllers;
 
-import de.pinneddown.server.messages.JoinMessage;
-import de.pinneddown.server.messages.JoinedMessage;
+import de.pinneddown.server.MatchmakingService;
+import de.pinneddown.server.PlayerManager;
+import de.pinneddown.server.WebSocketMessage;
+import de.pinneddown.server.actions.JoinGameAction;
+import de.pinneddown.server.events.PlayerJoinedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class WebSocketController {
+public class PlayerController {
     @Autowired
     private MatchmakingService matchmakingService;
 
@@ -16,13 +19,13 @@ public class WebSocketController {
     private PlayerManager playerManager;
 
     @MessageMapping("/join")
-    @SendTo("/topic/messages")
-    public WebSocketMessage join(JoinMessage message) {
+    @SendTo("/topic/events")
+    public WebSocketMessage join(JoinGameAction message) {
         // Verify player.
         matchmakingService.notifyPlayerJoined(message.getPlayerId());
 
         // Add player.
         playerManager.addPlayer(message.getPlayerId());
-        return new WebSocketMessage(new JoinedMessage(message.getPlayerId()));
+        return new WebSocketMessage(new PlayerJoinedEvent(message.getPlayerId()));
     }
 }

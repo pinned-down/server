@@ -1,12 +1,12 @@
-package de.pinneddown.server.messages;
+package de.pinneddown.server.events;
 
-public class JoinedMessage {
+public class PlayerJoinedEvent {
     private String playerId;
 
-    public JoinedMessage() {
+    public PlayerJoinedEvent() {
     }
 
-    public JoinedMessage(String playerId) {
+    public PlayerJoinedEvent(String playerId) {
         this.playerId = playerId;
     }
 

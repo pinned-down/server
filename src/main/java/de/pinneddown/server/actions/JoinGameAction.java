@@ -1,6 +1,6 @@
-package de.pinneddown.server.messages;
+package de.pinneddown.server.actions;
 
-public class JoinMessage {
+public class JoinGameAction {
     private String playerId;
 
     public String getPlayerId() {
