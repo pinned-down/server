@@ -30,4 +30,9 @@ public class PlayerManager {
         return maxPlayers;
     }
 
+    public DeckList getDeckList(String playerId) {
+        DeckList deckList = new DeckList();
+        deckList.setFlagship("TRBArdor");
+        return deckList;
+    }
 }
