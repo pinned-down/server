@@ -38,6 +38,9 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
     @Autowired
     private HttpHeaders httpHeaders;
 
+    @Autowired
+    private PlayerManager playerManager;
+
     private Logger logger = LoggerFactory.getLogger(ServerApplication.class);
 
     private URI matchmakingUri;
@@ -61,7 +64,7 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
         // Build request.
         String version = "0.1";
         String gameMode = "PD";
-        int maxPlayers = 2;
+        int maxPlayers = playerManager.getMaxPlayers();
         String region = "EU";
         String ipV4Address = "localhost";
 

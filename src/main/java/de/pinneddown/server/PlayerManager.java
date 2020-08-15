@@ -7,9 +7,11 @@ import java.util.ArrayList;
 @Component
 public class PlayerManager {
     private ArrayList<String> playerIds;
+    private int maxPlayers;
 
     public PlayerManager() {
         this.playerIds = new ArrayList<>();
+        this.maxPlayers = 1;
     }
 
     public void addPlayer(String playerId) {
@@ -19,4 +21,13 @@ public class PlayerManager {
     public boolean removePlayer(String playerId) {
         return this.playerIds.remove(playerId);
     }
+
+    public ArrayList<String> getPlayerIds() {
+        return playerIds;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
 }
