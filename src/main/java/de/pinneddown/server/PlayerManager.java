@@ -1,7 +1,10 @@
 package de.pinneddown.server;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 
+@Component
 public class PlayerManager {
     private ArrayList<String> playerIds;
 
