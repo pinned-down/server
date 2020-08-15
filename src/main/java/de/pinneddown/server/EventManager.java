@@ -41,7 +41,7 @@ public class EventManager {
     {
         this.newEvents.add(e);
 
-        if (this.newEvents.size() == 1) {
+        if (this.newEvents.size() == 1 && this.currentEvents.size() == 0) {
             processEvents();
         }
     }
