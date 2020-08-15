@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TomeProject Version="6" RecordIdType="String">
+    <Name>PinnedDown</Name>
+    <Locale>en_US</Locale>
+    <Components>
+        <Path>PinnedDown</Path>
+    </Components>
+    <FieldDefinitions>
+        <Path>PinnedDown</Path>
+    </FieldDefinitions>
+    <Records>
+        <Path>PinnedDown</Path>
+    </Records>
+    <RecordExportTemplates>
+        <Path>Data Export JSON.texport</Path>
+    </RecordExportTemplates>
+    <Types>
+        <Path>PinnedDown</Path>
+    </Types>
+    <RecordImportTemplates/>
+</TomeProject>

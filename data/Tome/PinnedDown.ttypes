@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Types Version="2">
+    <Type Name="Keyword">
+        <FundamentalFacets>
+            <FundamentalFacet Key="Enumeration" Value="Flagship"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="KeywordList">
+        <FundamentalFacets>
+            <FundamentalFacet Key="ItemType" Value="Keyword"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+</Types>

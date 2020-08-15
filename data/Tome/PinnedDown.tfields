@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Fields>
+    <Field Id="Keywords" DisplayName="Keywords" Description="" Type="KeywordList" Component="KeywordComponent"/>
+</Fields>

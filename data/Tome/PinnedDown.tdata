@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Records>
+    <Record Id="BlueWing" DisplayName="Blue Wing"/>
+    <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
+        <Keywords>
+            <Item Value="Flagship"/>
+        </Keywords>
+    </Record>
+</Records>
