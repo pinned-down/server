@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Fields>
     <Field Id="Keywords" DisplayName="Keywords" Description="" Type="KeywordList" Component="KeywordComponent"/>
+    <Field Id="Owner" DisplayName="Owner" Description="" Type="Integer" Component="OwnerComponent" DefaultValue="-1"/>
 </Fields>

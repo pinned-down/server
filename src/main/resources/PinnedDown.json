@@ -1,13 +1,15 @@
 {
-  "hash": "caadf365e567f85a569873b5e68cb483",
+  "hash": "ae778a74791e9913e6ddb519a7ca79d3",
   "records": [
     {
       "id": "TRBArdor",
       "attributes": {
-        "Keywords": ["Flagship"]
+        "Keywords": ["Flagship"],
+        "Owner": "-1"
       },
       "components": [
-        "KeywordComponent"
+        "KeywordComponent",
+        "OwnerComponent"
       ],
       "parent_id": ""
     }
