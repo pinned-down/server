@@ -43,7 +43,7 @@ public class BlueprintManager implements ApplicationListener<ApplicationReadyEve
         blueprints = jsonMapper.readValue(blueprintFile.getURL(), BlueprintSet.class);
     }
 
-    public void createEntity(String blueprintId) {
+    public long createEntity(String blueprintId) {
         // Get blueprint.
         Blueprint blueprint = blueprints.getBlueprint(blueprintId);
 
@@ -79,6 +79,8 @@ public class BlueprintManager implements ApplicationListener<ApplicationReadyEve
                 e.printStackTrace();
             }
         }
+
+        return entityId;
     }
 
     private HashSet<String> buildComponentSet(Blueprint blueprint) {
