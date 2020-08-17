@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Records>
     <Record Id="BlueWing" DisplayName="Blue Wing"/>
+    <Record Id="Damage" DisplayName="Damage"/>
+    <Record Id="DirectHit" DisplayName="Direct Hit" Parent="Damage">
+        <StructureDamage Value="35"/>
+    </Record>
+    <Record Id="Dra'tar" DisplayName="Dra'tar"/>
+    <Record Id="DratarAssaultFrigate" DisplayName="Dra'tar Assault Frigate" Parent="Dra'tar">
+        <Owner Value="-1"/>
+    </Record>
+    <Record Id="Locations" DisplayName="Locations"/>
+    <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
+        <Distance Value="1"/>
+    </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
         <Keywords>
             <Item Value="Flagship"/>

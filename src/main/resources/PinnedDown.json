@@ -1,6 +1,36 @@
 {
-  "hash": "ae778a74791e9913e6ddb519a7ca79d3",
+  "hash": "82463d377f4e196de5d2e30c04b81451",
   "records": [
+    {
+      "id": "DirectHit",
+      "attributes": {
+        "StructureDamage": "35"
+      },
+      "components": [
+        "DamageComponent"
+      ],
+      "parent_id": ""
+    },
+    {
+      "id": "DratarAssaultFrigate",
+      "attributes": {
+        "Owner": "-1"
+      },
+      "components": [
+        "OwnerComponent"
+      ],
+      "parent_id": ""
+    },
+    {
+      "id": "SolmarBorderStation",
+      "attributes": {
+        "Distance": "1"
+      },
+      "components": [
+        "DistanceComponent"
+      ],
+      "parent_id": ""
+    },
     {
       "id": "TRBArdor",
       "attributes": {

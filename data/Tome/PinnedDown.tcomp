@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Components>
+    <Name>DamageComponent</Name>
+    <Name>DistanceComponent</Name>
     <Name>KeywordComponent</Name>
     <Name>OwnerComponent</Name>
 </Components>

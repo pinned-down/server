@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Fields>
-    <Field Id="Keywords" DisplayName="Keywords" Description="" Type="KeywordList" Component="KeywordComponent"/>
+    <Field Id="Distance" DisplayName="Distance" Description="" Type="Integer" Component="DistanceComponent" DefaultValue="1"/>
+    <Field Id="Keywords" DisplayName="Keywords" Description="" Type="KeywordList" Component="KeywordComponent" DefaultValue=""/>
     <Field Id="Owner" DisplayName="Owner" Description="" Type="Integer" Component="OwnerComponent" DefaultValue="-1"/>
+    <Field Id="StructureDamage" DisplayName="Structure Damage" Description="" Type="Integer" Component="DamageComponent" DefaultValue="25"/>
 </Fields>
