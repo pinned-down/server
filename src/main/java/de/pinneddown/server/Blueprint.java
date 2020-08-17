@@ -14,6 +14,11 @@ public class Blueprint {
     @JsonProperty("parent_id")
     private String parentId;
 
+    public Blueprint() {
+        this.attributes = new LinkedHashMap();
+        this.components = new ArrayList<>();
+    }
+
     public String getId() {
         return id;
     }

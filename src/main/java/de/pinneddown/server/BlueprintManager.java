@@ -32,15 +32,20 @@ public class BlueprintManager implements ApplicationListener<ApplicationReadyEve
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         try {
-            loadBlueprints();
+            BlueprintSet blueprintSet = loadBlueprints();
+            setBlueprints(blueprintSet);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void loadBlueprints() throws IOException {
+    public BlueprintSet loadBlueprints() throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
-        blueprints = jsonMapper.readValue(blueprintFile.getURL(), BlueprintSet.class);
+        return jsonMapper.readValue(blueprintFile.getURL(), BlueprintSet.class);
+    }
+
+    public void setBlueprints(BlueprintSet blueprints) {
+        this.blueprints = blueprints;
     }
 
     public long createEntity(String blueprintId) {

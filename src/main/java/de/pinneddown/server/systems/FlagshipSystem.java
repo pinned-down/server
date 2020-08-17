@@ -4,10 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
-import de.pinneddown.server.events.ReadyToStartEvent;
 import org.springframework.stereotype.Component;
-
-import java.security.acl.Owner;
 
 @Component
 public class FlagshipSystem {
