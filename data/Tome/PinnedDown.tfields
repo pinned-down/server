@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Fields>
+    <Field Id="Abilities" DisplayName="Abilities" Description="" Type="AbilityList" Component="AbilitiesComponent"/>
+    <Field Id="AbilityEffectDuration" DisplayName="Ability Effect Duration" Description="" Type="AbilityEffectDuration" Component="AbilityEffectComponent" DefaultValue="Indefinite"/>
+    <Field Id="AbilityEffects" DisplayName="Ability Effects" Description="" Type="EffectList" Component="AbilityComponent"/>
+    <Field Id="CardType" DisplayName="Card Type" Description="" Type="CardType" Component="CardTypeComponent" DefaultValue="Effect"/>
     <Field Id="Distance" DisplayName="Distance" Description="" Type="Integer" Component="DistanceComponent" DefaultValue="1"/>
-    <Field Id="Keywords" DisplayName="Keywords" Description="" Type="KeywordList" Component="KeywordComponent" DefaultValue=""/>
+    <Field Id="InitialGameplayTags" DisplayName="Initial Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent"/>
+    <Field Id="LocationType" DisplayName="Location Type" Description="" Type="LocationType" Component="LocationComponent" DefaultValue="Planet"/>
     <Field Id="Owner" DisplayName="Owner" Description="" Type="Integer" Component="OwnerComponent" DefaultValue="-1"/>
+    <Field Id="Power" DisplayName="Power" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
+    <Field Id="PowerModifier" DisplayName="Power Modifier" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
+    <Field Id="PowerPerLocation" DisplayName="Power Per Location" Description="" Type="Integer" Component="PowerPerLocationComponent" DefaultValue="0"/>
+    <Field Id="RequiredTags" DisplayName="Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent"/>
     <Field Id="StructureDamage" DisplayName="Structure Damage" Description="" Type="Integer" Component="DamageComponent" DefaultValue="25"/>
+    <Field Id="TargetBlockedTags" DisplayName="Target Blocked Tags" Description="" Type="GameplayTagList" Component="AbilityComponent"/>
+    <Field Id="TargetRequiredTags" DisplayName="Target Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent"/>
+    <Field Id="TargetType" DisplayName="Target Type" Description="" Type="TargetType" Component="AbilityComponent" DefaultValue="Starship"/>
+    <Field Id="Threat" DisplayName="Threat" Description="" Type="Integer" Component="ThreatComponent" DefaultValue="0"/>
+    <Field Id="Upkeep" DisplayName="Upkeep" Description="" Type="Integer" Component="UpkeepComponent" DefaultValue="1"/>
 </Fields>

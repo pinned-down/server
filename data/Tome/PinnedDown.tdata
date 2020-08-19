@@ -1,22 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Records>
-    <Record Id="BlueWing" DisplayName="Blue Wing"/>
-    <Record Id="Damage" DisplayName="Damage"/>
+    <Record Id="Abilities" DisplayName="Abilities">
+        <AbilityEffects/>
+        <RequiredTags/>
+        <TargetBlockedTags/>
+        <TargetRequiredTags/>
+        <TargetType Value="Starship"/>
+    </Record>
+    <Record Id="AbilityEffects" DisplayName="Ability Effects">
+        <AbilityEffectDuration Value="Indefinite"/>
+    </Record>
+    <Record Id="BlueWing" DisplayName="Blue Wing">
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+        </InitialGameplayTags>
+    </Record>
+    <Record Id="Damage" DisplayName="Damage">
+        <CardType Value="Damage"/>
+    </Record>
     <Record Id="DirectHit" DisplayName="Direct Hit" Parent="Damage">
+        <CardType Value="Damage"/>
+        <PowerModifier Value="-1"/>
         <StructureDamage Value="35"/>
     </Record>
-    <Record Id="Dra'tar" DisplayName="Dra'tar"/>
-    <Record Id="DratarAssaultFrigate" DisplayName="Dra'tar Assault Frigate" Parent="Dra'tar">
-        <Owner Value="-1"/>
+    <Record Id="Dra'tar" DisplayName="Dra'tar">
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+        </InitialGameplayTags>
     </Record>
-    <Record Id="Locations" DisplayName="Locations"/>
+    <Record Id="DratarAssaultFrigate" DisplayName="Dra'tar Assault Frigate" Parent="Dra'tar">
+        <CardType Value="Starship"/>
+        <Owner Value="-1"/>
+        <Power Value="9"/>
+        <PowerModifier Value="0"/>
+        <Threat Value="2"/>
+    </Record>
+    <Record Id="FireAtWill" DisplayName="Fire At Will" Parent="BlueWing">
+        <Abilities>
+            <Item Value="FireAtWillDefaultAbility"/>
+            <Item Value="FireAtWillImprovedAbility"/>
+        </Abilities>
+        <CardType Value="Effect"/>
+        <Threat Value="1"/>
+    </Record>
+    <Record Id="FireAtWillDefaultAbility" DisplayName="Fire At Will (Default Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="FireAtWillDefaultEffect"/>
+        </AbilityEffects>
+        <RequiredTags/>
+        <TargetBlockedTags/>
+        <TargetRequiredTags/>
+        <TargetType Value="Starship"/>
+    </Record>
+    <Record Id="FireAtWillDefaultEffect" DisplayName="Fire At Will (Default Effect)" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <PowerModifier Value="2"/>
+    </Record>
+    <Record Id="FireAtWillImprovedAbility" DisplayName="Fire At Will (Improved Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="FireAtWillImprovedEffect"/>
+        </AbilityEffects>
+        <RequiredTags/>
+        <TargetBlockedTags/>
+        <TargetRequiredTags/>
+        <TargetType Value="Starship"/>
+    </Record>
+    <Record Id="FireAtWillImprovedEffect" DisplayName="Fire At Will (Improved Effect)" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <PowerModifier Value="4"/>
+    </Record>
+    <Record Id="Locations" DisplayName="Locations">
+        <CardType Value="Location"/>
+    </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
+        <CardType Value="Location"/>
         <Distance Value="1"/>
+        <LocationType Value="Station"/>
+        <Threat Value="3"/>
     </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
-        <Keywords>
-            <Item Value="Flagship"/>
-        </Keywords>
+        <CardType Value="Starship"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="Keyword.Flagship"/>
+        </InitialGameplayTags>
         <Owner Value="-1"/>
+        <Power Value="8"/>
+        <PowerModifier Value="0"/>
+        <Upkeep Value="1"/>
+    </Record>
+    <Record Id="TRBArdorDamageBonusAbility" DisplayName="TRB Ardor (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="TRBArdorDamageBonusEffect"/>
+        </AbilityEffects>
+        <RequiredTags/>
+        <TargetBlockedTags/>
+        <TargetRequiredTags/>
+        <TargetType Value="Starship"/>
+    </Record>
+    <Record Id="TRBArdorDamageBonusEffect" DisplayName="TRB Ardor (Damage Bonus Effect)" Parent="AbilityEffects">
+        <PowerPerLocation Value="1"/>
     </Record>
 </Records>

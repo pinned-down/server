@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Types Version="2">
-    <Type Name="Keyword">
+    <Type Name="AbilityEffectDuration">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Flagship"/>
+            <FundamentalFacet Key="Enumeration" Value="EndOfFight;Indefinite"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>
-    <Type Name="KeywordList">
+    <Type Name="AbilityList">
         <FundamentalFacets>
-            <FundamentalFacet Key="ItemType" Value="Keyword"/>
+            <FundamentalFacet Key="ItemType" Value="AbilityReference"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="AbilityReference">
+        <FundamentalFacets>
+            <FundamentalFacet Key="BaseType" Value="Reference"/>
+        </FundamentalFacets>
+        <ConstrainingFacets>
+            <ConstrainingFacet Key="RequiredAncestor" Value="Abilities"/>
+        </ConstrainingFacets>
+    </Type>
+    <Type Name="CardType">
+        <FundamentalFacets>
+            <FundamentalFacet Key="Enumeration" Value="Damage;Effect;Location;Starship"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="EffectList">
+        <FundamentalFacets>
+            <FundamentalFacet Key="ItemType" Value="EffectReference"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="EffectReference">
+        <FundamentalFacets>
+            <FundamentalFacet Key="BaseType" Value="Reference"/>
+        </FundamentalFacets>
+        <ConstrainingFacets>
+            <ConstrainingFacet Key="RequiredAncestor" Value="AbilityEffects"/>
+        </ConstrainingFacets>
+    </Type>
+    <Type Name="GameplayTag">
+        <FundamentalFacets>
+            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;Keyword.Flagship;TurnPhase.Fight"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="GameplayTagList">
+        <FundamentalFacets>
+            <FundamentalFacet Key="ItemType" Value="GameplayTag"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="LocationType">
+        <FundamentalFacets>
+            <FundamentalFacet Key="Enumeration" Value="Planet;Space;Station"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="TargetType">
+        <FundamentalFacets>
+            <FundamentalFacet Key="Enumeration" Value="Passive;Starship"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

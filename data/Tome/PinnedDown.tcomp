@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Components>
+    <Name>AbilitiesComponent</Name>
+    <Name>AbilityComponent</Name>
+    <Name>AbilityEffectComponent</Name>
+    <Name>CardTypeComponent</Name>
     <Name>DamageComponent</Name>
     <Name>DistanceComponent</Name>
-    <Name>KeywordComponent</Name>
+    <Name>GameplayTagsComponent</Name>
+    <Name>LocationComponent</Name>
     <Name>OwnerComponent</Name>
+    <Name>PowerComponent</Name>
+    <Name>PowerPerLocationComponent</Name>
+    <Name>ThreatComponent</Name>
+    <Name>UpkeepComponent</Name>
 </Components>

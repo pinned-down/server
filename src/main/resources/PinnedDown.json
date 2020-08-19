@@ -1,47 +1,167 @@
 {
-  "hash": "82463d377f4e196de5d2e30c04b81451",
+  "hash": "61abf2cc7e27912bdbc390ec3b2f7723",
   "records": [
     {
       "id": "DirectHit",
       "attributes": {
+        "CardType": "Damage",
+        "PowerModifier": "-1",
         "StructureDamage": "35"
       },
       "components": [
+        "CardTypeComponent",
+        "PowerComponent",
         "DamageComponent"
       ],
-      "parent_id": ""
+      "parent_id": "Damage"
     },
     {
       "id": "DratarAssaultFrigate",
       "attributes": {
-        "Owner": "-1"
+        "CardType": "Starship",
+        "InitialGameplayTags": ["Affiliation.DraTar"],
+        "Owner": "-1",
+        "Power": "9",
+        "PowerModifier": "0",
+        "Threat": "2"
       },
       "components": [
-        "OwnerComponent"
+        "CardTypeComponent",
+        "GameplayTagsComponent",
+        "OwnerComponent",
+        "PowerComponent",
+        "ThreatComponent"
       ],
-      "parent_id": ""
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "FireAtWill",
+      "attributes": {
+        "Abilities": ["FireAtWillDefaultAbility", "FireAtWillImprovedAbility"],
+        "CardType": "Effect",
+        "InitialGameplayTags": ["Affiliation.BlueWing"],
+        "Threat": "1"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "CardTypeComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "FireAtWillDefaultAbility",
+      "attributes": {
+        "AbilityEffects": ["FireAtWillDefaultEffect"],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Starship"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "FireAtWillDefaultEffect",
+      "attributes": {
+        "AbilityEffectDuration": "EndOfFight",
+        "PowerModifier": "2"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "FireAtWillImprovedAbility",
+      "attributes": {
+        "AbilityEffects": ["FireAtWillImprovedEffect"],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Starship"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "FireAtWillImprovedEffect",
+      "attributes": {
+        "AbilityEffectDuration": "EndOfFight",
+        "PowerModifier": "4"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerComponent"
+      ],
+      "parent_id": "AbilityEffects"
     },
     {
       "id": "SolmarBorderStation",
       "attributes": {
-        "Distance": "1"
+        "CardType": "Location",
+        "Distance": "1",
+        "LocationType": "Station",
+        "Threat": "3"
       },
       "components": [
-        "DistanceComponent"
+        "CardTypeComponent",
+        "DistanceComponent",
+        "LocationComponent",
+        "ThreatComponent"
       ],
-      "parent_id": ""
+      "parent_id": "Locations"
     },
     {
       "id": "TRBArdor",
       "attributes": {
-        "Keywords": ["Flagship"],
-        "Owner": "-1"
+        "CardType": "Starship",
+        "InitialGameplayTags": ["Affiliation.BlueWing", "Keyword.Flagship"],
+        "Owner": "-1",
+        "Power": "8",
+        "PowerModifier": "0",
+        "Upkeep": "1"
       },
       "components": [
-        "KeywordComponent",
-        "OwnerComponent"
+        "CardTypeComponent",
+        "GameplayTagsComponent",
+        "OwnerComponent",
+        "PowerComponent",
+        "UpkeepComponent"
       ],
-      "parent_id": ""
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "TRBArdorDamageBonusAbility",
+      "attributes": {
+        "AbilityEffects": ["TRBArdorDamageBonusEffect"],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Starship"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "TRBArdorDamageBonusEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "PowerPerLocation": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerPerLocationComponent"
+      ],
+      "parent_id": "AbilityEffects"
     }
   ]
 }
