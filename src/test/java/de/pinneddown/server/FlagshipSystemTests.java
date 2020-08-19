@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class FlagshipSystemTests {
     @Test
-    void createsPlayerEntitiesAtStartOfGame() throws IOException {
+    void playersPutFlagshipsIntoPlay() throws IOException {
         // ARRANGE
         EventManager eventManager = new EventManager();
         PlayerManager playerManager = new PlayerManager();

@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DamageSystemTests {
     @Test
-    void createsAttackDeckAtStartOfGame() {
+    void createsDamageDeckAtStartOfGame() {
         // ARRANGE
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
