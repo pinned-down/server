@@ -29,4 +29,12 @@ public class CardPile {
     public ArrayList<String> getCards() {
         return cards;
     }
+
+    public String pop() {
+        return cards.remove(cards.size() - 1);
+    }
+
+    public void push(String card) {
+        cards.add(card);
+    }
 }

@@ -3,6 +3,7 @@ package de.pinneddown.server;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Component
 public class PlayerManager {
@@ -31,8 +32,13 @@ public class PlayerManager {
     }
 
     public DeckList getDeckList(String playerId) {
+        HashMap<String, Integer> cards = new HashMap<>();
+        cards.put("FireAtWill", 4);
+
         DeckList deckList = new DeckList();
         deckList.setFlagship("TRBArdor");
+        deckList.setCards(cards);
+
         return deckList;
     }
 }
