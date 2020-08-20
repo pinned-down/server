@@ -1,6 +1,22 @@
 {
-  "hash": "61abf2cc7e27912bdbc390ec3b2f7723",
+  "hash": "74565b0b995e53ac2c291576168b8304",
   "records": [
+    {
+      "id": "BerenaPulsar",
+      "attributes": {
+        "CardType": "Location",
+        "Distance": "1",
+        "InitialGameplayTags": ["Keyword.Detector"],
+        "LocationType": "Space"
+      },
+      "components": [
+        "CardTypeComponent",
+        "DistanceComponent",
+        "GameplayTagsComponent",
+        "LocationComponent"
+      ],
+      "parent_id": "Locations"
+    },
     {
       "id": "DirectHit",
       "attributes": {

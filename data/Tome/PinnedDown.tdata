@@ -10,6 +10,12 @@
     <Record Id="AbilityEffects" DisplayName="Ability Effects">
         <AbilityEffectDuration Value="Indefinite"/>
     </Record>
+    <Record Id="BerenaPulsar" DisplayName="Berena Pulsar" Parent="Locations">
+        <InitialGameplayTags>
+            <Item Value="Keyword.Detector"/>
+        </InitialGameplayTags>
+        <LocationType Value="Space"/>
+    </Record>
     <Record Id="BlueWing" DisplayName="Blue Wing">
         <InitialGameplayTags>
             <Item Value="Affiliation.BlueWing"/>
@@ -71,6 +77,8 @@
     </Record>
     <Record Id="Locations" DisplayName="Locations">
         <CardType Value="Location"/>
+        <Distance Value="1"/>
+        <LocationType Value="Planet"/>
     </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
         <CardType Value="Location"/>
