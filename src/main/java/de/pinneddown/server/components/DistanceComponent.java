@@ -1,6 +1,8 @@
 package de.pinneddown.server.components;
 
-public class DistanceComponent {
+import de.pinneddown.server.EntityComponent;
+
+public class DistanceComponent implements EntityComponent {
     private int distance;
 
     public int getDistance() {

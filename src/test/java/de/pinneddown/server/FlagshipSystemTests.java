@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class FlagshipSystemTests {
+public class FlagshipSystemTests extends GameSystemTestSuite {
     @Test
     void playersPutFlagshipsIntoPlay() throws IOException {
         // ARRANGE
@@ -24,11 +24,7 @@ public class FlagshipSystemTests {
         Blueprint flagshipBlueprint = new Blueprint();
         flagshipBlueprint.getComponents().add(OwnerComponent.class.getSimpleName());
 
-        BlueprintSet blueprints = mock(BlueprintSet.class);
-        when(blueprints.getBlueprint(anyString())).thenReturn(flagshipBlueprint);
-
-        BlueprintManager blueprintManager = new BlueprintManager(entityManager);
-        blueprintManager.setBlueprints(blueprints);
+        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, flagshipBlueprint);
 
         FlagshipSystem system = new FlagshipSystem(eventManager, playerManager, entityManager, blueprintManager);
 
