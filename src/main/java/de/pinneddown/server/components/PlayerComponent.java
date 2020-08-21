@@ -7,10 +7,12 @@ public class PlayerComponent implements EntityComponent {
     private String playerId;
     private CardPile drawDeck;
     private CardPile hand;
+    private CardPile discardPile;
 
     public PlayerComponent() {
         this.drawDeck = new CardPile();
         this.hand = new CardPile();
+        this.discardPile = new CardPile();
     }
 
     public String getPlayerId() {
@@ -35,5 +37,13 @@ public class PlayerComponent implements EntityComponent {
 
     public void setHand(CardPile hand) {
         this.hand = hand;
+    }
+
+    public CardPile getDiscardPile() {
+        return discardPile;
+    }
+
+    public void setDiscardPile(CardPile discardPile) {
+        this.discardPile = discardPile;
     }
 }
