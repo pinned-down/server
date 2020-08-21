@@ -1,8 +1,8 @@
-package de.pinneddown.server;
+package de.pinneddown.server.tests;
 
+import de.pinneddown.server.*;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.DistanceComponent;
-import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.ReadyToStartEvent;
 import de.pinneddown.server.systems.JumpPhaseSystem;
 import org.junit.jupiter.api.Test;

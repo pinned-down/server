@@ -1,5 +1,9 @@
-package de.pinneddown.server;
+package de.pinneddown.server.tests;
 
+import de.pinneddown.server.EntityManager;
+import de.pinneddown.server.EventManager;
+import de.pinneddown.server.EventType;
+import de.pinneddown.server.PlayerManager;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.systems.CardDrawSystem;

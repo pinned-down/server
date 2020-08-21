@@ -1,5 +1,6 @@
-package de.pinneddown.server;
+package de.pinneddown.server.tests;
 
+import de.pinneddown.server.*;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
@@ -9,9 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class FlagshipSystemTests extends GameSystemTestSuite {
     @Test

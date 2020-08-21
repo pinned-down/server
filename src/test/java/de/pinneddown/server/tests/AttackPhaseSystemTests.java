@@ -1,23 +1,26 @@
-package de.pinneddown.server;
+package de.pinneddown.server.tests;
 
+import de.pinneddown.server.EntityManager;
+import de.pinneddown.server.EventManager;
+import de.pinneddown.server.EventType;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.events.ReadyToStartEvent;
-import de.pinneddown.server.systems.DamageSystem;
+import de.pinneddown.server.systems.AttackPhaseSystem;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DamageSystemTests {
+public class AttackPhaseSystemTests {
     @Test
-    void createsDamageDeckAtStartOfGame() {
+    void createsAttackDeckAtStartOfGame() {
         // ARRANGE
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
         Random random = new Random();
 
-        DamageSystem system = new DamageSystem(eventManager, entityManager, random);
+        AttackPhaseSystem system = new AttackPhaseSystem(eventManager, entityManager, random);
 
         // ACT
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());

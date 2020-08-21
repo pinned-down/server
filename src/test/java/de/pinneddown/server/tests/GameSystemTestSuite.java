@@ -1,4 +1,9 @@
-package de.pinneddown.server;
+package de.pinneddown.server.tests;
+
+import de.pinneddown.server.Blueprint;
+import de.pinneddown.server.BlueprintManager;
+import de.pinneddown.server.BlueprintSet;
+import de.pinneddown.server.EntityManager;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
