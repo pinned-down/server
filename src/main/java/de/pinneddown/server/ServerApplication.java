@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @EnableDiscoveryClient
 @SpringBootApplication
@@ -28,5 +29,10 @@ public class ServerApplication {
 		httpHeaders.setAccept(acceptedTypes);
 
 		return httpHeaders;
+	}
+
+	@Bean
+	public Random random() {
+		return new Random();
 	}
 }
