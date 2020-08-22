@@ -4,35 +4,39 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.JoinGameAction;
 import de.pinneddown.server.events.PlayerJoinedEvent;
 import de.pinneddown.server.events.ReadyToStartEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
 @Controller
-public class PlayerController {
-    @Autowired
+public class PlayerController extends WebSocketController {
     private MatchmakingService matchmakingService;
 
-    @Autowired
-    private PlayerManager playerManager;
+    private Logger logger = LoggerFactory.getLogger(ServerApplication.class);
 
-    @Autowired
-    private EventManager eventManager;
+    public PlayerController(PlayerManager playerManager, EventManager eventManager, MatchmakingService matchmakingService) {
+        super(playerManager, eventManager);
+
+        this.matchmakingService = matchmakingService;
+    }
 
     @MessageMapping("/join")
     @SendTo("/topic/events")
-    public WebSocketMessage join(JoinGameAction message) {
+    public WebSocketMessage join(SimpMessageHeaderAccessor headerAccessor, JoinGameAction message) {
         // Verify player.
         matchmakingService.notifyPlayerJoined(message.getPlayerId());
 
         // Add player.
-        playerManager.addPlayer(message.getPlayerId());
+        String remoteAddress = getRemoteAddressFromSession(headerAccessor);
+        playerManager.addPlayer(remoteAddress, message.getPlayerId());
 
         // Check player count.
-        ArrayList<String> playerIds = playerManager.getPlayerIds();
+        Collection<String> playerIds = playerManager.getPlayerIds();
 
         if (playerIds.size() >= playerManager.getMaxPlayers()) {
             ReadyToStartEvent eventData = new ReadyToStartEvent(playerIds);

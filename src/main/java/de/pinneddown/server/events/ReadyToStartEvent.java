@@ -1,22 +1,23 @@
 package de.pinneddown.server.events;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class ReadyToStartEvent {
-    private ArrayList<String> players;
+    private Collection<String> players;
 
     public ReadyToStartEvent() {
     }
 
-    public ReadyToStartEvent(ArrayList<String> players) {
+    public ReadyToStartEvent(Collection<String> players) {
         this.players = players;
     }
 
-    public ArrayList<String> getPlayers() {
+    public Collection<String> getPlayers() {
         return players;
     }
 
-    public void setPlayers(ArrayList<String> players) {
+    public void setPlayers(Collection<String> players) {
         this.players = players;
     }
 }

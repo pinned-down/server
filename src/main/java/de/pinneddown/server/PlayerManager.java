@@ -3,28 +3,30 @@ package de.pinneddown.server;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class PlayerManager {
-    private ArrayList<String> playerIds;
+    private HashMap<String, String> remoteAddressToPlayerIds;
     private int maxPlayers;
 
     public PlayerManager() {
-        this.playerIds = new ArrayList<>();
+        this.remoteAddressToPlayerIds = new HashMap<>();
         this.maxPlayers = 1;
     }
 
-    public void addPlayer(String playerId) {
-        this.playerIds.add(playerId);
+    public void addPlayer(String remoteAddress, String playerId) {
+        this.remoteAddressToPlayerIds.put(remoteAddress, playerId);
     }
 
-    public boolean removePlayer(String playerId) {
-        return this.playerIds.remove(playerId);
+    public Collection<String> getPlayerIds() {
+        return remoteAddressToPlayerIds.values();
     }
 
-    public ArrayList<String> getPlayerIds() {
-        return playerIds;
+    public String getPlayerIdFromRemoteAddress(String remoteAddress) {
+        return remoteAddressToPlayerIds.getOrDefault(remoteAddress, null);
     }
 
     public int getMaxPlayers() {
