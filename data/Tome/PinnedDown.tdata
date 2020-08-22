@@ -13,6 +13,7 @@
     <Record Id="BerenaPulsar" DisplayName="Berena Pulsar" Parent="Locations">
         <InitialGameplayTags>
             <Item Value="Keyword.Detector"/>
+            <Item Value="CardType.Location"/>
         </InitialGameplayTags>
         <LocationType Value="Space"/>
     </Record>
@@ -22,12 +23,15 @@
         </InitialGameplayTags>
     </Record>
     <Record Id="Damage" DisplayName="Damage">
-        <CardType Value="Damage"/>
+        <InitialGameplayTags>
+            <Item Value="CardType.Damage"/>
+        </InitialGameplayTags>
     </Record>
     <Record Id="DirectHit" DisplayName="Direct Hit" Parent="Damage">
-        <CardType Value="Damage"/>
+        <BasePower Value="0"/>
+        <BaseStructure Value="0"/>
         <PowerModifier Value="-1"/>
-        <StructureDamage Value="35"/>
+        <StructureModifier Value="-35"/>
     </Record>
     <Record Id="Dra'tar" DisplayName="Dra'tar">
         <InitialGameplayTags>
@@ -35,10 +39,15 @@
         </InitialGameplayTags>
     </Record>
     <Record Id="DratarAssaultFrigate" DisplayName="Dra'tar Assault Frigate" Parent="Dra'tar">
-        <CardType Value="Starship"/>
-        <Owner Value="-1"/>
-        <Power Value="9"/>
+        <BasePower Value="9"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <Owner Value="0"/>
         <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
         <Threat Value="2"/>
     </Record>
     <Record Id="FireAtWill" DisplayName="Fire At Will" Parent="BlueWing">
@@ -46,7 +55,10 @@
             <Item Value="FireAtWillDefaultAbility"/>
             <Item Value="FireAtWillImprovedAbility"/>
         </Abilities>
-        <CardType Value="Effect"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Effect"/>
+        </InitialGameplayTags>
         <Threat Value="1"/>
     </Record>
     <Record Id="FireAtWillDefaultAbility" DisplayName="Fire At Will (Default Ability)" Parent="Abilities">
@@ -60,6 +72,7 @@
     </Record>
     <Record Id="FireAtWillDefaultEffect" DisplayName="Fire At Will (Default Effect)" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
+        <BasePower Value="0"/>
         <PowerModifier Value="2"/>
     </Record>
     <Record Id="FireAtWillImprovedAbility" DisplayName="Fire At Will (Improved Ability)" Parent="Abilities">
@@ -73,28 +86,32 @@
     </Record>
     <Record Id="FireAtWillImprovedEffect" DisplayName="Fire At Will (Improved Effect)" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
+        <BasePower Value="0"/>
         <PowerModifier Value="4"/>
     </Record>
     <Record Id="Locations" DisplayName="Locations">
-        <CardType Value="Location"/>
         <Distance Value="1"/>
+        <InitialGameplayTags>
+            <Item Value="CardType.Location"/>
+        </InitialGameplayTags>
         <LocationType Value="Planet"/>
     </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
-        <CardType Value="Location"/>
         <Distance Value="1"/>
         <LocationType Value="Station"/>
         <Threat Value="3"/>
     </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
-        <CardType Value="Starship"/>
+        <BasePower Value="8"/>
+        <BaseStructure Value="100"/>
         <InitialGameplayTags>
             <Item Value="Affiliation.BlueWing"/>
             <Item Value="Keyword.Flagship"/>
+            <Item Value="CardType.Starship"/>
         </InitialGameplayTags>
-        <Owner Value="-1"/>
-        <Power Value="8"/>
+        <Owner Value="0"/>
         <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
         <Upkeep Value="1"/>
     </Record>
     <Record Id="TRBArdorDamageBonusAbility" DisplayName="TRB Ardor (Damage Bonus Ability)" Parent="Abilities">

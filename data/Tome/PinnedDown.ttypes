@@ -20,12 +20,6 @@
             <ConstrainingFacet Key="RequiredAncestor" Value="Abilities"/>
         </ConstrainingFacets>
     </Type>
-    <Type Name="CardType">
-        <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Damage;Effect;Location;Starship"/>
-        </FundamentalFacets>
-        <ConstrainingFacets/>
-    </Type>
     <Type Name="EffectList">
         <FundamentalFacets>
             <FundamentalFacet Key="ItemType" Value="EffectReference"/>
@@ -42,7 +36,7 @@
     </Type>
     <Type Name="GameplayTag">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;Keyword.Detector;Keyword.Flagship;TurnPhase.Fight"/>
+            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;CardType.Damage;CardType.Effect;CardType.Location;CardType.Starship;Keyword.Detector;Keyword.Flagship;TurnPhase.Fight"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

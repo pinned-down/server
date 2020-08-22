@@ -1,16 +1,14 @@
 {
-  "hash": "74565b0b995e53ac2c291576168b8304",
+  "hash": "9a7e7ec0a254367716583b5ab0c8b61d",
   "records": [
     {
       "id": "BerenaPulsar",
       "attributes": {
-        "CardType": "Location",
         "Distance": "1",
-        "InitialGameplayTags": ["Keyword.Detector"],
+        "InitialGameplayTags": ["Keyword.Detector", "CardType.Location"],
         "LocationType": "Space"
       },
       "components": [
-        "CardTypeComponent",
         "DistanceComponent",
         "GameplayTagsComponent",
         "LocationComponent"
@@ -20,32 +18,35 @@
     {
       "id": "DirectHit",
       "attributes": {
-        "CardType": "Damage",
+        "BasePower": "0",
+        "BaseStructure": "0",
+        "InitialGameplayTags": ["CardType.Damage"],
         "PowerModifier": "-1",
-        "StructureDamage": "35"
+        "StructureModifier": "-35"
       },
       "components": [
-        "CardTypeComponent",
         "PowerComponent",
-        "DamageComponent"
+        "StructureComponent",
+        "GameplayTagsComponent"
       ],
       "parent_id": "Damage"
     },
     {
       "id": "DratarAssaultFrigate",
       "attributes": {
-        "CardType": "Starship",
-        "InitialGameplayTags": ["Affiliation.DraTar"],
-        "Owner": "-1",
-        "Power": "9",
+        "BasePower": "9",
+        "BaseStructure": "100",
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "Owner": "0",
         "PowerModifier": "0",
+        "StructureModifier": "0",
         "Threat": "2"
       },
       "components": [
-        "CardTypeComponent",
+        "PowerComponent",
+        "StructureComponent",
         "GameplayTagsComponent",
         "OwnerComponent",
-        "PowerComponent",
         "ThreatComponent"
       ],
       "parent_id": "Dra'tar"
@@ -54,13 +55,11 @@
       "id": "FireAtWill",
       "attributes": {
         "Abilities": ["FireAtWillDefaultAbility", "FireAtWillImprovedAbility"],
-        "CardType": "Effect",
-        "InitialGameplayTags": ["Affiliation.BlueWing"],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Effect"],
         "Threat": "1"
       },
       "components": [
         "AbilitiesComponent",
-        "CardTypeComponent",
         "GameplayTagsComponent",
         "ThreatComponent"
       ],
@@ -84,6 +83,7 @@
       "id": "FireAtWillDefaultEffect",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
+        "BasePower": "0",
         "PowerModifier": "2"
       },
       "components": [
@@ -110,6 +110,7 @@
       "id": "FireAtWillImprovedEffect",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
+        "BasePower": "0",
         "PowerModifier": "4"
       },
       "components": [
@@ -121,14 +122,14 @@
     {
       "id": "SolmarBorderStation",
       "attributes": {
-        "CardType": "Location",
         "Distance": "1",
+        "InitialGameplayTags": ["CardType.Location"],
         "LocationType": "Station",
         "Threat": "3"
       },
       "components": [
-        "CardTypeComponent",
         "DistanceComponent",
+        "GameplayTagsComponent",
         "LocationComponent",
         "ThreatComponent"
       ],
@@ -137,18 +138,19 @@
     {
       "id": "TRBArdor",
       "attributes": {
-        "CardType": "Starship",
-        "InitialGameplayTags": ["Affiliation.BlueWing", "Keyword.Flagship"],
-        "Owner": "-1",
-        "Power": "8",
+        "BasePower": "8",
+        "BaseStructure": "100",
+        "InitialGameplayTags": ["Affiliation.BlueWing", "Keyword.Flagship", "CardType.Starship"],
+        "Owner": "0",
         "PowerModifier": "0",
+        "StructureModifier": "0",
         "Upkeep": "1"
       },
       "components": [
-        "CardTypeComponent",
+        "PowerComponent",
+        "StructureComponent",
         "GameplayTagsComponent",
         "OwnerComponent",
-        "PowerComponent",
         "UpkeepComponent"
       ],
       "parent_id": "BlueWing"

@@ -3,14 +3,13 @@
     <Name>AbilitiesComponent</Name>
     <Name>AbilityComponent</Name>
     <Name>AbilityEffectComponent</Name>
-    <Name>CardTypeComponent</Name>
-    <Name>DamageComponent</Name>
     <Name>DistanceComponent</Name>
     <Name>GameplayTagsComponent</Name>
     <Name>LocationComponent</Name>
     <Name>OwnerComponent</Name>
     <Name>PowerComponent</Name>
     <Name>PowerPerLocationComponent</Name>
+    <Name>StructureComponent</Name>
     <Name>ThreatComponent</Name>
     <Name>UpkeepComponent</Name>
 </Components>
