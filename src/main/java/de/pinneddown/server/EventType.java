@@ -3,5 +3,9 @@ package de.pinneddown.server;
 public enum EventType {
     READY_TO_START,
     PLAYER_ENTITY_CREATED,
-    MAIN_PHASE_ENDED
+    MAIN_PHASE_ENDED,
+    TOTAL_DISTANCE_CHANGED,
+    CARD_PLAYED,
+    THREAT_POOL_INITIALIZED,
+    ATTACK_PHASE_ENDED
 }

@@ -37,4 +37,12 @@ public class CardPile {
     public void push(String card) {
         cards.add(card);
     }
+
+    public boolean isEmpty() { return cards.isEmpty(); }
+
+    public void shuffleInto(CardPile other, Random shuffleRandom) {
+        other.cards.addAll(cards);
+        cards.clear();
+        Collections.shuffle(other.cards, shuffleRandom);
+    }
 }

@@ -1,10 +1,8 @@
 package de.pinneddown.server.systems;
 
-import de.pinneddown.server.EntityManager;
-import de.pinneddown.server.EventManager;
-import de.pinneddown.server.EventType;
-import de.pinneddown.server.GameEvent;
+import de.pinneddown.server.*;
 import de.pinneddown.server.components.ThreatComponent;
+import de.pinneddown.server.events.ThreatPoolInitializedEvent;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +12,7 @@ public class ThreatSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
 
-    private long threatPoolEntitId;
+    private long threatPoolEntityId;
 
     public ThreatSystem(EventManager eventManager, EntityManager entityManager) {
         this.eventManager = eventManager;
@@ -24,11 +22,17 @@ public class ThreatSystem {
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
-        threatPoolEntitId = entityManager.createEntity();
+        threatPoolEntityId = entityManager.createEntity();
 
         ThreatComponent threatComponent = new ThreatComponent();
         threatComponent.setThreat(INITIAL_THREAT);
 
-        entityManager.addComponent(threatPoolEntitId, threatComponent);
+        entityManager.addComponent(threatPoolEntityId, threatComponent);
+
+        // Notify listeners.
+        ThreatPoolInitializedEvent eventData = new ThreatPoolInitializedEvent();
+        eventData.setEntityId(threatPoolEntityId);
+
+        eventManager.queueEvent(EventType.THREAT_POOL_INITIALIZED, eventData);
     }
 }

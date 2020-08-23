@@ -3,6 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.DistanceComponent;
+import de.pinneddown.server.events.TotalDistanceChangedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -56,6 +57,11 @@ public class JumpPhaseSystem {
         if (newDistanceComponent != null) {
             int newTotalDistance = totalDistanceComponent.getDistance() + newDistanceComponent.getDistance();
             totalDistanceComponent.setDistance(newTotalDistance);
+
+            TotalDistanceChangedEvent eventData = new TotalDistanceChangedEvent();
+            eventData.setTotalDistance(newTotalDistance);
+
+            eventManager.queueEvent(EventType.TOTAL_DISTANCE_CHANGED, eventData);
         }
     }
 

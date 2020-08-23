@@ -3,6 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.PlayerComponent;
+import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import org.springframework.stereotype.Component;
 
@@ -33,5 +34,11 @@ public class FlagshipSystem {
 
         OwnerComponent ownerComponent = entityManager.getComponent(entityId, OwnerComponent.class);
         ownerComponent.setOwner(eventData.getEntityId());
+
+        // Notify listeners.
+        CardPlayedEvent cardPlayedEventData = new CardPlayedEvent();
+        cardPlayedEventData.setEntityId(entityId);
+
+        eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
     }
 }
