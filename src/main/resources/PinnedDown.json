@@ -1,5 +1,5 @@
 {
-  "hash": "9a7e7ec0a254367716583b5ab0c8b61d",
+  "hash": "c57e534559ca6e6e6246777aa7b6092d",
   "records": [
     {
       "id": "BerenaPulsar",
@@ -37,7 +37,6 @@
         "BasePower": "9",
         "BaseStructure": "100",
         "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
-        "Owner": "0",
         "PowerModifier": "0",
         "StructureModifier": "0",
         "Threat": "2"
@@ -46,7 +45,6 @@
         "PowerComponent",
         "StructureComponent",
         "GameplayTagsComponent",
-        "OwnerComponent",
         "ThreatComponent"
       ],
       "parent_id": "Dra'tar"
@@ -141,7 +139,6 @@
         "BasePower": "8",
         "BaseStructure": "100",
         "InitialGameplayTags": ["Affiliation.BlueWing", "Keyword.Flagship", "CardType.Starship"],
-        "Owner": "0",
         "PowerModifier": "0",
         "StructureModifier": "0",
         "Upkeep": "1"
@@ -150,7 +147,6 @@
         "PowerComponent",
         "StructureComponent",
         "GameplayTagsComponent",
-        "OwnerComponent",
         "UpkeepComponent"
       ],
       "parent_id": "BlueWing"

@@ -27,13 +27,16 @@ public class FlagshipSystem {
     private void onPlayerEntityCreated(GameEvent gameEvent) {
         PlayerEntityCreatedEvent eventData = (PlayerEntityCreatedEvent)gameEvent.getEventData();
 
+        // Play flagship.
         PlayerComponent playerComponent = entityManager.getComponent(eventData.getEntityId(), PlayerComponent.class);
         DeckList deckList = playerManager.getDeckList(playerComponent.getPlayerId());
         String flagshipBlueprintId = deckList.getFlagship();
         long entityId = blueprintManager.createEntity(flagshipBlueprintId);
 
-        OwnerComponent ownerComponent = entityManager.getComponent(entityId, OwnerComponent.class);
+        // Add additional components.
+        OwnerComponent ownerComponent = new OwnerComponent();
         ownerComponent.setOwner(eventData.getEntityId());
+        entityManager.addComponent(entityId, ownerComponent);
 
         // Notify listeners.
         CardPlayedEvent cardPlayedEventData = new CardPlayedEvent();

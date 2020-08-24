@@ -45,7 +45,6 @@
             <Item Value="Affiliation.DraTar"/>
             <Item Value="CardType.Starship"/>
         </InitialGameplayTags>
-        <Owner Value="0"/>
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
@@ -109,7 +108,6 @@
             <Item Value="Keyword.Flagship"/>
             <Item Value="CardType.Starship"/>
         </InitialGameplayTags>
-        <Owner Value="0"/>
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
         <Upkeep Value="1"/>
