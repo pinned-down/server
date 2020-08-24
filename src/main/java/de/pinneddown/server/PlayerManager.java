@@ -2,10 +2,7 @@ package de.pinneddown.server;
 
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class PlayerManager {

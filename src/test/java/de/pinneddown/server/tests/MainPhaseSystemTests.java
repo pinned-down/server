@@ -2,8 +2,6 @@ package de.pinneddown.server.tests;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.EndMainPhaseAction;
-import de.pinneddown.server.components.PlayerComponent;
-import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.systems.MainPhaseSystem;
 import org.junit.jupiter.api.Test;
 
@@ -18,21 +16,14 @@ public class MainPhaseSystemTests {
         // Set up system.
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager();
+        PlayerManager playerManager = new PlayerManager();
+        PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
 
-        MainPhaseSystem system = new MainPhaseSystem(eventManager, entityManager);
+        MainPhaseSystem system = new MainPhaseSystem(eventManager, entityManager, playerReadyManager);
 
         // Add single player.
         String playerId = "PlayerA";
-        PlayerComponent playerComponent = new PlayerComponent();
-        playerComponent.setPlayerId(playerId);
-
-        long playerEntityId = entityManager.createEntity();
-        entityManager.addComponent(playerEntityId, playerComponent);
-
-        PlayerEntityCreatedEvent eventData = new PlayerEntityCreatedEvent();
-        eventData.setEntityId(playerEntityId);
-
-        eventManager.queueEvent(EventType.PLAYER_ENTITY_CREATED, eventData);
+        playerManager.addPlayer("", playerId);
 
         // Listen for resulting event.
         mainPhaseEnded = false;
