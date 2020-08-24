@@ -1,6 +1,7 @@
 package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
+import de.pinneddown.server.components.AssignmentComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
@@ -37,6 +38,7 @@ public class FlagshipSystem {
         OwnerComponent ownerComponent = new OwnerComponent();
         ownerComponent.setOwner(eventData.getEntityId());
         entityManager.addComponent(entityId, ownerComponent);
+        entityManager.addComponent(entityId, new AssignmentComponent());
 
         // Notify listeners.
         CardPlayedEvent cardPlayedEventData = new CardPlayedEvent();
