@@ -5,10 +5,7 @@ import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.GameplayTagsComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.ThreatComponent;
-import de.pinneddown.server.events.CardPlayedEvent;
-import de.pinneddown.server.events.PlayerEntityCreatedEvent;
-import de.pinneddown.server.events.ThreatPoolInitializedEvent;
-import de.pinneddown.server.events.TotalDistanceChangedEvent;
+import de.pinneddown.server.events.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -147,6 +144,10 @@ public class AttackPhaseSystem {
         cardPileComponent.setCardPile(attackDeck);
 
         entityManager.addComponent(attackDeckEntityId, cardPileComponent);
+
+        // Notify listeners.
+        AttackDeckInitializedEvent attackDeckInitializedEvent = new AttackDeckInitializedEvent(attackDeckEntityId);
+        eventManager.queueEvent(EventType.ATTACK_DECK_INITIALIZED, attackDeckInitializedEvent);
     }
 
     private DeckList getDeckList() {
