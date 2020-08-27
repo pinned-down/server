@@ -7,6 +7,7 @@ import de.pinneddown.server.components.AssignmentComponent;
 import de.pinneddown.server.components.GameplayTagsComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.StarshipAssignedEvent;
 
 import java.util.HashSet;
 
@@ -92,5 +93,11 @@ public class AssignmentPhaseSystem {
         AssignmentComponent assignmentComponent = entityManager.getComponent(eventData.getAssignedStarship(),
                 AssignmentComponent.class);
         assignmentComponent.setAssignedTo(eventData.getAssignedTo());
+
+        // Notify listeners.
+        StarshipAssignedEvent starshipAssignedEvent =
+                new StarshipAssignedEvent(eventData.getAssignedStarship(), eventData.getAssignedTo());
+
+        eventManager.queueEvent(EventType.STARSHIP_ASSIGNED, starshipAssignedEvent);
     }
 }

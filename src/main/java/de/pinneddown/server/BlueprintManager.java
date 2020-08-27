@@ -3,6 +3,7 @@ package de.pinneddown.server;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.org.slf4j.internal.Logger;
 import com.sun.org.slf4j.internal.LoggerFactory;
+import de.pinneddown.server.components.BlueprintComponent;
 import org.springframework.beans.PropertyAccessor;
 import org.springframework.beans.PropertyAccessorFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,6 +85,10 @@ public class BlueprintManager implements ApplicationListener<ApplicationReadyEve
                 e.printStackTrace();
             }
         }
+
+        // Remember blueprint id.
+        BlueprintComponent blueprintComponent = new BlueprintComponent(blueprintId);
+        entityManager.addComponent(entityId, blueprintComponent);
 
         return entityId;
     }

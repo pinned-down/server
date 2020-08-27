@@ -1,6 +1,8 @@
 package de.pinneddown.server.components;
 
-public class StructureComponent {
+import de.pinneddown.server.EntityComponent;
+
+public class StructureComponent implements EntityComponent {
     private int baseStructure;
     private int structureModifier;
 
