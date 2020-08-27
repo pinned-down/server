@@ -1,6 +1,8 @@
 package de.pinneddown.server.components;
 
-public class PowerComponent {
+import de.pinneddown.server.EntityComponent;
+
+public class PowerComponent implements EntityComponent {
     private int basePower;
     private int powerModifier;
 
