@@ -1,10 +1,7 @@
 package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
-import de.pinneddown.server.components.CardPileComponent;
-import de.pinneddown.server.components.GameplayTagsComponent;
-import de.pinneddown.server.components.OwnerComponent;
-import de.pinneddown.server.components.ThreatComponent;
+import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +21,7 @@ public class AttackPhaseSystem {
     private int totalDistance;
     private ArrayList<Long> playerEntities;
     private ArrayList<Long> playerStarships;
+    private ArrayList<Long> enemyStarships;
 
     public AttackPhaseSystem(EventManager eventManager, EntityManager entityManager,
                              BlueprintManager blueprintManager, Random random) {
@@ -34,6 +32,7 @@ public class AttackPhaseSystem {
 
         playerEntities = new ArrayList<>();
         playerStarships = new ArrayList<>();
+        enemyStarships = new ArrayList<>();
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.THREAT_POOL_INITIALIZED, this::onThreatPoolInitialized);
@@ -41,6 +40,7 @@ public class AttackPhaseSystem {
         this.eventManager.addEventHandler(EventType.TOTAL_DISTANCE_CHANGED, this::onTotalDistanceChanged);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(EventType.MAIN_PHASE_ENDED, this::onMainPhaseEnded);
+        this.eventManager.addEventHandler(EventType.FIGHT_PHASE_ENDED, this::onFightPhaseEnded);
     }
 
     private void onThreatPoolInitialized(GameEvent gameEvent) {
@@ -74,6 +74,7 @@ public class AttackPhaseSystem {
             // Check top-most card.
             String cardBlueprintId = attackDeck.getCardPile().pop();
             long entityId = blueprintManager.createEntity(cardBlueprintId);
+            enemyStarships.add(entityId);
 
             ThreatComponent cardThreatComponent = entityManager.getComponent(entityId, ThreatComponent.class);
 
@@ -99,6 +100,28 @@ public class AttackPhaseSystem {
 
         // Enter next phase.
         eventManager.queueEvent(EventType.ATTACK_PHASE_ENDED, null);
+    }
+
+    private void onFightPhaseEnded(GameEvent gameEvent) {
+        // Discard enemy starships and add threat.
+        CardPileComponent attackDeck = entityManager.getComponent(attackDeckEntityId, CardPileComponent.class);
+
+        ThreatComponent threatPoolThreatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
+        int newThreat = threatPoolThreatComponent.getThreat();
+
+        for (Long entityId : enemyStarships) {
+            BlueprintComponent blueprintComponent = entityManager.getComponent(entityId, BlueprintComponent.class);
+
+            attackDeck.getDiscardPile().push(blueprintComponent.getBlueprintId());
+
+            entityManager.removeEntity(entityId);
+
+            ++newThreat;
+        }
+
+        threatPoolThreatComponent.setThreat(newThreat);
+
+        enemyStarships.clear();
     }
 
     private void onCardPlayed(GameEvent gameEvent) {
