@@ -2,6 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
+import de.pinneddown.server.events.DefeatEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
 import org.springframework.stereotype.Component;
 
@@ -123,6 +124,17 @@ public class DamageSystem {
 
         playerComponent.getDiscardPile().push(blueprintComponent.getBlueprintId());
 
+        // Check defeat condition.
+        GameplayTagsComponent gameplayTagsComponent = entityManager.getComponent(entityId, GameplayTagsComponent.class);
+
+        if (gameplayTagsComponent != null &&
+                gameplayTagsComponent.getInitialGameplayTags().contains(GameplayTags.KEYWORD_FLAGSHIP)) {
+            DefeatEvent defeatEvent = new DefeatEvent(DefeatReason.FLAGSHIP_DESTROYED, entityId);
+            eventManager.queueEvent(EventType.DEFEAT, defeatEvent);
+            return;
+        }
+
+        // Remove entity.
         entityManager.removeEntity(entityId);
     }
 }
