@@ -7,6 +7,7 @@ import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.ThreatComponent;
 import de.pinneddown.server.events.*;
 import de.pinneddown.server.systems.AttackPhaseSystem;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,7 +16,12 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AttackPhaseSystemTests extends GameSystemTestSuite {
-    private int cardsPlayed;
+    private ArrayList<Long> cardsPlayed;
+
+    @BeforeEach
+    void beforeEach() {
+        cardsPlayed = new ArrayList<>();
+    }
 
     @Test
     void createsAttackDeckAtStartOfGame() {
@@ -111,18 +117,42 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         threatComponent.setThreat(availableThreat);
 
         // Listen for events.
-        cardsPlayed = 0;
         eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
 
         // ACT
         eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
 
         // ASSERT
-        assertThat(cardsPlayed).isEqualTo(availableThreat / enemyThreatCost);
+        assertThat(cardsPlayed.size()).isEqualTo(availableThreat / enemyThreatCost);
+    }
+
+    @Test
+    void discardsAllEnemiesInJumpPhase() {
+        // ARRANGE
+        int availableThreat = 5;
+        int enemyThreatCost = 2;
+
+        EntityManager entityManager = new EntityManager();
+        EventManager eventManager = new EventManager();
+        ThreatComponent threatComponent = setupSystem(entityManager, eventManager, enemyThreatCost);
+        threatComponent.setThreat(availableThreat);
+
+        // Listen for events.
+        eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
+
+        // ACT
+        eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+
+        // ASSERT
+        for (long entityId : cardsPlayed) {
+            assertThat(entityManager.getComponent(entityId, ThreatComponent.class)).isNull();
+        }
     }
 
     private void onCardPlayed(GameEvent gameEvent) {
-        ++cardsPlayed;
+        CardPlayedEvent eventData = (CardPlayedEvent)gameEvent.getEventData();
+        cardsPlayed.add(eventData.getEntityId());
     }
 
     private ThreatComponent setupSystem(EntityManager entityManager, EventManager eventManager, int enemyThreatCost) {

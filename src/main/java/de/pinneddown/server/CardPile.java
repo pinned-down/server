@@ -45,4 +45,8 @@ public class CardPile {
         cards.clear();
         Collections.shuffle(other.cards, shuffleRandom);
     }
+
+    public int size() {
+        return cards.size();
+    }
 }

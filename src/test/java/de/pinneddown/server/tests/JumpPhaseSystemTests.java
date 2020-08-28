@@ -18,12 +18,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
 
-        Blueprint locationBlueprint = new Blueprint();
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, locationBlueprint);
-
-        Random random = new Random();
-
-        JumpPhaseSystem system = new JumpPhaseSystem(eventManager, entityManager, blueprintManager, random);
+        JumpPhaseSystem system = createSystem(eventManager, entityManager);
 
         // ACT
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
@@ -42,15 +37,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
 
-        Blueprint locationBlueprint = new Blueprint();
-        locationBlueprint.getComponents().add(DistanceComponent.class.getSimpleName());
-        locationBlueprint.getAttributes().put("Distance", 1);
-
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, locationBlueprint);
-
-        Random random = new Random();
-
-        JumpPhaseSystem system = new JumpPhaseSystem(eventManager, entityManager, blueprintManager, random);
+        JumpPhaseSystem system = createSystem(eventManager, entityManager);
 
         // ACT
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
@@ -60,5 +47,37 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
 
         assertThat(distanceComponent).isNotNull();
         assertThat(distanceComponent.getDistance()).isGreaterThan(0);
+    }
+
+    @Test
+    void revealsNewLocationInJumpPhase() {
+        // ARRANGE
+        EntityManager entityManager = new EntityManager();
+        EventManager eventManager = new EventManager();
+
+        JumpPhaseSystem system = createSystem(eventManager, entityManager);
+
+        eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
+
+        DistanceComponent distanceComponent = entityManager.getComponent(0, DistanceComponent.class);
+        int initialDistance = distanceComponent.getDistance();
+
+        // ACT
+        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+
+        // ASSERT
+        assertThat(distanceComponent.getDistance()).isGreaterThan(initialDistance);
+    }
+
+    private JumpPhaseSystem createSystem(EventManager eventManager, EntityManager entityManager) {
+        Blueprint locationBlueprint = new Blueprint();
+        locationBlueprint.getComponents().add(DistanceComponent.class.getSimpleName());
+        locationBlueprint.getAttributes().put("Distance", 1);
+
+        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, locationBlueprint);
+
+        Random random = new Random();
+
+        return new JumpPhaseSystem(eventManager, entityManager, blueprintManager, random);
     }
 }

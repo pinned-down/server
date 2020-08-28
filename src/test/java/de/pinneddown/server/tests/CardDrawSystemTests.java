@@ -40,4 +40,34 @@ public class CardDrawSystemTests {
         assertThat(playerComponent.getHand().getCards()).isNotNull();
         assertThat(playerComponent.getHand().getCards()).isNotEmpty();
     }
+
+    @Test
+    void playersDrawCardsInJumpPhase() throws IOException {
+        // ARRANGE
+        // Create system.
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager();
+        PlayerManager playerManager = new PlayerManager();
+        Random random = new Random();
+
+        CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random);
+
+        // Create player.
+        long playerEntityId = entityManager.createEntity();
+        PlayerComponent playerComponent = new PlayerComponent();
+        entityManager.addComponent(playerEntityId, playerComponent);
+
+        PlayerEntityCreatedEvent eventData = new PlayerEntityCreatedEvent();
+        eventData.setEntityId(playerEntityId);
+
+        eventManager.queueEvent(EventType.PLAYER_ENTITY_CREATED, eventData);
+
+        int cardsInHand = playerComponent.getHand().size();
+
+        // ACT
+        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+
+        // ASSERT
+        assertThat(playerComponent.getHand().size()).isGreaterThan(cardsInHand);
+    }
 }
