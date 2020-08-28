@@ -12,6 +12,8 @@ import java.util.Random;
 
 @Component
 public class JumpPhaseSystem {
+    private static final int VICTORY_DISTANCE = 10;
+
     private EventManager eventManager;
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
@@ -49,6 +51,15 @@ public class JumpPhaseSystem {
     }
 
     private void onFightPhaseEnded(GameEvent gameEvent) {
+        // Check victory condition.
+        DistanceComponent totalDistanceComponent = entityManager.getComponent(locationDeckEntityId, DistanceComponent.class);
+
+        if (totalDistanceComponent.getDistance() >= VICTORY_DISTANCE) {
+            eventManager.queueEvent(EventType.VICTORY, null);
+            return;
+        }
+
+        // Reveal next location.
         revealNextLocation();
 
         eventManager.queueEvent(EventType.JUMP_PHASE_ENDED, null);
