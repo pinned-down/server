@@ -12,13 +12,15 @@ import java.util.Random;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class JumpPhaseSystemTests extends GameSystemTestSuite {
+    private boolean victory;
+
     @Test
     void createsLocationDeckAtStartOfGame() {
         // ARRANGE
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
 
-        JumpPhaseSystem system = createSystem(eventManager, entityManager);
+        JumpPhaseSystem system = createSystem(eventManager, entityManager, 1);
 
         // ACT
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
@@ -37,7 +39,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
 
-        JumpPhaseSystem system = createSystem(eventManager, entityManager);
+        JumpPhaseSystem system = createSystem(eventManager, entityManager, 1);
 
         // ACT
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
@@ -55,7 +57,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
 
-        JumpPhaseSystem system = createSystem(eventManager, entityManager);
+        JumpPhaseSystem system = createSystem(eventManager, entityManager, 1);
 
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
@@ -69,10 +71,34 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         assertThat(distanceComponent.getDistance()).isGreaterThan(initialDistance);
     }
 
-    private JumpPhaseSystem createSystem(EventManager eventManager, EntityManager entityManager) {
+    @Test
+    void victoryAtFinalLocation() {
+        // ARRANGE
+        EntityManager entityManager = new EntityManager();
+        EventManager eventManager = new EventManager();
+
+        JumpPhaseSystem system = createSystem(eventManager, entityManager, 10);
+
+        eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
+
+        victory = false;
+        eventManager.addEventHandler(EventType.VICTORY, this::onVictory);
+
+        // ACT
+        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+
+        // ASSERT
+        assertThat(victory).isTrue();
+    }
+
+    private void onVictory(GameEvent gameEvent) {
+        victory = true;
+    }
+
+    private JumpPhaseSystem createSystem(EventManager eventManager, EntityManager entityManager, int locationDistance) {
         Blueprint locationBlueprint = new Blueprint();
         locationBlueprint.getComponents().add(DistanceComponent.class.getSimpleName());
-        locationBlueprint.getAttributes().put("Distance", 1);
+        locationBlueprint.getAttributes().put("Distance", locationDistance);
 
         BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, locationBlueprint);
 
