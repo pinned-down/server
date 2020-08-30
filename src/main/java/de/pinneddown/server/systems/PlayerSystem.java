@@ -31,9 +31,8 @@ public class PlayerSystem {
             entityManager.addComponent(playerEntityId, playerComponent);
 
             // Notify listeners.
-            PlayerEntityCreatedEvent playerEntityCreatedEventData = new PlayerEntityCreatedEvent();
-            playerEntityCreatedEventData.setEntityId(playerEntityId);
-
+            PlayerEntityCreatedEvent playerEntityCreatedEventData =
+                    new PlayerEntityCreatedEvent(playerId, playerEntityId);
             eventManager.queueEvent(EventType.PLAYER_ENTITY_CREATED, playerEntityCreatedEventData);
         }
     }
