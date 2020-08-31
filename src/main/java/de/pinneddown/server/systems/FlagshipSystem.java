@@ -41,9 +41,8 @@ public class FlagshipSystem {
         entityManager.addComponent(entityId, new AssignmentComponent());
 
         // Notify listeners.
-        CardPlayedEvent cardPlayedEventData = new CardPlayedEvent();
-        cardPlayedEventData.setEntityId(entityId);
-
+        CardPlayedEvent cardPlayedEventData =
+                new CardPlayedEvent(entityId, flagshipBlueprintId, eventData.getEntityId());
         eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
     }
 }

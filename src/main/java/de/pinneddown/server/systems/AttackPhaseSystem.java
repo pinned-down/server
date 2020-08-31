@@ -87,9 +87,7 @@ public class AttackPhaseSystem {
             }
 
             // Play card.
-            CardPlayedEvent cardPlayedEventData = new CardPlayedEvent();
-            cardPlayedEventData.setEntityId(entityId);
-
+            CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, cardBlueprintId, 0L);
             eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
             newThreat -= cardThreatComponent.getThreat();
@@ -97,6 +95,9 @@ public class AttackPhaseSystem {
 
         // Set resulting threat.
         threatPoolThreatComponent.setThreat(newThreat);
+
+        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(newThreat);
+        eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
 
         // Enter next phase.
         eventManager.queueEvent(EventType.ATTACK_PHASE_ENDED, null);
@@ -120,6 +121,9 @@ public class AttackPhaseSystem {
         }
 
         threatPoolThreatComponent.setThreat(newThreat);
+
+        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(newThreat);
+        eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
 
         enemyStarships.clear();
     }

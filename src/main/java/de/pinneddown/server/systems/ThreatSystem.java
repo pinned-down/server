@@ -2,6 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.ThreatComponent;
+import de.pinneddown.server.events.ThreatChangedEvent;
 import de.pinneddown.server.events.ThreatPoolInitializedEvent;
 import org.springframework.stereotype.Component;
 
@@ -34,5 +35,8 @@ public class ThreatSystem {
         eventData.setEntityId(threatPoolEntityId);
 
         eventManager.queueEvent(EventType.THREAT_POOL_INITIALIZED, eventData);
+
+        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(threatComponent.getThreat());
+        eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
     }
 }

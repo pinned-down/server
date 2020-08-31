@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.BlueprintComponent;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.DistanceComponent;
+import de.pinneddown.server.events.CurrentLocationChangedEvent;
 import de.pinneddown.server.events.TotalDistanceChangedEvent;
 import org.springframework.stereotype.Component;
 
@@ -80,6 +81,10 @@ public class JumpPhaseSystem {
         // Reveal new location.
         String topLocation = cardPileComponent.getCardPile().pop();
         currentLocationEntityId = blueprintManager.createEntity(topLocation);
+
+        CurrentLocationChangedEvent currentLocationChangedEvent =
+                new CurrentLocationChangedEvent(currentLocationEntityId, topLocation);
+        eventManager.queueEvent(EventType.CURRENT_LOCATION_CHANGED, currentLocationChangedEvent);
 
         // Update total distance.
         DistanceComponent totalDistanceComponent = entityManager.getComponent(locationDeckEntityId, DistanceComponent.class);

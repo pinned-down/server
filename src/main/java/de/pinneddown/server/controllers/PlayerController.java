@@ -28,6 +28,10 @@ public class PlayerController extends WebSocketController {
 
         eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.PLAYER_HAND_CHANGED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.CURRENT_LOCATION_CHANGED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.CARD_PLAYED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.THREAT_CHANGED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.TOTAL_DISTANCE_CHANGED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

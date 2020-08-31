@@ -1,17 +1,15 @@
 package de.pinneddown.server.events;
 
-public class CardPlayedEvent {
+public class CurrentLocationChangedEvent {
     private long entityId;
     private String blueprintId;
-    private long ownerEntityId;
 
-    public CardPlayedEvent() {
+    public CurrentLocationChangedEvent() {
     }
 
-    public CardPlayedEvent(long entityId, String blueprintId, long ownerEntityId) {
+    public CurrentLocationChangedEvent(long entityId, String blueprintId) {
         this.entityId = entityId;
         this.blueprintId = blueprintId;
-        this.ownerEntityId = ownerEntityId;
     }
 
     public long getEntityId() {
@@ -28,13 +26,5 @@ public class CardPlayedEvent {
 
     public void setBlueprintId(String blueprintId) {
         this.blueprintId = blueprintId;
-    }
-
-    public long getOwnerEntityId() {
-        return ownerEntityId;
-    }
-
-    public void setOwnerEntityId(long ownerEntityId) {
-        this.ownerEntityId = ownerEntityId;
     }
 }
