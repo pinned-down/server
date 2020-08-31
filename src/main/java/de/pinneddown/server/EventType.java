@@ -15,5 +15,6 @@ public enum EventType {
     ATTACK_DECK_INITIALIZED,
     JUMP_PHASE_ENDED,
     VICTORY,
-    DEFEAT
+    DEFEAT,
+    PLAYER_HAND_CHANGED
 }

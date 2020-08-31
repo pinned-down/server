@@ -27,6 +27,7 @@ public class PlayerController extends WebSocketController {
         this.template = template;
 
         eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.PLAYER_HAND_CHANGED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

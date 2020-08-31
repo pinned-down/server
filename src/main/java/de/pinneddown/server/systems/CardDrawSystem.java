@@ -3,6 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
+import de.pinneddown.server.events.PlayerHandChangedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -34,10 +35,12 @@ public class CardDrawSystem {
 
     private void onPlayerEntityCreated(GameEvent gameEvent) {
         PlayerEntityCreatedEvent eventData = (PlayerEntityCreatedEvent)gameEvent.getEventData();
-        playerEntities.add(eventData.getEntityId());
+        long playerEntityId = eventData.getEntityId();
+
+        playerEntities.add(playerEntityId);
 
         // Setup draw deck.
-        PlayerComponent playerComponent = entityManager.getComponent(eventData.getEntityId(), PlayerComponent.class);
+        PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
         DeckList deckList = playerManager.getDeckList(playerComponent.getPlayerId());
         CardPile drawDeck = CardPile.createFromDecklist(deckList, random);
 
@@ -45,18 +48,24 @@ public class CardDrawSystem {
 
         // Draw initial cards.
         for (int i = 0; i < INITIAL_CARDS; ++i) {
-            String card = playerComponent.getDrawDeck().pop();
-            playerComponent.getHand().push(card);
+            drawCard(playerEntityId);
         }
     }
 
     private void onFightPhaseEnded(GameEvent gameEvent) {
         // Draw card.
         for (long entityId : playerEntities) {
-            PlayerComponent playerComponent = entityManager.getComponent(entityId, PlayerComponent.class);
-
-            String card = playerComponent.getDrawDeck().pop();
-            playerComponent.getHand().push(card);
+            drawCard(entityId);
         }
+    }
+
+    private void drawCard(long playerEntityId) {
+        PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
+
+        String card = playerComponent.getDrawDeck().pop();
+        playerComponent.getHand().push(card);
+
+        PlayerHandChangedEvent playerHandChangedEvent = new PlayerHandChangedEvent(playerEntityId, playerComponent.getHand().getCards());
+        eventManager.queueEvent(EventType.PLAYER_HAND_CHANGED, playerHandChangedEvent);
     }
 }
