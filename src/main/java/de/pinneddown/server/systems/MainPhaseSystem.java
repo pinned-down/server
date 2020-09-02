@@ -2,7 +2,10 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.EndMainPhaseAction;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MainPhaseSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
@@ -13,7 +16,12 @@ public class MainPhaseSystem {
         this.entityManager = entityManager;
         this.playerReadyManager = playerReadyManager;
 
+        this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(ActionType.END_MAIN_PHASE, this::onEndMainPhase);
+    }
+
+    private void onReadyToStart(GameEvent gameEvent) {
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.MAIN));
     }
 
     private void onEndMainPhase(GameEvent gameEvent) {
@@ -26,6 +34,6 @@ public class MainPhaseSystem {
 
         playerReadyManager.resetReadyPlayers();
 
-        this.eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
+        this.eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ATTACK));
     }
 }

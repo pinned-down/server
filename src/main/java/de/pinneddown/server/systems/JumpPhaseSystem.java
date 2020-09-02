@@ -6,6 +6,7 @@ import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.DistanceComponent;
 import de.pinneddown.server.events.CurrentLocationChangedEvent;
 import de.pinneddown.server.events.TotalDistanceChangedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class JumpPhaseSystem {
         this.random = random;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
-        this.eventManager.addEventHandler(EventType.FIGHT_PHASE_ENDED, this::onFightPhaseEnded);
+        this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
@@ -51,7 +52,13 @@ public class JumpPhaseSystem {
         revealNextLocation();
     }
 
-    private void onFightPhaseEnded(GameEvent gameEvent) {
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() != TurnPhase.JUMP) {
+            return;
+        }
+
         // Check victory condition.
         DistanceComponent totalDistanceComponent = entityManager.getComponent(locationDeckEntityId, DistanceComponent.class);
 
@@ -63,7 +70,7 @@ public class JumpPhaseSystem {
         // Reveal next location.
         revealNextLocation();
 
-        eventManager.queueEvent(EventType.JUMP_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.MAIN));
     }
 
     private void revealNextLocation() {

@@ -6,6 +6,7 @@ import de.pinneddown.server.components.AssignmentComponent;
 import de.pinneddown.server.components.GameplayTagsComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.AssignmentPhaseSystem;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ public class AssignmentPhaseSystemTests {
 
         // Listen for resulting event.
         assignmentPhaseEnded = false;
-        eventManager.addEventHandler(EventType.ASSIGNMENT_PHASE_ENDED, this::onAssignmentPhaseEnded);
+        eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
 
         // ACT
         EndAssignmentPhaseAction actionData = new EndAssignmentPhaseAction();
@@ -71,7 +72,7 @@ public class AssignmentPhaseSystemTests {
 
         // Listen for resulting event.
         assignmentPhaseEnded = false;
-        eventManager.addEventHandler(EventType.ASSIGNMENT_PHASE_ENDED, this::onAssignmentPhaseEnded);
+        eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
 
         // ACT
         EndAssignmentPhaseAction actionData = new EndAssignmentPhaseAction();
@@ -83,8 +84,12 @@ public class AssignmentPhaseSystemTests {
         assertThat(assignmentPhaseEnded).isFalse();
     }
 
-    private void onAssignmentPhaseEnded(GameEvent gameEvent) {
-        assignmentPhaseEnded = true;
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() == TurnPhase.FIGHT) {
+            assignmentPhaseEnded = true;
+        }
     }
 
     private long createStarshipEntity(EntityManager entityManager) {

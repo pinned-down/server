@@ -1,11 +1,9 @@
 package de.pinneddown.server.tests;
 
-import de.pinneddown.server.EntityManager;
-import de.pinneddown.server.EventManager;
-import de.pinneddown.server.EventType;
-import de.pinneddown.server.PlayerManager;
+import de.pinneddown.server.*;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.CardDrawSystem;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +63,7 @@ public class CardDrawSystemTests {
         int cardsInHand = playerComponent.getHand().size();
 
         // ACT
-        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
 
         // ASSERT
         assertThat(playerComponent.getHand().size()).isGreaterThan(cardsInHand);

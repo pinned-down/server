@@ -39,8 +39,7 @@ public class AttackPhaseSystem {
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
         this.eventManager.addEventHandler(EventType.TOTAL_DISTANCE_CHANGED, this::onTotalDistanceChanged);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
-        this.eventManager.addEventHandler(EventType.MAIN_PHASE_ENDED, this::onMainPhaseEnded);
-        this.eventManager.addEventHandler(EventType.FIGHT_PHASE_ENDED, this::onFightPhaseEnded);
+        this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
     }
 
     private void onThreatPoolInitialized(GameEvent gameEvent) {
@@ -48,7 +47,21 @@ public class AttackPhaseSystem {
         threatPoolEntityId = eventData.getEntityId();
     }
 
-    private void onMainPhaseEnded(GameEvent gameEvent) {
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        switch (eventData.getTurnPhase()) {
+            case ATTACK:
+                onAttackPhaseStarted();
+                break;
+
+            case JUMP:
+                onJumpPhaseStarted();
+                break;
+        }
+    }
+
+    private void onAttackPhaseStarted() {
         ThreatComponent threatPoolThreatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
         int currentThreat = threatPoolThreatComponent.getThreat();
         int newThreat = currentThreat;
@@ -100,10 +113,10 @@ public class AttackPhaseSystem {
         eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
 
         // Enter next phase.
-        eventManager.queueEvent(EventType.ATTACK_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ASSIGNMENT));
     }
 
-    private void onFightPhaseEnded(GameEvent gameEvent) {
+    private void onJumpPhaseStarted() {
         // Discard enemy starships and add threat.
         CardPileComponent attackDeck = entityManager.getComponent(attackDeckEntityId, CardPileComponent.class);
 

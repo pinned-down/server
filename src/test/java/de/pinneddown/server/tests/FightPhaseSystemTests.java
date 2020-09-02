@@ -6,6 +6,7 @@ import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AttackDeckInitializedEvent;
 import de.pinneddown.server.events.ReadyToStartEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.DamageSystem;
 import de.pinneddown.server.systems.FightPhaseSystem;
 import org.junit.jupiter.api.Test;
@@ -120,10 +121,10 @@ public class FightPhaseSystemTests {
 
         // Register listener.
         fightPhaseEnded = false;
-        eventManager.addEventHandler(EventType.FIGHT_PHASE_ENDED, this::onFightPhaseEnded);
+        eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
 
         // ACT
-        eventManager.queueEvent(EventType.ASSIGNMENT_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.FIGHT));
 
         // ASSERT
         assertThat(fightPhaseEnded).isTrue();
@@ -150,7 +151,7 @@ public class FightPhaseSystemTests {
 
         // Register listener.
         fightPhaseEnded = false;
-        eventManager.addEventHandler(EventType.FIGHT_PHASE_ENDED, this::onFightPhaseEnded);
+        eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
 
         // ACT
         eventManager.queueEvent(ActionType.RESOLVE_FIGHT, new ResolveFightAction(playerShipId));
@@ -185,7 +186,11 @@ public class FightPhaseSystemTests {
         eventData = (StarshipDefeatedEvent)gameEvent.getEventData();
     }
 
-    private void onFightPhaseEnded(GameEvent gameEvent) {
-        fightPhaseEnded = true;
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() == TurnPhase.JUMP) {
+            fightPhaseEnded = true;
+        }
     }
 }

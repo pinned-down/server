@@ -8,6 +8,7 @@ import de.pinneddown.server.components.GameplayTagsComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.events.StarshipAssignedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 
 import java.util.HashSet;
 
@@ -84,7 +85,7 @@ public class AssignmentPhaseSystem {
         // End assignment phase.
         playerReadyManager.resetReadyPlayers();
 
-        this.eventManager.queueEvent(EventType.ASSIGNMENT_PHASE_ENDED, null);
+        this.eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.FIGHT));
     }
 
     private void onAssignStarship(GameEvent gameEvent) {

@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.DistanceComponent;
 import de.pinneddown.server.events.ReadyToStartEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.JumpPhaseSystem;
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +66,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         int initialDistance = distanceComponent.getDistance();
 
         // ACT
-        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
 
         // ASSERT
         assertThat(distanceComponent.getDistance()).isGreaterThan(initialDistance);
@@ -85,7 +86,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         eventManager.addEventHandler(EventType.VICTORY, this::onVictory);
 
         // ACT
-        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
 
         // ASSERT
         assertThat(victory).isTrue();

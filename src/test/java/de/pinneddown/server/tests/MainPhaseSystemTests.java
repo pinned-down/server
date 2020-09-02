@@ -2,6 +2,7 @@ package de.pinneddown.server.tests;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.EndMainPhaseAction;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.MainPhaseSystem;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +28,7 @@ public class MainPhaseSystemTests {
 
         // Listen for resulting event.
         mainPhaseEnded = false;
-        eventManager.addEventHandler(EventType.MAIN_PHASE_ENDED, this::onMainPhaseEnded);
+        eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
 
         // ACT
         EndMainPhaseAction actionData = new EndMainPhaseAction();
@@ -39,7 +40,11 @@ public class MainPhaseSystemTests {
         assertThat(mainPhaseEnded).isTrue();
     }
 
-    private void onMainPhaseEnded(GameEvent gameEvent) {
-        mainPhaseEnded = true;
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() == TurnPhase.ATTACK) {
+            mainPhaseEnded = true;
+        }
     }
 }

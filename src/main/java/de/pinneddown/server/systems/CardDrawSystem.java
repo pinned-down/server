@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.PlayerHandChangedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class CardDrawSystem {
         this.playerEntities = new ArrayList<>();
 
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
-        this.eventManager.addEventHandler(EventType.FIGHT_PHASE_ENDED, this::onFightPhaseEnded);
+        this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
     }
 
     private void onPlayerEntityCreated(GameEvent gameEvent) {
@@ -52,7 +53,13 @@ public class CardDrawSystem {
         }
     }
 
-    private void onFightPhaseEnded(GameEvent gameEvent) {
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() != TurnPhase.JUMP) {
+            return;
+        }
+
         // Draw card.
         for (long entityId : playerEntities) {
             drawCard(entityId);

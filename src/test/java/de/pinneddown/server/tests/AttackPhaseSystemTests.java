@@ -59,7 +59,7 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         eventManager.queueEvent(EventType.TOTAL_DISTANCE_CHANGED, totalDistanceChangedEventData);
 
         // ACT
-        eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ATTACK));
 
         // ASSERT
         assertThat(threatComponent.getThreat()).isEqualTo(totalDistance);
@@ -99,7 +99,7 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
         // ACT
-        eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ATTACK));
 
         // ASSERT
         assertThat(threatComponent.getThreat()).isEqualTo(1);
@@ -120,7 +120,7 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
 
         // ACT
-        eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ATTACK));
 
         // ASSERT
         assertThat(cardsPlayed.size()).isEqualTo(availableThreat / enemyThreatCost);
@@ -141,8 +141,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
 
         // ACT
-        eventManager.queueEvent(EventType.MAIN_PHASE_ENDED, null);
-        eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ATTACK));
+        eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
 
         // ASSERT
         for (long entityId : cardsPlayed) {

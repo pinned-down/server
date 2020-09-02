@@ -9,6 +9,7 @@ import de.pinneddown.server.components.PowerComponent;
 import de.pinneddown.server.events.AttackDeckInitializedEvent;
 import de.pinneddown.server.events.StarshipAssignedEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
+import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -29,7 +30,7 @@ public class FightPhaseSystem {
 
         this.eventManager.addEventHandler(EventType.ATTACK_DECK_INITIALIZED, this::onAttackDeckInitialized);
         this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
-        this.eventManager.addEventHandler(EventType.ASSIGNMENT_PHASE_ENDED, this::onAssignmentPhaseEnded);
+        this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
         this.eventManager.addEventHandler(ActionType.RESOLVE_FIGHT, this::onResolveFight);
     }
 
@@ -43,10 +44,16 @@ public class FightPhaseSystem {
         assignedStarships.add(eventData.getAssignedStarship());
     }
 
-    private void onAssignmentPhaseEnded(GameEvent gameEvent) {
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() != TurnPhase.FIGHT) {
+            return;
+        }
+
         // Check if there's anything to do.
         if (assignedStarships.size() <= 0) {
-            eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+            eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
         }
     }
 
@@ -103,7 +110,7 @@ public class FightPhaseSystem {
         assignedStarships.remove(playerEntityId);
 
         if (assignedStarships.size() <= 0) {
-            eventManager.queueEvent(EventType.FIGHT_PHASE_ENDED, null);
+            eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
         }
     }
 }
