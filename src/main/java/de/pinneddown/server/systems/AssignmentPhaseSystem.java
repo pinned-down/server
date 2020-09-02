@@ -9,9 +9,11 @@ import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.events.StarshipAssignedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 
+@Component
 public class AssignmentPhaseSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
