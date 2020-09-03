@@ -128,6 +128,7 @@ public class AttackPhaseSystem {
 
             attackDeck.getDiscardPile().push(blueprintComponent.getBlueprintId());
 
+            eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(entityId));
             entityManager.removeEntity(entityId);
 
             ++newThreat;

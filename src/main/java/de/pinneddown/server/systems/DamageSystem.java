@@ -2,6 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
+import de.pinneddown.server.events.CardRemovedEvent;
 import de.pinneddown.server.events.DefeatEvent;
 import de.pinneddown.server.events.StarshipDamagedEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
@@ -119,6 +120,7 @@ public class DamageSystem {
                 BlueprintComponent blueprintComponent = entityManager.getComponent(otherDamageEntityId, BlueprintComponent.class);
                 cardPileComponent.getDiscardPile().push(blueprintComponent.getBlueprintId());
 
+                eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(otherDamageEntityId));
                 entityManager.removeEntity(otherDamageEntityId);
             }
         }
@@ -142,6 +144,7 @@ public class DamageSystem {
         }
 
         // Remove entity.
+        eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(entityId));
         entityManager.removeEntity(entityId);
     }
 }

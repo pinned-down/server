@@ -6,10 +6,7 @@ import de.pinneddown.server.components.AssignmentComponent;
 import de.pinneddown.server.components.BlueprintComponent;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.PowerComponent;
-import de.pinneddown.server.events.AttackDeckInitializedEvent;
-import de.pinneddown.server.events.StarshipAssignedEvent;
-import de.pinneddown.server.events.StarshipDefeatedEvent;
-import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import de.pinneddown.server.events.*;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -90,6 +87,7 @@ public class FightPhaseSystem {
 
             cardPileComponent.getDiscardPile().push(blueprintComponent.getBlueprintId());
 
+            eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(enemyEntityId));
             entityManager.removeEntity(enemyEntityId);
 
             // Notify listeners.
