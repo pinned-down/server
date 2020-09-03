@@ -5,7 +5,6 @@ import de.pinneddown.server.EventManager;
 import de.pinneddown.server.PlayerManager;
 import de.pinneddown.server.actions.AssignStarshipAction;
 import de.pinneddown.server.actions.EndAssignmentPhaseAction;
-import de.pinneddown.server.actions.EndMainPhaseAction;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;

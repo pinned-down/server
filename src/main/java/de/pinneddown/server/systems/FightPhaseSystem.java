@@ -41,7 +41,10 @@ public class FightPhaseSystem {
 
     private void onStarshipAssigned(GameEvent gameEvent) {
         StarshipAssignedEvent eventData = (StarshipAssignedEvent)gameEvent.getEventData();
-        assignedStarships.add(eventData.getAssignedStarship());
+
+        if (eventData.getAssignedTo() > 0) {
+            assignedStarships.add(eventData.getAssignedStarship());
+        }
     }
 
     private void onTurnPhaseStarted(GameEvent gameEvent) {
@@ -106,9 +109,15 @@ public class FightPhaseSystem {
             eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);
         }
 
-        // Check if all fights resolved.
+        // Unassign starship.
+        assignmentComponent.setAssignedTo(-1);
+
+        StarshipAssignedEvent starshipAssignedEvent = new StarshipAssignedEvent(playerEntityId, -1);
+        eventManager.queueEvent(EventType.STARSHIP_ASSIGNED, starshipAssignedEvent);
+
         assignedStarships.remove(playerEntityId);
 
+        // Check if all fights resolved.
         if (assignedStarships.size() <= 0) {
             eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
         }
