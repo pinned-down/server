@@ -34,6 +34,7 @@ public class PlayerController extends WebSocketController {
         eventManager.addEventHandler(EventType.TOTAL_DISTANCE_CHANGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.STARSHIP_DAMAGED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

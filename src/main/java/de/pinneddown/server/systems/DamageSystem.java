@@ -3,6 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.DefeatEvent;
+import de.pinneddown.server.events.StarshipDamagedEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
 import org.springframework.stereotype.Component;
 
@@ -81,6 +82,12 @@ public class DamageSystem {
             starshipStructureComponent.setStructureModifier(starshipStructureComponent.getStructureModifier() +
                     damageStructureComponent.getStructureModifier());
 
+            // Notify listeners.
+            StarshipDamagedEvent starshipDamagedEvent =
+                    new StarshipDamagedEvent(entityId, damageEntityId, damageBlueprintId);
+            eventManager.queueEvent(EventType.STARSHIP_DAMAGED, starshipDamagedEvent);
+
+            // Check structure.
             if (starshipStructureComponent.getCurrentStructure() <= 0) {
                 destroyStarship(entityId);
             }
