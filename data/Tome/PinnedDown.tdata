@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Records>
     <Record Id="Abilities" DisplayName="Abilities">
-        <AbilityEffects/>
-        <RequiredTags/>
-        <TargetBlockedTags/>
-        <TargetRequiredTags/>
+        <AbilityEffects Value=""/>
+        <RequiredTags Value=""/>
+        <TargetBlockedTags Value=""/>
+        <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="AbilityEffects" DisplayName="Ability Effects">
         <AbilityEffectDuration Value="Indefinite"/>
+    </Record>
+    <Record Id="Agniar" DisplayName="Agniar" Parent="Locations">
+        <Distance Value="2"/>
     </Record>
     <Record Id="BerenaPulsar" DisplayName="Berena Pulsar" Parent="Locations">
         <InitialGameplayTags>
@@ -64,9 +67,9 @@
         <AbilityEffects>
             <Item Value="FireAtWillDefaultEffect"/>
         </AbilityEffects>
-        <RequiredTags/>
-        <TargetBlockedTags/>
-        <TargetRequiredTags/>
+        <RequiredTags Value=""/>
+        <TargetBlockedTags Value=""/>
+        <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="FireAtWillDefaultEffect" DisplayName="Fire At Will (Default Effect)" Parent="AbilityEffects">
@@ -78,15 +81,27 @@
         <AbilityEffects>
             <Item Value="FireAtWillImprovedEffect"/>
         </AbilityEffects>
-        <RequiredTags/>
-        <TargetBlockedTags/>
-        <TargetRequiredTags/>
+        <RequiredTags Value=""/>
+        <TargetBlockedTags Value=""/>
+        <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="FireAtWillImprovedEffect" DisplayName="Fire At Will (Improved Effect)" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
         <BasePower Value="0"/>
         <PowerModifier Value="4"/>
+    </Record>
+    <Record Id="GerraraNebula" DisplayName="Gerrara Nebula" Parent="Locations">
+        <Distance Value="3"/>
+        <LocationType Value="Space"/>
+    </Record>
+    <Record Id="Harana" DisplayName="Harana" Parent="Locations"/>
+    <Record Id="KressarShipyards" DisplayName="Kressar Shipyards" Parent="Locations">
+        <Distance Value="2"/>
+        <LocationType Value="Station"/>
+    </Record>
+    <Record Id="LacarnaNebula" DisplayName="Lacarna Nebula" Parent="Locations">
+        <LocationType Value="Space"/>
     </Record>
     <Record Id="Locations" DisplayName="Locations">
         <Distance Value="1"/>
@@ -95,10 +110,29 @@
         </InitialGameplayTags>
         <LocationType Value="Planet"/>
     </Record>
+    <Record Id="MoslovAsteroid" DisplayName="Moslov Asteroid" Parent="Locations">
+        <Distance Value="2"/>
+        <LocationType Value="Space"/>
+    </Record>
+    <Record Id="OshiroAsteroidBelt" DisplayName="Oshiro Asteroid Belt" Parent="Locations">
+        <Distance Value="2"/>
+        <LocationType Value="Space"/>
+    </Record>
+    <Record Id="RahraAsteroidBelt" DisplayName="Rahra Asteroid Belt" Parent="Locations">
+        <Distance Value="2"/>
+        <LocationType Value="Space"/>
+    </Record>
+    <Record Id="SalazaDocks" DisplayName="Salaza Docks" Parent="Locations">
+        <LocationType Value="Station"/>
+    </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
         <Distance Value="1"/>
         <LocationType Value="Station"/>
         <Threat Value="3"/>
+    </Record>
+    <Record Id="TekanaPassage" DisplayName="Tekana Passage" Parent="Locations">
+        <Distance Value="2"/>
+        <LocationType Value="Space"/>
     </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
         <BasePower Value="8"/>
@@ -116,12 +150,16 @@
         <AbilityEffects>
             <Item Value="TRBArdorDamageBonusEffect"/>
         </AbilityEffects>
-        <RequiredTags/>
-        <TargetBlockedTags/>
-        <TargetRequiredTags/>
+        <RequiredTags Value=""/>
+        <TargetBlockedTags Value=""/>
+        <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="TRBArdorDamageBonusEffect" DisplayName="TRB Ardor (Damage Bonus Effect)" Parent="AbilityEffects">
         <PowerPerLocation Value="1"/>
+    </Record>
+    <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
+        <Distance Value="3"/>
+        <LocationType Value="Space"/>
     </Record>
 </Records>

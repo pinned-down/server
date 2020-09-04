@@ -112,8 +112,18 @@ public class JumpPhaseSystem {
         DeckList deckList = new DeckList();
         HashMap<String, Integer> cards = new HashMap<>();
 
+        cards.put("Agniar", 1);
         cards.put("BerenaPulsar", 1);
+        cards.put("GerraraNebula", 1);
+        cards.put("Harana", 1);
+        cards.put("KressarShipyards", 1);
+        cards.put("MoslovAsteroid", 1);
+        cards.put("OshiroAsteroidBelt", 1);
+        cards.put("RahraAsteroidBelt", 1);
+        cards.put("SalazaDocks", 1);
         cards.put("SolmarBorderStation", 1);
+        cards.put("TekanaPassage", 1);
+        cards.put("VolarPulsar", 1);
 
         deckList.setCards(cards);
         return deckList;
