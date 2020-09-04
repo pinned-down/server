@@ -36,6 +36,8 @@ public class PlayerController extends WebSocketController {
         eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.STARSHIP_DAMAGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.CARD_REMOVED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.VICTORY, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.DEFEAT, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

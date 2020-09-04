@@ -7,6 +7,7 @@ import de.pinneddown.server.components.DistanceComponent;
 import de.pinneddown.server.events.CurrentLocationChangedEvent;
 import de.pinneddown.server.events.TotalDistanceChangedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import de.pinneddown.server.events.VictoryEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class JumpPhaseSystem {
         DistanceComponent totalDistanceComponent = entityManager.getComponent(locationDeckEntityId, DistanceComponent.class);
 
         if (totalDistanceComponent.getDistance() >= VICTORY_DISTANCE) {
-            eventManager.queueEvent(EventType.VICTORY, null);
+            eventManager.queueEvent(EventType.VICTORY, new VictoryEvent());
             return;
         }
 
