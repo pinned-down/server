@@ -69,6 +69,10 @@ public class CardDrawSystem {
     private void drawCard(long playerEntityId) {
         PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
 
+        if (playerComponent.getDrawDeck().isEmpty()) {
+            return;
+        }
+
         String card = playerComponent.getDrawDeck().pop();
         playerComponent.getHand().push(card);
 
