@@ -21,6 +21,7 @@ public class DamageSystem {
 
     private long damageDeckEntityId;
     private HashSet<Long> damageEntities;
+    private boolean godModeEnabled;
 
     public DamageSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
                         Random random) {
@@ -33,6 +34,11 @@ public class DamageSystem {
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
+        this.eventManager.addEventHandler(ActionType.GOD_CHEAT, this::onGodCheat);
+    }
+
+    private void onGodCheat(GameEvent gameEvent) {
+        godModeEnabled = !godModeEnabled;
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
@@ -49,6 +55,10 @@ public class DamageSystem {
 
     private void onStarshipDefeated(GameEvent gameEvent) {
         StarshipDefeatedEvent eventData = (StarshipDefeatedEvent)gameEvent.getEventData();
+
+        if (godModeEnabled) {
+            return;
+        }
 
         // Check if player starship.
         long entityId = eventData.getEntityId();
