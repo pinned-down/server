@@ -23,12 +23,15 @@ public class FightPhaseSystem {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
 
-        assignedStarships = new HashSet<>();
-
+        this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.ATTACK_DECK_INITIALIZED, this::onAttackDeckInitialized);
         this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
         this.eventManager.addEventHandler(ActionType.RESOLVE_FIGHT, this::onResolveFight);
+    }
+
+    private void onReadyToStart(GameEvent gameEvent) {
+        assignedStarships = new HashSet<>();
     }
 
     private void onAttackDeckInitialized(GameEvent gameEvent) {

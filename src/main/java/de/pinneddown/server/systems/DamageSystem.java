@@ -30,18 +30,14 @@ public class DamageSystem {
         this.blueprintManager = blueprintManager;
         this.random = random;
 
-        damageEntities = new HashSet<>();
-
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
         this.eventManager.addEventHandler(ActionType.GOD_CHEAT, this::onGodCheat);
     }
 
-    private void onGodCheat(GameEvent gameEvent) {
-        godModeEnabled = !godModeEnabled;
-    }
-
     private void onReadyToStart(GameEvent gameEvent) {
+        damageEntities = new HashSet<>();
+
         DeckList deckList = getDeckList();
         CardPile attackDeck = CardPile.createFromDecklist(deckList, random);
 
@@ -51,6 +47,12 @@ public class DamageSystem {
         cardPileComponent.setCardPile(attackDeck);
 
         entityManager.addComponent(damageDeckEntityId, cardPileComponent);
+
+        godModeEnabled = false;
+    }
+
+    private void onGodCheat(GameEvent gameEvent) {
+        godModeEnabled = !godModeEnabled;
     }
 
     private void onStarshipDefeated(GameEvent gameEvent) {

@@ -27,12 +27,15 @@ public class AssignmentPhaseSystem {
         this.entityManager = entityManager;
         this.playerReadyManager = playerReadyManager;
 
-        playerStarships = new HashSet<>();
-        enemyStarships = new HashSet<>();
-
+        this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(ActionType.ASSIGN_STARSHIP, this::onAssignStarship);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(ActionType.END_ASSIGNMENT_PHASE, this::onEndAssignmentPhase);
+    }
+
+    private void onReadyToStart(GameEvent gameEvent) {
+        playerStarships = new HashSet<>();
+        enemyStarships = new HashSet<>();
     }
 
     private void onCardPlayed(GameEvent gameEvent) {

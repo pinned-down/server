@@ -30,16 +30,32 @@ public class AttackPhaseSystem {
         this.blueprintManager = blueprintManager;
         this.random = random;
 
-        playerEntities = new ArrayList<>();
-        playerStarships = new ArrayList<>();
-        enemyStarships = new ArrayList<>();
-
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.THREAT_POOL_INITIALIZED, this::onThreatPoolInitialized);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
         this.eventManager.addEventHandler(EventType.TOTAL_DISTANCE_CHANGED, this::onTotalDistanceChanged);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
+    }
+
+    private void onReadyToStart(GameEvent gameEvent) {
+        playerEntities = new ArrayList<>();
+        playerStarships = new ArrayList<>();
+        enemyStarships = new ArrayList<>();
+
+        DeckList deckList = getDeckList();
+        CardPile attackDeck = CardPile.createFromDecklist(deckList, random);
+
+        attackDeckEntityId = entityManager.createEntity();
+
+        CardPileComponent cardPileComponent = new CardPileComponent();
+        cardPileComponent.setCardPile(attackDeck);
+
+        entityManager.addComponent(attackDeckEntityId, cardPileComponent);
+
+        // Notify listeners.
+        AttackDeckInitializedEvent attackDeckInitializedEvent = new AttackDeckInitializedEvent(attackDeckEntityId);
+        eventManager.queueEvent(EventType.ATTACK_DECK_INITIALIZED, attackDeckInitializedEvent);
     }
 
     private void onThreatPoolInitialized(GameEvent gameEvent) {
@@ -173,22 +189,6 @@ public class AttackPhaseSystem {
     private void onTotalDistanceChanged(GameEvent gameEvent) {
         TotalDistanceChangedEvent eventData = (TotalDistanceChangedEvent)gameEvent.getEventData();
         totalDistance = eventData.getTotalDistance();
-    }
-
-    private void onReadyToStart(GameEvent gameEvent) {
-        DeckList deckList = getDeckList();
-        CardPile attackDeck = CardPile.createFromDecklist(deckList, random);
-
-        attackDeckEntityId = entityManager.createEntity();
-
-        CardPileComponent cardPileComponent = new CardPileComponent();
-        cardPileComponent.setCardPile(attackDeck);
-
-        entityManager.addComponent(attackDeckEntityId, cardPileComponent);
-
-        // Notify listeners.
-        AttackDeckInitializedEvent attackDeckInitializedEvent = new AttackDeckInitializedEvent(attackDeckEntityId);
-        eventManager.queueEvent(EventType.ATTACK_DECK_INITIALIZED, attackDeckInitializedEvent);
     }
 
     private DeckList getDeckList() {

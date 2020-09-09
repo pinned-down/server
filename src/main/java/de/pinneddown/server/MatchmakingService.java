@@ -1,14 +1,8 @@
 package de.pinneddown.server;
 
 import com.google.common.base.Strings;
-import de.opengamebackend.matchmaking.model.requests.ServerDeregisterRequest;
-import de.opengamebackend.matchmaking.model.requests.ServerNotifyPlayerJoinedRequest;
-import de.opengamebackend.matchmaking.model.requests.ServerRegisterRequest;
-import de.opengamebackend.matchmaking.model.requests.ServerSendHeartbeatRequest;
-import de.opengamebackend.matchmaking.model.responses.ServerDeregisterResponse;
-import de.opengamebackend.matchmaking.model.responses.ServerNotifyPlayerJoinedResponse;
-import de.opengamebackend.matchmaking.model.responses.ServerRegisterResponse;
-import de.opengamebackend.matchmaking.model.responses.ServerSendHeartbeatResponse;
+import de.opengamebackend.matchmaking.model.requests.*;
+import de.opengamebackend.matchmaking.model.responses.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,6 +120,21 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
                 sendRequest("/server/notifyPlayerJoined", request, ServerNotifyPlayerJoinedResponse.class);
 
         logger.info("Player joined: " + playerId);
+    }
+
+    public void notifyPlayerLeft(String playerId) {
+        if (!isInitialized()) {
+            return;
+        }
+
+        ServerNotifyPlayerLeftRequest request = new ServerNotifyPlayerLeftRequest();
+        request.setServerId(serverId);
+        request.setPlayerId(playerId);
+
+        ServerNotifyPlayerLeftResponse response =
+                sendRequest("/server/notifyPlayerLeft", request, ServerNotifyPlayerLeftResponse.class);
+
+        logger.info("Player left: " + playerId);
     }
 
     private boolean isInitialized() {

@@ -18,6 +18,10 @@ public class PlayerManager {
         this.remoteAddressToPlayerIds.put(remoteAddress, playerId);
     }
 
+    public void removePlayer(String remoteAddress) {
+        this.remoteAddressToPlayerIds.remove(remoteAddress);
+    }
+
     public Collection<String> getPlayerIds() {
         return remoteAddressToPlayerIds.values();
     }

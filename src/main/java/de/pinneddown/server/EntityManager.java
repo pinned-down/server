@@ -42,6 +42,12 @@ public class EntityManager {
         }
     }
 
+    public void clear() {
+        componentManagers.clear();
+
+        nextEntityId = 0L;
+    }
+
     private ComponentManager getOrCreateComponentManager(Class<? extends EntityComponent> componentClass) {
         ComponentManager componentManager = componentManagers.get(componentClass);
 

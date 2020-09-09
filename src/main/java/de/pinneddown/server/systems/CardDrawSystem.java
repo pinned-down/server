@@ -28,10 +28,13 @@ public class CardDrawSystem {
         this.playerManager = playerManager;
         this.random = random;
 
-        this.playerEntities = new ArrayList<>();
-
+        this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
+    }
+
+    private void onReadyToStart(GameEvent gameEvent) {
+        this.playerEntities = new ArrayList<>();
     }
 
     private void onPlayerEntityCreated(GameEvent gameEvent) {
