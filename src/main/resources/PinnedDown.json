@@ -1,5 +1,5 @@
 {
-  "hash": "14d8155e02a1c864e4493f88609a4d6a",
+  "hash": "9add7492ea67de6af852a32275cabadb",
   "records": [
     {
       "id": "Agniar",
@@ -81,8 +81,8 @@
       "id": "FireAtWillDefaultAbility",
       "attributes": {
         "AbilityEffects": ["FireAtWillDefaultEffect"],
-        "RequiredTags": [],
-        "TargetBlockedTags": [],
+        "RequiredTags": ["TurnPhase.Fight"],
+        "TargetBlockedTags": ["Affiliation.BlueWing"],
         "TargetRequiredTags": [],
         "TargetType": "Starship"
       },
@@ -108,9 +108,9 @@
       "id": "FireAtWillImprovedAbility",
       "attributes": {
         "AbilityEffects": ["FireAtWillImprovedEffect"],
-        "RequiredTags": [],
+        "RequiredTags": ["TurnPhase.Fight"],
         "TargetBlockedTags": [],
-        "TargetRequiredTags": [],
+        "TargetRequiredTags": ["Affiliation.BlueWing"],
         "TargetType": "Starship"
       },
       "components": [

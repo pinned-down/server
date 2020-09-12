@@ -5,5 +5,6 @@ public enum ActionType {
     ASSIGN_STARSHIP,
     END_ASSIGNMENT_PHASE,
     RESOLVE_FIGHT,
-    GOD_CHEAT
+    GOD_CHEAT,
+    PLAY_EFFECT
 }

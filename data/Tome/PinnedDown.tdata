@@ -67,8 +67,12 @@
         <AbilityEffects>
             <Item Value="FireAtWillDefaultEffect"/>
         </AbilityEffects>
-        <RequiredTags Value=""/>
-        <TargetBlockedTags Value=""/>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+        </RequiredTags>
+        <TargetBlockedTags>
+            <Item Value="Affiliation.BlueWing"/>
+        </TargetBlockedTags>
         <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
@@ -81,9 +85,13 @@
         <AbilityEffects>
             <Item Value="FireAtWillImprovedEffect"/>
         </AbilityEffects>
-        <RequiredTags Value=""/>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+        </RequiredTags>
         <TargetBlockedTags Value=""/>
-        <TargetRequiredTags Value=""/>
+        <TargetRequiredTags>
+            <Item Value="Affiliation.BlueWing"/>
+        </TargetRequiredTags>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="FireAtWillImprovedEffect" DisplayName="Fire At Will (Improved Effect)" Parent="AbilityEffects">

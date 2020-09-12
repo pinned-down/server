@@ -49,4 +49,6 @@ public class CardPile {
     public int size() {
         return cards.size();
     }
+
+    public boolean remove(String card) { return cards.remove(card); }
 }
