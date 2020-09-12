@@ -23,6 +23,8 @@ public class CardDrawSystemTests {
 
         CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random);
 
+        eventManager.queueEvent(EventType.READY_TO_START, null);
+
         // ACT
         long playerEntityId = entityManager.createEntity();
         PlayerComponent playerComponent = new PlayerComponent();
@@ -49,6 +51,8 @@ public class CardDrawSystemTests {
         Random random = new Random();
 
         CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random);
+
+        eventManager.queueEvent(EventType.READY_TO_START, null);
 
         // Create player.
         long playerEntityId = entityManager.createEntity();

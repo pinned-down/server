@@ -28,6 +28,8 @@ public class AssignmentPhaseSystemTests {
 
         AssignmentPhaseSystem system = new AssignmentPhaseSystem(eventManager, entityManager, playerReadyManager);
 
+        eventManager.queueEvent(EventType.READY_TO_START, null);
+
         // Add single player.
         String playerId = "PlayerA";
         playerManager.addPlayer("", playerId);
@@ -56,6 +58,8 @@ public class AssignmentPhaseSystemTests {
         PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
 
         AssignmentPhaseSystem system = new AssignmentPhaseSystem(eventManager, entityManager, playerReadyManager);
+
+        eventManager.queueEvent(EventType.READY_TO_START, null);
 
         // Add single player.
         String playerId = "PlayerA";
