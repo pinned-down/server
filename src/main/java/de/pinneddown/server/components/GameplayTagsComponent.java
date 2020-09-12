@@ -7,6 +7,10 @@ import java.util.ArrayList;
 public class GameplayTagsComponent implements EntityComponent {
     private ArrayList<String> initialGameplayTags;
 
+    public GameplayTagsComponent() {
+        initialGameplayTags = new ArrayList<>();
+    }
+
     public ArrayList<String> getInitialGameplayTags() {
         return initialGameplayTags;
     }

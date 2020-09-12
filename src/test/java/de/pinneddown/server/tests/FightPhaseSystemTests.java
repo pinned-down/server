@@ -166,6 +166,7 @@ public class FightPhaseSystemTests {
         long attackDeckEntityId = entityManager.createEntity();
         entityManager.addComponent(attackDeckEntityId, new CardPileComponent());
 
+        eventManager.queueEvent(EventType.READY_TO_START, null);
         eventManager.queueEvent(EventType.ATTACK_DECK_INITIALIZED, new AttackDeckInitializedEvent(attackDeckEntityId));
 
         return system;
