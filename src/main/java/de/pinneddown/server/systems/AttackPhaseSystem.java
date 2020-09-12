@@ -142,12 +142,15 @@ public class AttackPhaseSystem {
         for (Long entityId : enemyStarships) {
             BlueprintComponent blueprintComponent = entityManager.getComponent(entityId, BlueprintComponent.class);
 
-            attackDeck.getDiscardPile().push(blueprintComponent.getBlueprintId());
+            if (blueprintComponent != null) {
+                // Entity is still alive.
+                attackDeck.getDiscardPile().push(blueprintComponent.getBlueprintId());
 
-            eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(entityId));
-            entityManager.removeEntity(entityId);
+                eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(entityId));
+                entityManager.removeEntity(entityId);
 
-            ++newThreat;
+                ++newThreat;
+            }
         }
 
         threatPoolThreatComponent.setThreat(newThreat);
