@@ -18,8 +18,8 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void createsLocationDeckAtStartOfGame() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         JumpPhaseSystem system = createSystem(eventManager, entityManager, 1);
 
@@ -27,7 +27,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
         // ASSERT
-        CardPileComponent cardPileComponent = entityManager.getComponent(0, CardPileComponent.class);
+        CardPileComponent cardPileComponent = entityManager.getComponent(1L, CardPileComponent.class);
 
         assertThat(cardPileComponent).isNotNull();
         assertThat(cardPileComponent.getCardPile()).isNotNull();
@@ -37,8 +37,8 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void revealsInitialLocationAtStartOfGame() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         JumpPhaseSystem system = createSystem(eventManager, entityManager, 1);
 
@@ -46,7 +46,7 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
         // ASSERT
-        DistanceComponent distanceComponent = entityManager.getComponent(0, DistanceComponent.class);
+        DistanceComponent distanceComponent = entityManager.getComponent(1L, DistanceComponent.class);
 
         assertThat(distanceComponent).isNotNull();
         assertThat(distanceComponent.getDistance()).isGreaterThan(0);
@@ -55,14 +55,14 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void revealsNewLocationInJumpPhase() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         JumpPhaseSystem system = createSystem(eventManager, entityManager, 1);
 
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
-        DistanceComponent distanceComponent = entityManager.getComponent(0, DistanceComponent.class);
+        DistanceComponent distanceComponent = entityManager.getComponent(1L, DistanceComponent.class);
         int initialDistance = distanceComponent.getDistance();
 
         // ACT
@@ -75,8 +75,8 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void victoryAtFinalLocation() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         JumpPhaseSystem system = createSystem(eventManager, entityManager, 10);
 

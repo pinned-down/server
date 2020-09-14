@@ -17,7 +17,7 @@ public class CardDrawSystemTests {
     void playersDrawInitialCards() throws IOException {
         // ARRANGE
         EventManager eventManager = new EventManager();
-        EntityManager entityManager = new EntityManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
         Random random = new Random();
 
@@ -46,7 +46,7 @@ public class CardDrawSystemTests {
         // ARRANGE
         // Create system.
         EventManager eventManager = new EventManager();
-        EntityManager entityManager = new EntityManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
         Random random = new Random();
 

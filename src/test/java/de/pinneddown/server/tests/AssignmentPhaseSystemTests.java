@@ -22,7 +22,7 @@ public class AssignmentPhaseSystemTests {
         // ARRANGE
         // Set up system.
         EventManager eventManager = new EventManager();
-        EntityManager entityManager = new EntityManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
         PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
 
@@ -53,7 +53,7 @@ public class AssignmentPhaseSystemTests {
         // ARRANGE
         // Set up system.
         EventManager eventManager = new EventManager();
-        EntityManager entityManager = new EntityManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
         PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
 

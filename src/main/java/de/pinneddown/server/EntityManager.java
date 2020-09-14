@@ -2,15 +2,23 @@ package de.pinneddown.server;
 
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @Component
 public class EntityManager {
+    private EventManager eventManager;
     private HashMap<Class<? extends EntityComponent>, ComponentManager> componentManagers;
     private long nextEntityId;
+    private ArrayList<Long> removedEntities;
 
-    public EntityManager() {
-        componentManagers = new HashMap<>();
+    public EntityManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+        this.componentManagers = new HashMap<>();
+        this.nextEntityId = 1L;
+        this.removedEntities = new ArrayList<>();
+
+        this.eventManager.addAllEventsHandledHandler(this::onAllEventsHandled);
     }
 
     public void addComponent(long entityId, EntityComponent component) {
@@ -35,11 +43,19 @@ public class EntityManager {
     }
 
     public void removeEntity(long entityId) {
-        // Remove components.
-        for (ComponentManager manager : componentManagers.values())
-        {
-            manager.removeComponent(entityId);
+        removedEntities.add(entityId);
+    }
+
+    public void cleanUpEntities() {
+        for (Long entityId : removedEntities) {
+            // Remove components.
+            for (ComponentManager manager : componentManagers.values())
+            {
+                manager.removeComponent(entityId);
+            }
         }
+
+        removedEntities.clear();
     }
 
     public void clear() {
@@ -58,5 +74,10 @@ public class EntityManager {
         }
 
         return componentManager;
+    }
+
+
+    private void onAllEventsHandled() {
+        cleanUpEntities();
     }
 }

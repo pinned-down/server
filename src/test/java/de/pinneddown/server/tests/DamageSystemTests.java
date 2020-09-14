@@ -19,8 +19,8 @@ public class DamageSystemTests extends GameSystemTestSuite {
     @Test
     void createsDamageDeckAtStartOfGame() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         int damage = -10;
 
         DamageSystem system = createSystem(eventManager, entityManager, damage);
@@ -29,7 +29,7 @@ public class DamageSystemTests extends GameSystemTestSuite {
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
         // ASSERT
-        CardPileComponent cardPileComponent = entityManager.getComponent(0, CardPileComponent.class);
+        CardPileComponent cardPileComponent = entityManager.getComponent(1L, CardPileComponent.class);
 
         assertThat(cardPileComponent).isNotNull();
         assertThat(cardPileComponent.getCardPile()).isNotNull();
@@ -40,8 +40,8 @@ public class DamageSystemTests extends GameSystemTestSuite {
     void defeatedPlayerShipsTakeDamage() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         int damage = -10;
 
         DamageSystem system = createSystem(eventManager, entityManager, damage);
@@ -64,8 +64,8 @@ public class DamageSystemTests extends GameSystemTestSuite {
     void overpoweredPlayerShipsAreDestroyed() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         int damage = -10;
 
         DamageSystem system = createSystem(eventManager, entityManager, damage);
@@ -94,8 +94,8 @@ public class DamageSystemTests extends GameSystemTestSuite {
     void defeatWhenFlagshipDestroyed() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         int damage = -10;
 
         DamageSystem system = createSystem(eventManager, entityManager, damage);
