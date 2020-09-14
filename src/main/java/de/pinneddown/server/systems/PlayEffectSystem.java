@@ -1,6 +1,7 @@
 package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
+import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.actions.PlayEffectAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
@@ -85,39 +86,17 @@ public class PlayEffectSystem {
 
         // Instantiate abilities.
         AbilitiesComponent abilitiesComponent = entityManager.getComponent(entityId, AbilitiesComponent.class);
-        ArrayList<Long> abilities = new ArrayList<>();
 
         if (abilitiesComponent != null) {
-            for (String abilityBlueprintId : abilitiesComponent.getAbilities()) {
-                long abilityEntityId = blueprintManager.createEntity(abilityBlueprintId);
-                abilities.add(abilityEntityId);
-            }
+            ArrayList<Long> abilities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
 
             // Find matching ability.
-            Optional<Long> matchingAbility = findMatchingAbility(abilities, eventData.getTargetEntityId());
+            Optional<Integer> matchingAbility = findMatchingAbility(abilities, eventData.getTargetEntityId());
 
             if (matchingAbility.isPresent()) {
-                // Apply effects.
-                AbilityComponent abilityComponent = entityManager.getComponent(matchingAbility.get(), AbilityComponent.class);
-
-                for (String effectBlueprintId : abilityComponent.getAbilityEffects()) {
-                    long effectEntityId = blueprintManager.createEntity(effectBlueprintId);
-
-                    // Apply power bonus.
-                    PowerComponent effectPowerComponent = entityManager.getComponent(effectEntityId, PowerComponent.class);
-                    PowerComponent targetPowerComponent = entityManager.getComponent(eventData.getTargetEntityId(), PowerComponent.class);
-
-                    if (effectPowerComponent != null && targetPowerComponent != null) {
-                        int oldPowerModifier = targetPowerComponent.getPowerModifier();
-                        int newPowerModifier = oldPowerModifier + effectPowerComponent.getPowerModifier();
-
-                        targetPowerComponent.setPowerModifier(newPowerModifier);
-
-                        StarshipPowerChangedEvent starshipPowerChangedEvent =
-                                new StarshipPowerChangedEvent(eventData.getTargetEntityId(), oldPowerModifier, newPowerModifier);
-                        eventManager.queueEvent(EventType.STARSHIP_POWER_CHANGED, starshipPowerChangedEvent);
-                    }
-                }
+                ActivateAbilityAction activateAbilityAction =
+                        new ActivateAbilityAction(entityId, matchingAbility.get(), eventData.getTargetEntityId());
+                eventManager.queueEvent(ActionType.ACTIVATE_ABILITY, activateAbilityAction);
             }
         }
 
@@ -126,15 +105,23 @@ public class PlayEffectSystem {
         eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
         // Remove abilities and card again.
-        abilities.forEach(abilityEntity -> entityManager.removeEntity(abilityEntity));
         entityManager.removeEntity(entityId);
 
         CardRemovedEvent cardRemovedEvent = new CardRemovedEvent(entityId);
         eventManager.queueEvent(EventType.CARD_REMOVED, cardRemovedEvent);
     }
 
-    private Optional<Long> findMatchingAbility(ArrayList<Long> abilities, long targetEntityId) {
-        return abilities.stream().filter(abilityEntityId -> isValidTarget(abilityEntityId, targetEntityId)).findFirst();
+    private Optional<Integer> findMatchingAbility(ArrayList<Long> abilities, long targetEntityId) {
+        for (int abilityIndex = 0; abilityIndex < abilities.size(); ++abilityIndex) {
+            long abilityEntity = abilities.get(abilityIndex);
+
+            if (isValidTarget(abilityEntity, targetEntityId))
+            {
+                return Optional.of(abilityIndex);
+            }
+        }
+
+        return Optional.empty();
     }
 
     private boolean isValidTarget(long abilityEntityId, long targetEntityId) {

@@ -6,5 +6,6 @@ public enum ActionType {
     END_ASSIGNMENT_PHASE,
     RESOLVE_FIGHT,
     GOD_CHEAT,
-    PLAY_EFFECT
+    PLAY_EFFECT,
+    ACTIVATE_ABILITY
 }
