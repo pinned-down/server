@@ -5,6 +5,7 @@ import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.AbilitiesComponent;
 import de.pinneddown.server.components.AbilityComponent;
 import de.pinneddown.server.components.PowerComponent;
+import de.pinneddown.server.events.AbilityEffectRemovedEvent;
 import de.pinneddown.server.systems.AbilitySystem;
 import org.junit.jupiter.api.Test;
 
@@ -38,15 +39,48 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         entityManager.addComponent(entityId, abilitiesComponent);
 
         // Create target.
-        long targetEntityId = createTarget(entityManager);
+        long targetEntityId = entityManager.createEntity();
+
+        PowerComponent powerComponent = new PowerComponent();
+        entityManager.addComponent(targetEntityId, powerComponent);
 
         // ACT
         eventManager.queueEvent(ActionType.ACTIVATE_ABILITY,
                 new ActivateAbilityAction(entityId, 0, targetEntityId));
 
         // ASSERT
-        PowerComponent powerComponent = entityManager.getComponent(targetEntityId, PowerComponent.class);
         assertThat(powerComponent.getPowerModifier()).isGreaterThan(0);
+    }
+
+    @Test
+    void removesPowerEffect() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager);
+
+        // Create effect.
+        long effectEntityId = entityManager.createEntity();
+        PowerComponent effectPowerComponent = new PowerComponent();
+        effectPowerComponent.setPowerModifier(2);
+
+        entityManager.addComponent(effectEntityId, effectPowerComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+
+        PowerComponent targetPowerComponent = new PowerComponent();
+        targetPowerComponent.setPowerModifier(effectPowerComponent.getPowerModifier());
+
+        entityManager.addComponent(targetEntityId, targetPowerComponent);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_REMOVED,
+                new AbilityEffectRemovedEvent(effectEntityId, targetEntityId));
+
+        // ASSERT
+        assertThat(targetPowerComponent.getPowerModifier()).isZero();
     }
 
     private AbilitySystem createSystem(EntityManager entityManager, EventManager eventManager) {
@@ -80,14 +114,5 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         blueprintManager.setBlueprints(blueprints);
 
         return blueprintManager;
-    }
-
-    private long createTarget(EntityManager entityManager) {
-        long targetEntityId = entityManager.createEntity();
-
-        PowerComponent powerComponent = new PowerComponent();
-        entityManager.addComponent(targetEntityId, powerComponent);
-
-        return targetEntityId;
     }
 }
