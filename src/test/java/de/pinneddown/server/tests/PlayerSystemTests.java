@@ -17,8 +17,8 @@ public class PlayerSystemTests {
     @Test
     void createsPlayerEntitiesAtStartOfGame() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         PlayerSystem system = new PlayerSystem(eventManager, entityManager);
 
@@ -34,7 +34,7 @@ public class PlayerSystemTests {
 
         // ASSERT
         for (int i = 0; i < players.size(); ++i) {
-            PlayerComponent playerComponent = entityManager.getComponent(i, PlayerComponent.class);
+            PlayerComponent playerComponent = entityManager.getComponent(i + 1, PlayerComponent.class);
 
             assertThat(playerComponent).isNotNull();
             assertThat(playerComponent.getPlayerId()).isEqualTo(players.get(i));

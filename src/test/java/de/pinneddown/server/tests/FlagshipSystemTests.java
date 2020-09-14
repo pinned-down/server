@@ -17,8 +17,8 @@ public class FlagshipSystemTests extends GameSystemTestSuite {
     void playersPutFlagshipsIntoPlay() throws IOException {
         // ARRANGE
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
-        EntityManager entityManager = new EntityManager();
 
         Blueprint flagshipBlueprint = new Blueprint();
         flagshipBlueprint.getComponents().add(OwnerComponent.class.getSimpleName());

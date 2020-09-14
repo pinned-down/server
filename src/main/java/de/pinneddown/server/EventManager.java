@@ -10,11 +10,13 @@ public class EventManager {
     private ArrayList<GameEvent> newEvents;
     private ArrayList<GameEvent> currentEvents;
     private HashMap<Object, ArrayList<EventHandler>> handlers;
+    private ArrayList<AllEventsHandledHandler> allEventsHandledHandlers;
 
     public EventManager() {
         this.newEvents = new ArrayList<>();
         this.currentEvents = new ArrayList<>();
         this.handlers = new HashMap<>();
+        this.allEventsHandledHandlers = new ArrayList<>();
     }
 
     public void processEvents() {
@@ -29,6 +31,10 @@ public class EventManager {
             }
 
             this.currentEvents.clear();
+        }
+
+        for (AllEventsHandledHandler handler : allEventsHandledHandlers) {
+            handler.onAllEventsHandled();
         }
     }
 
@@ -59,6 +65,10 @@ public class EventManager {
         eventHandlers.add(handler);
     }
 
+    public void addAllEventsHandledHandler(AllEventsHandledHandler handler) {
+        allEventsHandledHandlers.add(handler);
+    }
+
     public void removeEventHandler(Object eventType, EventHandler handler) {
         if (!handlers.containsKey(eventType)) {
             return;
@@ -66,6 +76,10 @@ public class EventManager {
 
         ArrayList<EventHandler> eventHandlers = handlers.get(eventType);
         eventHandlers.remove(handler);
+    }
+
+    public void removeAllEventsHandledHandler(AllEventsHandledHandler handler) {
+        allEventsHandledHandlers.remove(handler);
     }
 
     private void processEvent(GameEvent event) {

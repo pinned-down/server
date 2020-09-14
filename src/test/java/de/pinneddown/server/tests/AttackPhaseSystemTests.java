@@ -26,8 +26,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void createsAttackDeckAtStartOfGame() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, null);
         Random random = new Random();
 
@@ -37,7 +37,7 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
         // ASSERT
-        CardPileComponent cardPileComponent = entityManager.getComponent(0, CardPileComponent.class);
+        CardPileComponent cardPileComponent = entityManager.getComponent(1L, CardPileComponent.class);
 
         assertThat(cardPileComponent).isNotNull();
         assertThat(cardPileComponent.getCardPile()).isNotNull();
@@ -47,8 +47,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void addsThreatForLocations() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         ThreatComponent threatComponent = setupSystem(entityManager, eventManager, 0);
 
         // Set current distance.
@@ -68,8 +68,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
     @Test
     void addsThreatForPlayerStarships() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         ThreatComponent threatComponent = setupSystem(entityManager, eventManager, 0);
 
         // Add player.
@@ -111,8 +111,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         int availableThreat = 5;
         int enemyThreatCost = 2;
 
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         ThreatComponent threatComponent = setupSystem(entityManager, eventManager, enemyThreatCost);
         threatComponent.setThreat(availableThreat);
 
@@ -132,8 +132,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         int availableThreat = 5;
         int enemyThreatCost = 2;
 
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
         ThreatComponent threatComponent = setupSystem(entityManager, eventManager, enemyThreatCost);
         threatComponent.setThreat(availableThreat);
 

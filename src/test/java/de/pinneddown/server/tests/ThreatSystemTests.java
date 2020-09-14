@@ -14,8 +14,8 @@ public class ThreatSystemTests {
     @Test
     void addsInitialThreat() {
         // ARRANGE
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         ThreatSystem system = new ThreatSystem(eventManager, entityManager);
 
@@ -23,7 +23,7 @@ public class ThreatSystemTests {
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
 
         // ASSERT
-        ThreatComponent threatComponent = entityManager.getComponent(0, ThreatComponent.class);
+        ThreatComponent threatComponent = entityManager.getComponent(1L, ThreatComponent.class);
 
         assertThat(threatComponent).isNotNull();
         assertThat(threatComponent.getThreat()).isGreaterThan(0);

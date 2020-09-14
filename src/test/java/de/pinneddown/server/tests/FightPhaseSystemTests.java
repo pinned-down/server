@@ -23,8 +23,8 @@ public class FightPhaseSystemTests {
     void defeatedEnemyShipsAreDestroyed() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         createSystem(eventManager, entityManager);
 
@@ -50,8 +50,8 @@ public class FightPhaseSystemTests {
     void moreEnemyPowerDefeatsPlayerShip() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         createSystem(eventManager, entityManager);
 
@@ -82,8 +82,8 @@ public class FightPhaseSystemTests {
     void doubleEnemyPowerOverpowersPlayerShip() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         createSystem(eventManager, entityManager);
 
@@ -114,8 +114,8 @@ public class FightPhaseSystemTests {
     void fightPhaseIsSkippedWithoutAssignments() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         createSystem(eventManager, entityManager);
 
@@ -134,8 +134,8 @@ public class FightPhaseSystemTests {
     void fightPhaseEndsAfterAllAssignments() {
         // ARRANGE
         // Setup system.
-        EntityManager entityManager = new EntityManager();
         EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
 
         createSystem(eventManager, entityManager);
 
