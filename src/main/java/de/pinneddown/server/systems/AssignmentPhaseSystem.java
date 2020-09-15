@@ -9,6 +9,7 @@ import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.events.StarshipAssignedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import de.pinneddown.server.util.AssignmentUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -18,14 +19,17 @@ public class AssignmentPhaseSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
     private PlayerReadyManager playerReadyManager;
+    private AssignmentUtils assignmentUtils;
 
     private HashSet<Long> playerStarships;
     private HashSet<Long> enemyStarships;
 
-    public AssignmentPhaseSystem(EventManager eventManager, EntityManager entityManager,  PlayerReadyManager playerReadyManager) {
+    public AssignmentPhaseSystem(EventManager eventManager, EntityManager entityManager,
+                                 PlayerReadyManager playerReadyManager, AssignmentUtils assignmentUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.playerReadyManager = playerReadyManager;
+        this.assignmentUtils = assignmentUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(ActionType.ASSIGN_STARSHIP, this::onAssignStarship);
@@ -95,15 +99,6 @@ public class AssignmentPhaseSystem {
 
     private void onAssignStarship(GameEvent gameEvent) {
         AssignStarshipAction eventData = (AssignStarshipAction)gameEvent.getEventData();
-
-        AssignmentComponent assignmentComponent = entityManager.getComponent(eventData.getAssignedStarship(),
-                AssignmentComponent.class);
-        assignmentComponent.setAssignedTo(eventData.getAssignedTo());
-
-        // Notify listeners.
-        StarshipAssignedEvent starshipAssignedEvent =
-                new StarshipAssignedEvent(eventData.getAssignedStarship(), eventData.getAssignedTo());
-
-        eventManager.queueEvent(EventType.STARSHIP_ASSIGNED, starshipAssignedEvent);
+        assignmentUtils.assignTo(eventData.getAssignedStarship(), eventData.getAssignedTo());
     }
 }

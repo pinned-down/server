@@ -3,6 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.ThreatUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,23 +16,23 @@ public class AttackPhaseSystem {
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
     private Random random;
+    private ThreatUtils threatUtils;
 
     private long attackDeckEntityId;
-    private long threatPoolEntityId;
     private int totalDistance;
     private ArrayList<Long> playerEntities;
     private ArrayList<Long> playerStarships;
     private ArrayList<Long> enemyStarships;
 
     public AttackPhaseSystem(EventManager eventManager, EntityManager entityManager,
-                             BlueprintManager blueprintManager, Random random) {
+                             BlueprintManager blueprintManager, Random random, ThreatUtils threatUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
         this.random = random;
+        this.threatUtils = threatUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
-        this.eventManager.addEventHandler(EventType.THREAT_POOL_INITIALIZED, this::onThreatPoolInitialized);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
         this.eventManager.addEventHandler(EventType.TOTAL_DISTANCE_CHANGED, this::onTotalDistanceChanged);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
@@ -58,11 +59,6 @@ public class AttackPhaseSystem {
         eventManager.queueEvent(EventType.ATTACK_DECK_INITIALIZED, attackDeckInitializedEvent);
     }
 
-    private void onThreatPoolInitialized(GameEvent gameEvent) {
-        ThreatPoolInitializedEvent eventData = (ThreatPoolInitializedEvent)gameEvent.getEventData();
-        threatPoolEntityId = eventData.getEntityId();
-    }
-
     private void onTurnPhaseStarted(GameEvent gameEvent) {
         TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
 
@@ -78,8 +74,7 @@ public class AttackPhaseSystem {
     }
 
     private void onAttackPhaseStarted() {
-        ThreatComponent threatPoolThreatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
-        int currentThreat = threatPoolThreatComponent.getThreat();
+        int currentThreat = threatUtils.getThreat();
         int newThreat = currentThreat;
 
         // Add threat for locations.
@@ -123,10 +118,7 @@ public class AttackPhaseSystem {
         }
 
         // Set resulting threat.
-        threatPoolThreatComponent.setThreat(newThreat);
-
-        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(newThreat);
-        eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
+        threatUtils.setThreat(newThreat);
 
         // Enter next phase.
         eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ASSIGNMENT));
@@ -136,8 +128,7 @@ public class AttackPhaseSystem {
         // Discard enemy starships and add threat.
         CardPileComponent attackDeck = entityManager.getComponent(attackDeckEntityId, CardPileComponent.class);
 
-        ThreatComponent threatPoolThreatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
-        int newThreat = threatPoolThreatComponent.getThreat();
+        int newThreat = threatUtils.getThreat();
 
         for (Long entityId : enemyStarships) {
             BlueprintComponent blueprintComponent = entityManager.getComponent(entityId, BlueprintComponent.class);
@@ -153,10 +144,7 @@ public class AttackPhaseSystem {
             }
         }
 
-        threatPoolThreatComponent.setThreat(newThreat);
-
-        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(newThreat);
-        eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
+        threatUtils.setThreat(newThreat);
 
         enemyStarships.clear();
     }

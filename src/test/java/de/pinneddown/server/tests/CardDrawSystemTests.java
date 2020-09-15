@@ -5,6 +5,7 @@ import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.CardDrawSystem;
+import de.pinneddown.server.util.PlayerUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -18,12 +19,8 @@ public class CardDrawSystemTests {
         // ARRANGE
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        PlayerManager playerManager = new PlayerManager();
-        Random random = new Random();
 
-        CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random);
-
-        eventManager.queueEvent(EventType.READY_TO_START, null);
+        CardDrawSystem system = createSystem(eventManager, entityManager);
 
         // ACT
         long playerEntityId = entityManager.createEntity();
@@ -44,15 +41,10 @@ public class CardDrawSystemTests {
     @Test
     void playersDrawCardsInJumpPhase() throws IOException {
         // ARRANGE
-        // Create system.
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        PlayerManager playerManager = new PlayerManager();
-        Random random = new Random();
 
-        CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random);
-
-        eventManager.queueEvent(EventType.READY_TO_START, null);
+        CardDrawSystem system = createSystem(eventManager, entityManager);
 
         // Create player.
         long playerEntityId = entityManager.createEntity();
@@ -71,5 +63,17 @@ public class CardDrawSystemTests {
 
         // ASSERT
         assertThat(playerComponent.getHand().size()).isGreaterThan(cardsInHand);
+    }
+
+    private CardDrawSystem createSystem(EventManager eventManager, EntityManager entityManager) {
+        PlayerManager playerManager = new PlayerManager();
+        Random random = new Random();
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
+
+        CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random, playerUtils);
+
+        eventManager.queueEvent(EventType.READY_TO_START, null);
+
+        return system;
     }
 }

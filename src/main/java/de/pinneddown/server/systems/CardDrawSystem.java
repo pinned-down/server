@@ -5,6 +5,7 @@ import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.PlayerHandChangedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import de.pinneddown.server.util.PlayerUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,15 +19,17 @@ public class CardDrawSystem {
     private EntityManager entityManager;
     private PlayerManager playerManager;
     private Random random;
+    private PlayerUtils playerUtils;
 
     private ArrayList<Long> playerEntities;
 
     public CardDrawSystem(EventManager eventManager, EntityManager entityManager, PlayerManager playerManager,
-                          Random random) {
+                          Random random, PlayerUtils playerUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.playerManager = playerManager;
         this.random = random;
+        this.playerUtils = playerUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
@@ -77,9 +80,6 @@ public class CardDrawSystem {
         }
 
         String card = playerComponent.getDrawDeck().pop();
-        playerComponent.getHand().push(card);
-
-        PlayerHandChangedEvent playerHandChangedEvent = new PlayerHandChangedEvent(playerEntityId, playerComponent.getHand().getCards());
-        eventManager.queueEvent(EventType.PLAYER_HAND_CHANGED, playerHandChangedEvent);
+        playerUtils.addHandCard(playerEntityId, card);
     }
 }

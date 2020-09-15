@@ -9,6 +9,7 @@ import de.pinneddown.server.events.StarshipDefeatedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.DamageSystem;
 import de.pinneddown.server.systems.FightPhaseSystem;
+import de.pinneddown.server.util.AssignmentUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -161,7 +162,8 @@ public class FightPhaseSystemTests {
     }
 
     private FightPhaseSystem createSystem(EventManager eventManager, EntityManager entityManager) {
-        FightPhaseSystem system = new FightPhaseSystem(eventManager, entityManager);
+        AssignmentUtils assignmentUtils = new AssignmentUtils(eventManager, entityManager);
+        FightPhaseSystem system = new FightPhaseSystem(eventManager, entityManager, assignmentUtils);
 
         long attackDeckEntityId = entityManager.createEntity();
         entityManager.addComponent(attackDeckEntityId, new CardPileComponent());

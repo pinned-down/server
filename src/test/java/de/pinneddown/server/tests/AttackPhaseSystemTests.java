@@ -7,6 +7,7 @@ import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.ThreatComponent;
 import de.pinneddown.server.events.*;
 import de.pinneddown.server.systems.AttackPhaseSystem;
+import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,10 +29,8 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         // ARRANGE
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, null);
-        Random random = new Random();
 
-        AttackPhaseSystem system = new AttackPhaseSystem(eventManager, entityManager, blueprintManager, random);
+        AttackPhaseSystem system = createSystem(entityManager, eventManager, 0);
 
         // ACT
         eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
@@ -49,7 +48,9 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         // ARRANGE
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        ThreatComponent threatComponent = setupSystem(entityManager, eventManager, 0);
+
+        AttackPhaseSystem system = createSystem(entityManager, eventManager, 0);
+        ThreatComponent threatComponent = setupThreatPool(entityManager, eventManager);
 
         // Set current distance.
         int totalDistance = 5;
@@ -70,7 +71,9 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         // ARRANGE
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        ThreatComponent threatComponent = setupSystem(entityManager, eventManager, 0);
+
+        AttackPhaseSystem system = createSystem(entityManager, eventManager, 0);
+        ThreatComponent threatComponent = setupThreatPool(entityManager, eventManager);
 
         // Add player.
         long playerEntityId = entityManager.createEntity();
@@ -113,7 +116,10 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
 
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        ThreatComponent threatComponent = setupSystem(entityManager, eventManager, enemyThreatCost);
+
+        AttackPhaseSystem system = createSystem(entityManager, eventManager, 0);
+        ThreatComponent threatComponent = setupThreatPool(entityManager, eventManager);
+
         threatComponent.setThreat(availableThreat);
 
         // Listen for events.
@@ -134,7 +140,10 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
 
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        ThreatComponent threatComponent = setupSystem(entityManager, eventManager, enemyThreatCost);
+
+        AttackPhaseSystem system = createSystem(entityManager, eventManager, 0);
+        ThreatComponent threatComponent = setupThreatPool(entityManager, eventManager);
+
         threatComponent.setThreat(availableThreat);
 
         // Listen for events.
@@ -155,7 +164,7 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         cardsPlayed.add(eventData.getEntityId());
     }
 
-    private ThreatComponent setupSystem(EntityManager entityManager, EventManager eventManager, int enemyThreatCost) {
+    private AttackPhaseSystem createSystem(EntityManager entityManager, EventManager eventManager, int enemyThreatCost) {
         // Setup system.
         Blueprint enemyBlueprint = new Blueprint();
         enemyBlueprint.getComponents().add(ThreatComponent.class.getSimpleName());
@@ -163,11 +172,17 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, enemyBlueprint);
 
         Random random = new Random();
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
 
-        AttackPhaseSystem system = new AttackPhaseSystem(eventManager, entityManager, blueprintManager, random);
+        AttackPhaseSystem system =
+                new AttackPhaseSystem(eventManager, entityManager, blueprintManager, random, threatUtils);
 
         eventManager.queueEvent(EventType.READY_TO_START, null);
 
+        return system;
+    }
+
+    private ThreatComponent setupThreatPool(EntityManager entityManager, EventManager eventManager) {
         // Initialize threat pool.
         long threatPoolEntityId = entityManager.createEntity();
         ThreatComponent threatComponent = new ThreatComponent();

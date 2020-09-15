@@ -7,6 +7,7 @@ import de.pinneddown.server.components.BlueprintComponent;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.PowerComponent;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.AssignmentUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -15,13 +16,15 @@ import java.util.HashSet;
 public class FightPhaseSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
+    private AssignmentUtils assignmentUtils;
 
     private long attackDeckEntityId;
     private HashSet<Long> assignedStarships;
 
-    public FightPhaseSystem(EventManager eventManager, EntityManager entityManager) {
+    public FightPhaseSystem(EventManager eventManager, EntityManager entityManager, AssignmentUtils assignmentUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
+        this.assignmentUtils = assignmentUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.ATTACK_DECK_INITIALIZED, this::onAttackDeckInitialized);
@@ -96,31 +99,28 @@ public class FightPhaseSystem {
             // Notify listeners.
             boolean overpowered = playerPowerComponent.getCurrentPower() >= enemyPowerComponent.getCurrentPower() * 2;
 
-            StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(enemyEntityId);
-            starshipDefeatedEvent.setOverpowered(overpowered);
-
-            eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);
+            onStarshipDefeated(enemyEntityId, overpowered);
         } else {
             // Damage or destroy player starship.
             boolean overpowered = enemyPowerComponent.getCurrentPower() >= playerPowerComponent.getCurrentPower() * 2;
 
-            StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(playerEntityId);
-            starshipDefeatedEvent.setOverpowered(overpowered);
-
-            eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);
+            onStarshipDefeated(playerEntityId, overpowered);
         }
 
         // Unassign starship.
-        assignmentComponent.setAssignedTo(-1);
-
-        StarshipAssignedEvent starshipAssignedEvent = new StarshipAssignedEvent(playerEntityId, -1);
-        eventManager.queueEvent(EventType.STARSHIP_ASSIGNED, starshipAssignedEvent);
-
+        assignmentUtils.assignTo(playerEntityId, -1);
         assignedStarships.remove(playerEntityId);
 
         // Check if all fights resolved.
         if (assignedStarships.size() <= 0) {
             eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.JUMP));
         }
+    }
+
+    private void onStarshipDefeated(long entityId, boolean overpowered) {
+        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(entityId);
+        starshipDefeatedEvent.setOverpowered(overpowered);
+
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);
     }
 }

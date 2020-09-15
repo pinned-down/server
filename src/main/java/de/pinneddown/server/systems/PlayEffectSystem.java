@@ -5,6 +5,8 @@ import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.actions.PlayEffectAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.PlayerUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,28 +18,26 @@ public class PlayEffectSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
+    private PlayerUtils playerUtils;
+    private ThreatUtils threatUtils;
 
     private HashMap<String, Long> playerEntities;
-    private long threatPoolEntityId;
 
-    public PlayEffectSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager) {
+    public PlayEffectSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
+                            PlayerUtils playerUtils, ThreatUtils threatUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
+        this.playerUtils = playerUtils;
+        this.threatUtils = threatUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
-        this.eventManager.addEventHandler(EventType.THREAT_POOL_INITIALIZED, this::onThreatPoolInitialized);
         this.eventManager.addEventHandler(ActionType.PLAY_EFFECT, this::onPlayEffect);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
         this.playerEntities = new HashMap<>();
-    }
-
-    private void onThreatPoolInitialized(GameEvent gameEvent) {
-        ThreatPoolInitializedEvent eventData = (ThreatPoolInitializedEvent)gameEvent.getEventData();
-        threatPoolEntityId = eventData.getEntityId();
     }
 
     private void onPlayerEntityCreated(GameEvent gameEvent) {
@@ -55,19 +55,10 @@ public class PlayEffectSystem {
             return;
         }
 
-        PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
-
-        if (playerComponent == null) {
-            return;
-        }
-
         // Remove card.
-        if (!playerComponent.getHand().remove(eventData.getBlueprintId())) {
+        if (!playerUtils.removeHandCard(playerEntityId, eventData.getBlueprintId())) {
             return;
         }
-
-        PlayerHandChangedEvent playerHandChangedEvent = new PlayerHandChangedEvent(playerEntityId, playerComponent.getHand().getCards());
-        eventManager.queueEvent(EventType.PLAYER_HAND_CHANGED, playerHandChangedEvent);
 
         // Play card.
         long entityId = blueprintManager.createEntity(eventData.getBlueprintId());
@@ -76,12 +67,8 @@ public class PlayEffectSystem {
         ThreatComponent cardThreatComponent = entityManager.getComponent(entityId, ThreatComponent.class);
 
         if (cardThreatComponent != null) {
-            ThreatComponent threatPoolThreatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
-            int newThreat = threatPoolThreatComponent.getThreat() + cardThreatComponent.getThreat();
-            threatPoolThreatComponent.setThreat(newThreat);
-
-            ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(newThreat);
-            eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
+            int newThreat = threatUtils.getThreat() + cardThreatComponent.getThreat();
+            threatUtils.setThreat(newThreat);
         }
 
         // Instantiate abilities.
@@ -106,9 +93,7 @@ public class PlayEffectSystem {
 
         // Remove abilities and card again.
         entityManager.removeEntity(entityId);
-
-        CardRemovedEvent cardRemovedEvent = new CardRemovedEvent(entityId);
-        eventManager.queueEvent(EventType.CARD_REMOVED, cardRemovedEvent);
+        eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(entityId));
     }
 
     private Optional<Integer> findMatchingAbility(ArrayList<Long> abilities, long targetEntityId) {

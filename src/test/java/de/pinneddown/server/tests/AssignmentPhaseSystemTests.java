@@ -8,6 +8,8 @@ import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.AssignmentPhaseSystem;
+import de.pinneddown.server.util.AssignmentUtils;
+import de.pinneddown.server.util.PlayerUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -24,11 +26,8 @@ public class AssignmentPhaseSystemTests {
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
-        PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
 
-        AssignmentPhaseSystem system = new AssignmentPhaseSystem(eventManager, entityManager, playerReadyManager);
-
-        eventManager.queueEvent(EventType.READY_TO_START, null);
+        AssignmentPhaseSystem system = createSystem(eventManager, entityManager, playerManager);
 
         // Add single player.
         String playerId = "PlayerA";
@@ -55,11 +54,8 @@ public class AssignmentPhaseSystemTests {
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
-        PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
 
-        AssignmentPhaseSystem system = new AssignmentPhaseSystem(eventManager, entityManager, playerReadyManager);
-
-        eventManager.queueEvent(EventType.READY_TO_START, null);
+        AssignmentPhaseSystem system = createSystem(eventManager, entityManager, playerManager);
 
         // Add single player.
         String playerId = "PlayerA";
@@ -106,5 +102,17 @@ public class AssignmentPhaseSystemTests {
         entityManager.addComponent(starship, gameplayTagsComponent);
 
         return starship;
+    }
+
+    private AssignmentPhaseSystem createSystem(EventManager eventManager, EntityManager entityManager,
+                                               PlayerManager playerManager) {
+        PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
+        AssignmentUtils assignmentUtils = new AssignmentUtils(eventManager, entityManager);
+
+        AssignmentPhaseSystem system = new AssignmentPhaseSystem(eventManager, entityManager, playerReadyManager, assignmentUtils);
+
+        eventManager.queueEvent(EventType.READY_TO_START, null);
+
+        return system;
     }
 }

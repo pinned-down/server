@@ -7,6 +7,8 @@ import de.pinneddown.server.components.ThreatComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.ThreatPoolInitializedEvent;
 import de.pinneddown.server.systems.PlayEffectSystem;
+import de.pinneddown.server.util.PlayerUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,7 +90,11 @@ public class PlayEffectSystemTests extends GameSystemTestSuite {
 
     private PlayEffectSystem createSystem(EntityManager entityManager, EventManager eventManager) {
         BlueprintManager blueprintManager = createBlueprintManager(entityManager);
-        PlayEffectSystem system = new PlayEffectSystem(eventManager, entityManager, blueprintManager);
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
+
+        PlayEffectSystem system =
+                new PlayEffectSystem(eventManager, entityManager, blueprintManager, playerUtils,threatUtils);
 
         eventManager.queueEvent(EventType.READY_TO_START, null);
 
