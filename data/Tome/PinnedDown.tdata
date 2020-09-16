@@ -12,14 +12,15 @@
     </Record>
     <Record Id="Agniar" DisplayName="Agniar" Parent="Locations">
         <Distance Value="2"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Planet"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="BerenaPulsar" DisplayName="Berena Pulsar" Parent="Locations">
-        <GlobalGameplayTags/>
-        <InitialGameplayTags>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
             <Item Value="Keyword.Detector"/>
-            <Item Value="CardType.Location"/>
-        </InitialGameplayTags>
-        <LocationType Value="Space"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="BlueWing" DisplayName="Blue Wing">
         <GlobalGameplayTags/>
@@ -107,15 +108,25 @@
     </Record>
     <Record Id="GerraraNebula" DisplayName="Gerrara Nebula" Parent="Locations">
         <Distance Value="3"/>
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
-    <Record Id="Harana" DisplayName="Harana" Parent="Locations"/>
+    <Record Id="Harana" DisplayName="Harana" Parent="Locations">
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Planet"/>
+        </GlobalGameplayTags>
+    </Record>
     <Record Id="KressarShipyards" DisplayName="Kressar Shipyards" Parent="Locations">
         <Distance Value="2"/>
-        <LocationType Value="Station"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Station"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="LacarnaNebula" DisplayName="Lacarna Nebula" Parent="Locations">
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="Locations" DisplayName="Locations">
         <Distance Value="1"/>
@@ -123,31 +134,42 @@
         <InitialGameplayTags>
             <Item Value="CardType.Location"/>
         </InitialGameplayTags>
-        <LocationType Value="Planet"/>
     </Record>
     <Record Id="MoslovAsteroid" DisplayName="Moslov Asteroid" Parent="Locations">
         <Distance Value="2"/>
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="OshiroAsteroidBelt" DisplayName="Oshiro Asteroid Belt" Parent="Locations">
         <Distance Value="2"/>
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="RahraAsteroidBelt" DisplayName="Rahra Asteroid Belt" Parent="Locations">
         <Distance Value="2"/>
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="SalazaDocks" DisplayName="Salaza Docks" Parent="Locations">
-        <LocationType Value="Station"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Station"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
         <Distance Value="1"/>
-        <LocationType Value="Station"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Station"/>
+        </GlobalGameplayTags>
         <Threat Value="3"/>
     </Record>
     <Record Id="TekanaPassage" DisplayName="Tekana Passage" Parent="Locations">
         <Distance Value="2"/>
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
         <BasePower Value="8"/>
@@ -176,6 +198,8 @@
     </Record>
     <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
         <Distance Value="3"/>
-        <LocationType Value="Space"/>
+        <GlobalGameplayTags>
+            <Item Value="LocationType.Space"/>
+        </GlobalGameplayTags>
     </Record>
 </Records>

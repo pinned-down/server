@@ -1,17 +1,16 @@
 {
-  "hash": "9add7492ea67de6af852a32275cabadb",
+  "hash": "28e74c6cfb0d171106898aa97be3602a",
   "records": [
     {
       "id": "Agniar",
       "attributes": {
         "Distance": "2",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Planet"
+        "GlobalGameplayTags": ["LocationType.Planet"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -19,13 +18,12 @@
       "id": "BerenaPulsar",
       "attributes": {
         "Distance": "1",
-        "InitialGameplayTags": ["Keyword.Detector", "CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space", "Keyword.Detector"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -34,6 +32,7 @@
       "attributes": {
         "BasePower": "0",
         "BaseStructure": "0",
+        "GlobalGameplayTags": [],
         "InitialGameplayTags": ["CardType.Damage"],
         "PowerModifier": "-1",
         "StructureModifier": "-35"
@@ -50,6 +49,7 @@
       "attributes": {
         "BasePower": "9",
         "BaseStructure": "100",
+        "GlobalGameplayTags": [],
         "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
         "PowerModifier": "0",
         "StructureModifier": "0",
@@ -67,6 +67,7 @@
       "id": "FireAtWill",
       "attributes": {
         "Abilities": ["FireAtWillDefaultAbility", "FireAtWillImprovedAbility"],
+        "GlobalGameplayTags": [],
         "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Effect"],
         "Threat": "1"
       },
@@ -135,13 +136,12 @@
       "id": "GerraraNebula",
       "attributes": {
         "Distance": "3",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -149,13 +149,12 @@
       "id": "Harana",
       "attributes": {
         "Distance": "1",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Planet"
+        "GlobalGameplayTags": ["LocationType.Planet"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -163,13 +162,12 @@
       "id": "KressarShipyards",
       "attributes": {
         "Distance": "2",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Station"
+        "GlobalGameplayTags": ["LocationType.Station"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -177,13 +175,12 @@
       "id": "LacarnaNebula",
       "attributes": {
         "Distance": "1",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -191,13 +188,12 @@
       "id": "MoslovAsteroid",
       "attributes": {
         "Distance": "2",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -205,13 +201,12 @@
       "id": "OshiroAsteroidBelt",
       "attributes": {
         "Distance": "2",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -219,13 +214,12 @@
       "id": "RahraAsteroidBelt",
       "attributes": {
         "Distance": "2",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -233,13 +227,12 @@
       "id": "SalazaDocks",
       "attributes": {
         "Distance": "1",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Station"
+        "GlobalGameplayTags": ["LocationType.Station"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -247,14 +240,13 @@
       "id": "SolmarBorderStation",
       "attributes": {
         "Distance": "1",
+        "GlobalGameplayTags": ["LocationType.Station"],
         "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Station",
         "Threat": "3"
       },
       "components": [
         "DistanceComponent",
         "GameplayTagsComponent",
-        "LocationComponent",
         "ThreatComponent"
       ],
       "parent_id": "Locations"
@@ -263,13 +255,12 @@
       "id": "TekanaPassage",
       "attributes": {
         "Distance": "2",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     },
@@ -278,6 +269,7 @@
       "attributes": {
         "BasePower": "8",
         "BaseStructure": "100",
+        "GlobalGameplayTags": [],
         "InitialGameplayTags": ["Affiliation.BlueWing", "Keyword.Flagship", "CardType.Starship"],
         "PowerModifier": "0",
         "StructureModifier": "0",
@@ -321,13 +313,12 @@
       "id": "VolarPulsar",
       "attributes": {
         "Distance": "3",
-        "InitialGameplayTags": ["CardType.Location"],
-        "LocationType": "Space"
+        "GlobalGameplayTags": ["LocationType.Space"],
+        "InitialGameplayTags": ["CardType.Location"]
       },
       "components": [
         "DistanceComponent",
-        "GameplayTagsComponent",
-        "LocationComponent"
+        "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
     }

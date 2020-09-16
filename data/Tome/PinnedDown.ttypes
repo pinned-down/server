@@ -36,19 +36,13 @@
     </Type>
     <Type Name="GameplayTag">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;CardType.Damage;CardType.Effect;CardType.Location;CardType.Starship;Keyword.Detector;Keyword.Flagship;TurnPhase.Fight"/>
+            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;CardType.Damage;CardType.Effect;CardType.Location;CardType.Starship;Keyword.Detector;Keyword.Flagship;LocationType.Planet;LocationType.Space;LocationType.Station;TurnPhase.Fight"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>
     <Type Name="GameplayTagList">
         <FundamentalFacets>
             <FundamentalFacet Key="ItemType" Value="GameplayTag"/>
-        </FundamentalFacets>
-        <ConstrainingFacets/>
-    </Type>
-    <Type Name="LocationType">
-        <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Planet;Space;Station"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

@@ -8,7 +8,6 @@
     <Field Id="Distance" DisplayName="Distance" Description="" Type="Integer" Component="DistanceComponent" DefaultValue="1"/>
     <Field Id="GlobalGameplayTags" DisplayName="Global Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent"/>
     <Field Id="InitialGameplayTags" DisplayName="Initial Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
-    <Field Id="LocationType" DisplayName="Location Type" Description="" Type="LocationType" Component="LocationComponent" DefaultValue="Planet"/>
     <Field Id="PowerModifier" DisplayName="Power Modifier" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
     <Field Id="PowerPerLocation" DisplayName="Power Per Location" Description="" Type="Integer" Component="PowerPerLocationComponent" DefaultValue="0"/>
     <Field Id="RequiredTags" DisplayName="Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent" DefaultValue=""/>
