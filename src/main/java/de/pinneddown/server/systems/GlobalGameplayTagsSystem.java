@@ -2,6 +2,8 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.GameplayTagsComponent;
+import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.CardRemovedEvent;
 import de.pinneddown.server.events.GlobalGameplayTagsInitializedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.util.GameplayTagUtils;
@@ -21,6 +23,8 @@ public class GlobalGameplayTagsSystem {
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
+        this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
+        this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
@@ -64,6 +68,36 @@ public class GlobalGameplayTagsSystem {
             case JUMP:
                 gameplayTagUtils.addGlobalGameplayTag(GameplayTags.TURNPHASE_JUMP);
                 break;
+        }
+    }
+
+    private void onCardPlayed(GameEvent gameEvent) {
+        CardPlayedEvent eventData = (CardPlayedEvent)gameEvent.getEventData();
+
+        GameplayTagsComponent gameplayTagsComponent =
+                entityManager.getComponent(eventData.getEntityId(), GameplayTagsComponent.class);
+
+        if (gameplayTagsComponent == null) {
+            return;
+        }
+
+        for (String gameplayTag : gameplayTagsComponent.getGlobalGameplayTags()) {
+            gameplayTagUtils.addGlobalGameplayTag(gameplayTag);
+        }
+    }
+
+    private void onCardRemoved(GameEvent gameEvent) {
+        CardRemovedEvent eventData = (CardRemovedEvent)gameEvent.getEventData();
+
+        GameplayTagsComponent gameplayTagsComponent =
+                entityManager.getComponent(eventData.getEntityId(), GameplayTagsComponent.class);
+
+        if (gameplayTagsComponent == null) {
+            return;
+        }
+
+        for (String gameplayTag : gameplayTagsComponent.getGlobalGameplayTags()) {
+            gameplayTagUtils.removeGlobalGameplayTag(gameplayTag);
         }
     }
 }

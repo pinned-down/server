@@ -34,7 +34,7 @@ public class GameplayTagUtils {
                 entityManager.getComponent(globalGameplayTagsEntityId, GameplayTagsComponent.class);
 
         if (globalGameplayTagsComponent != null) {
-            combinedTags.addAll(globalGameplayTagsComponent.getGlobalGameplayTags());
+            addGameplayTagsUnique(combinedTags, globalGameplayTagsComponent.getGlobalGameplayTags());
         }
 
         // Add entity tags.
@@ -42,14 +42,18 @@ public class GameplayTagUtils {
                 entityManager.getComponent(entityId, GameplayTagsComponent.class);
 
         if (entityGameplayTagsComponent != null) {
-            combinedTags.addAll(entityGameplayTagsComponent.getInitialGameplayTags());
-            combinedTags.addAll(entityGameplayTagsComponent.getTemporaryGameplayTags());
+            addGameplayTagsUnique(combinedTags, entityGameplayTagsComponent.getInitialGameplayTags());
+            addGameplayTagsUnique(combinedTags, entityGameplayTagsComponent.getTemporaryGameplayTags());
         }
 
         return combinedTags;
     }
 
     public void addGameplayTag(ArrayList<String> gameplayTags, String gameplayTag) {
+        gameplayTags.add(gameplayTag);
+    }
+
+    public void addGameplayTagUnique(ArrayList<String> gameplayTags, String gameplayTag) {
         if (gameplayTags.contains(gameplayTag)) {
             return;
         }
@@ -57,12 +61,19 @@ public class GameplayTagUtils {
         gameplayTags.add(gameplayTag);
     }
 
+    public void addGameplayTagsUnique(ArrayList<String> gameplayTags, ArrayList<String> newTags) {
+        for (String newTag : newTags) {
+            addGameplayTagUnique(gameplayTags, newTag);
+        }
+    }
+
     public void removeGameplayTag(ArrayList<String> gameplayTags, String gameplayTag) {
-        for (int index = gameplayTags.size() - 1; index >= 0; --index) {
+        for (int index = 0; index < gameplayTags.size(); ++index) {
             String currentTag = gameplayTags.get(index);
 
             if (currentTag.equals(gameplayTag) || currentTag.startsWith(gameplayTag + ".")) {
                 gameplayTags.remove(index);
+                return;
             }
         }
     }
