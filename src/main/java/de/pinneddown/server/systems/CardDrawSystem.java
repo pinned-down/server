@@ -2,6 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.PlayerComponent;
+import de.pinneddown.server.events.PlayerDrawDeckSizeChangedEvent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.PlayerHandChangedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
@@ -81,5 +82,9 @@ public class CardDrawSystem {
 
         String card = playerComponent.getDrawDeck().pop();
         playerUtils.addHandCard(playerEntityId, card);
+
+        // Notify listeners.
+        eventManager.queueEvent(EventType.PLAYER_DRAW_DECK_SIZE_CHANGED,
+                new PlayerDrawDeckSizeChangedEvent(playerEntityId, playerComponent.getDrawDeck().size()));
     }
 }

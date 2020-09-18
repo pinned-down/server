@@ -43,6 +43,7 @@ public class PlayerController extends WebSocketController {
         eventManager.addEventHandler(EventType.DEFEAT, this::sendEventToClients);
         eventManager.addEventHandler(EventType.STARSHIP_POWER_CHANGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.PLAYER_DRAW_DECK_SIZE_CHANGED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")
