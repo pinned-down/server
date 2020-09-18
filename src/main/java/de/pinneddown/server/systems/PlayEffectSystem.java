@@ -94,6 +94,8 @@ public class PlayEffectSystem {
         // Remove abilities and card again.
         entityManager.removeEntity(entityId);
         eventManager.queueEvent(EventType.CARD_REMOVED, new CardRemovedEvent(entityId));
+
+        playerUtils.addCardToDiscardPile(playerEntityId, eventData.getBlueprintId());
     }
 
     private Optional<Integer> findMatchingAbility(ArrayList<Long> abilities, long targetEntityId) {

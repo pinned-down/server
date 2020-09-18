@@ -6,6 +6,7 @@ import de.pinneddown.server.events.CardRemovedEvent;
 import de.pinneddown.server.events.DefeatEvent;
 import de.pinneddown.server.events.StarshipDamagedEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
+import de.pinneddown.server.util.PlayerUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -18,17 +19,19 @@ public class DamageSystem {
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
     private Random random;
+    private PlayerUtils playerUtils;
 
     private long damageDeckEntityId;
     private HashSet<Long> damageEntities;
     private boolean godModeEnabled;
 
     public DamageSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
-                        Random random) {
+                        Random random, PlayerUtils playerUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
         this.random = random;
+        this.playerUtils = playerUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
@@ -139,11 +142,9 @@ public class DamageSystem {
 
         // Destroy starship.
         OwnerComponent ownerComponent = entityManager.getComponent(entityId, OwnerComponent.class);
-        PlayerComponent playerComponent = entityManager.getComponent(ownerComponent.getOwner(), PlayerComponent.class);
-
         BlueprintComponent blueprintComponent = entityManager.getComponent(entityId, BlueprintComponent.class);
 
-        playerComponent.getDiscardPile().push(blueprintComponent.getBlueprintId());
+        playerUtils.addCardToDiscardPile(ownerComponent.getOwner(), blueprintComponent.getBlueprintId());
 
         // Check defeat condition.
         GameplayTagsComponent gameplayTagsComponent = entityManager.getComponent(entityId, GameplayTagsComponent.class);

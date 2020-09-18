@@ -41,6 +41,7 @@ public class PlayEffectSystemTests extends GameSystemTestSuite {
         // ASSERT
         PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
         assertThat(playerComponent.getHand().getCards()).doesNotContain(EFFECT_CARD_BLUEPRINT_ID);
+        assertThat(playerComponent.getDiscardPile().getCards()).contains(EFFECT_CARD_BLUEPRINT_ID);
     }
 
     @Test

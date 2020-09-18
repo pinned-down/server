@@ -4,6 +4,7 @@ import de.pinneddown.server.EntityManager;
 import de.pinneddown.server.EventManager;
 import de.pinneddown.server.EventType;
 import de.pinneddown.server.components.PlayerComponent;
+import de.pinneddown.server.events.PlayerDiscardPileChangedEvent;
 import de.pinneddown.server.events.PlayerHandChangedEvent;
 import org.springframework.stereotype.Component;
 
@@ -38,5 +39,14 @@ public class PlayerUtils {
         eventManager.queueEvent(EventType.PLAYER_HAND_CHANGED, playerHandChangedEvent);
 
         return true;
+    }
+
+    public void addCardToDiscardPile(long playerEntityId, String card) {
+        PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
+        playerComponent.getDiscardPile().push(card);
+
+        PlayerDiscardPileChangedEvent playerDiscardPileChangedEvent =
+                new PlayerDiscardPileChangedEvent(playerEntityId, playerComponent.getDiscardPile().getCards());
+        eventManager.queueEvent(EventType.PLAYER_DISCARD_PILE_CHANGED, playerDiscardPileChangedEvent);
     }
 }

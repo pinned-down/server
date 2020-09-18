@@ -6,6 +6,7 @@ import de.pinneddown.server.events.DefeatEvent;
 import de.pinneddown.server.events.ReadyToStartEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
 import de.pinneddown.server.systems.DamageSystem;
+import de.pinneddown.server.util.PlayerUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -141,8 +142,9 @@ public class DamageSystemTests extends GameSystemTestSuite {
         BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, damageBlueprint);
 
         Random random = new Random();
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
 
-        return new DamageSystem(eventManager, entityManager, blueprintManager, random);
+        return new DamageSystem(eventManager, entityManager, blueprintManager, random, playerUtils);
     }
 
     private long createPlayerShip(EntityManager entityManager, long playerEntityId) {
