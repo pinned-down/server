@@ -4,9 +4,12 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.BlueprintComponent;
 import de.pinneddown.server.components.CardPileComponent;
 import de.pinneddown.server.components.DistanceComponent;
+import de.pinneddown.server.components.UpkeepComponent;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.ThreatUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -18,22 +21,30 @@ public class JumpPhaseSystem {
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
     private Random random;
+    private ThreatUtils threatUtils;
 
     private long locationDeckEntityId;
     private long currentLocationEntityId;
 
+    private ArrayList<Long> upkeepEntities;
+
     public JumpPhaseSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
-                           Random random) {
+                           Random random, ThreatUtils threatUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
         this.random = random;
+        this.threatUtils = threatUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
+        this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
+        this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
+        upkeepEntities = new ArrayList<>();
+
         // Setup location deck.
         DeckList deckList = getDeckList();
         CardPile attackDeck = CardPile.createFromDecklist(deckList, random);
@@ -68,7 +79,31 @@ public class JumpPhaseSystem {
         // Reveal next location.
         revealNextLocation();
 
+        // Add upkeep threat.
+        for (long upkeepEntityId : upkeepEntities) {
+            UpkeepComponent upkeepComponent = entityManager.getComponent(upkeepEntityId, UpkeepComponent.class);
+            threatUtils.setThreat(threatUtils.getThreat() + upkeepComponent.getUpkeep());
+        }
+
         eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.MAIN));
+    }
+
+    private void onCardPlayed(GameEvent gameEvent) {
+        CardPlayedEvent eventData = (CardPlayedEvent)gameEvent.getEventData();
+        UpkeepComponent upkeepComponent = entityManager.getComponent(eventData.getEntityId(), UpkeepComponent.class);
+
+        if (upkeepComponent != null) {
+            upkeepEntities.add(eventData.getEntityId());
+        }
+    }
+
+    private void onCardRemoved(GameEvent gameEvent) {
+        CardRemovedEvent eventData = (CardRemovedEvent)gameEvent.getEventData();
+        UpkeepComponent upkeepComponent = entityManager.getComponent(eventData.getEntityId(), UpkeepComponent.class);
+
+        if (upkeepComponent != null) {
+            upkeepEntities.remove(eventData.getEntityId());
+        }
     }
 
     private void revealNextLocation() {
