@@ -1,5 +1,5 @@
 {
-  "hash": "28e74c6cfb0d171106898aa97be3602a",
+  "hash": "d56504f6fe845965106d27b1a77abb38",
   "records": [
     {
       "id": "Agniar",
@@ -267,6 +267,7 @@
     {
       "id": "TRBArdor",
       "attributes": {
+        "Abilities": ["TRBArdorDamageBonusAbility"],
         "BasePower": "8",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -276,6 +277,7 @@
         "Upkeep": "1"
       },
       "components": [
+        "AbilitiesComponent",
         "PowerComponent",
         "StructureComponent",
         "GameplayTagsComponent",
@@ -290,7 +292,7 @@
         "RequiredTags": [],
         "TargetBlockedTags": [],
         "TargetRequiredTags": [],
-        "TargetType": "Starship"
+        "TargetType": "Passive"
       },
       "components": [
         "AbilityComponent"

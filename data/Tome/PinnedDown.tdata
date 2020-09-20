@@ -172,6 +172,9 @@
         </GlobalGameplayTags>
     </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
+        <Abilities>
+            <Item Value="TRBArdorDamageBonusAbility"/>
+        </Abilities>
         <BasePower Value="8"/>
         <BaseStructure Value="100"/>
         <GlobalGameplayTags/>
@@ -191,7 +194,7 @@
         <RequiredTags Value=""/>
         <TargetBlockedTags Value=""/>
         <TargetRequiredTags Value=""/>
-        <TargetType Value="Starship"/>
+        <TargetType Value="Passive"/>
     </Record>
     <Record Id="TRBArdorDamageBonusEffect" DisplayName="TRB Ardor (Damage Bonus Effect)" Parent="AbilityEffects">
         <PowerPerLocation Value="1"/>

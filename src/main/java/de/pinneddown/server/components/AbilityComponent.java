@@ -9,6 +9,7 @@ public class AbilityComponent implements EntityComponent {
     private ArrayList<String> requiredTags;
     private ArrayList<String> targetBlockedTags;
     private ArrayList<String> targetRequiredTags;
+    private String targetType;
 
     public AbilityComponent() {
         abilityEffects = new ArrayList<>();
@@ -47,5 +48,13 @@ public class AbilityComponent implements EntityComponent {
 
     public void setTargetRequiredTags(ArrayList<String> targetRequiredTags) {
         this.targetRequiredTags = targetRequiredTags;
+    }
+
+    public String getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(String targetType) {
+        this.targetType = targetType;
     }
 }

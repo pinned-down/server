@@ -5,7 +5,9 @@ import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.AbilitiesComponent;
 import de.pinneddown.server.components.AbilityComponent;
 import de.pinneddown.server.components.PowerComponent;
+import de.pinneddown.server.components.PowerPerLocationComponent;
 import de.pinneddown.server.events.AbilityEffectRemovedEvent;
+import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.systems.AbilitySystem;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +18,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AbilitySystemTests extends GameSystemTestSuite {
-    private static final String ABILITY_BLUEPRINT_ID = "testAbility";;
+    private static final String ABILITY_BLUEPRINT_ID = "testAbility";
+    private static final String PASSIVE_ABILITY_BLUEPRINT_ID = "testPassiveAbility";
     private static final String EFFECT_BLUEPRINT_ID = "testEffect";
+    private static final String POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID = "powerPerLocationEffect";
 
     @Test
     void appliesPowerEffect() {
@@ -25,7 +29,7 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
 
-        createSystem(entityManager, eventManager);
+        createSystem(entityManager, eventManager, EFFECT_BLUEPRINT_ID);
 
         // Setup card with ability.
         long entityId = entityManager.createEntity();
@@ -53,12 +57,47 @@ public class AbilitySystemTests extends GameSystemTestSuite {
     }
 
     @Test
+    void appliesPowerPerLocationEffect() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager, POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID);
+
+        // Setup card with ability.
+        long entityId = entityManager.createEntity();
+
+        ArrayList<String> abilities = new ArrayList<>();
+        abilities.add(ABILITY_BLUEPRINT_ID);
+
+        AbilitiesComponent abilitiesComponent = new AbilitiesComponent();
+        abilitiesComponent.setAbilities(abilities);
+
+        entityManager.addComponent(entityId, abilitiesComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+
+        PowerComponent powerComponent = new PowerComponent();
+        entityManager.addComponent(targetEntityId, powerComponent);
+
+        eventManager.queueEvent(EventType.CURRENT_LOCATION_CHANGED, null);
+
+        // ACT
+        eventManager.queueEvent(ActionType.ACTIVATE_ABILITY,
+                new ActivateAbilityAction(entityId, 0, targetEntityId));
+
+        // ASSERT
+        assertThat(powerComponent.getPowerModifier()).isGreaterThan(0);
+    }
+
+    @Test
     void removesPowerEffect() {
         // ARRANGE
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
 
-        createSystem(entityManager, eventManager);
+        createSystem(entityManager, eventManager, EFFECT_BLUEPRINT_ID);
 
         // Create effect.
         long effectEntityId = entityManager.createEntity();
@@ -83,32 +122,75 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         assertThat(targetPowerComponent.getPowerModifier()).isZero();
     }
 
-    private AbilitySystem createSystem(EntityManager entityManager, EventManager eventManager) {
-        BlueprintManager blueprintManager = createBlueprintManager(entityManager);
+    @Test
+    void activatesPassiveAbilities() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager, EFFECT_BLUEPRINT_ID);
+
+        // Setup card with ability.
+        long entityId = entityManager.createEntity();
+
+        ArrayList<String> abilities = new ArrayList<>();
+        abilities.add(PASSIVE_ABILITY_BLUEPRINT_ID);
+
+        AbilitiesComponent abilitiesComponent = new AbilitiesComponent();
+        abilitiesComponent.setAbilities(abilities);
+        entityManager.addComponent(entityId, abilitiesComponent);
+
+        PowerComponent powerComponent = new PowerComponent();
+        entityManager.addComponent(entityId, powerComponent);
+
+        // ACT
+        eventManager.queueEvent(EventType.CARD_PLAYED,
+                new CardPlayedEvent(entityId, null, 0));
+
+        // ASSERT
+        assertThat(powerComponent.getPowerModifier()).isGreaterThan(0);
+    }
+
+    private AbilitySystem createSystem(EntityManager entityManager, EventManager eventManager, String effect) {
+        BlueprintManager blueprintManager = createBlueprintManager(entityManager, effect);
         AbilitySystem system = new AbilitySystem(eventManager, entityManager, blueprintManager);
+
+        eventManager.queueEvent(EventType.READY_TO_START, null);
 
         return system;
     }
 
-    private BlueprintManager createBlueprintManager(EntityManager entityManager) {
-        // Create effect.
+    private BlueprintManager createBlueprintManager(EntityManager entityManager, String effect) {
+        // Create effecs.
         Blueprint effectBlueprint = new Blueprint();
         effectBlueprint.getComponents().add(PowerComponent.class.getSimpleName());
         effectBlueprint.getAttributes().put("PowerModifier", 1);
 
+        Blueprint powerPerLocationEffectBlueprint = new Blueprint();
+        powerPerLocationEffectBlueprint.getComponents().add(PowerPerLocationComponent.class.getSimpleName());
+        powerPerLocationEffectBlueprint.getAttributes().put("PowerPerLocation", 1);
+
         // Create ability.
         ArrayList<String> effects = new ArrayList<>();
-        effects.add(EFFECT_BLUEPRINT_ID);
+        effects.add(effect);
 
         Blueprint abilityBlueprint = new Blueprint();
         abilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
         abilityBlueprint.getAttributes().put("AbilityEffects", effects);
 
+        // Create passive ability.
+        Blueprint passiveAbilityBlueprint = new Blueprint();
+        passiveAbilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
+        passiveAbilityBlueprint.getAttributes().put("AbilityEffects", effects);
+        passiveAbilityBlueprint.getAttributes().put("TargetType", TargetType.PASSIVE);
+
         // Create blueprint manager.
         BlueprintSet blueprints = mock(BlueprintSet.class);
 
         when(blueprints.getBlueprint(ABILITY_BLUEPRINT_ID)).thenReturn(abilityBlueprint);
+        when(blueprints.getBlueprint(PASSIVE_ABILITY_BLUEPRINT_ID)).thenReturn(passiveAbilityBlueprint);
         when(blueprints.getBlueprint(EFFECT_BLUEPRINT_ID)).thenReturn(effectBlueprint);
+        when(blueprints.getBlueprint(POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID)).thenReturn(powerPerLocationEffectBlueprint);
 
         BlueprintManager blueprintManager = new BlueprintManager(entityManager);
         blueprintManager.setBlueprints(blueprints);
