@@ -1,5 +1,5 @@
 {
-  "hash": "466db6fbd5a959d19dc2ebd4f01b3648",
+  "hash": "06ded0a8121509a68d2d1503cc9e1e7d",
   "records": [
     {
       "id": "Agniar",
@@ -109,6 +109,36 @@
       "parent_id": "Dra'tar"
     },
     {
+      "id": "EvasionManeuver",
+      "attributes": {
+        "Abilities": ["EvasionManeuverAbility"],
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Effect"],
+        "Threat": "1"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "EvasionManeuverAbility",
+      "attributes": {
+        "AbilityEffects": ["MediumPowerMalus"],
+        "BlockedTags": [],
+        "RequiredTags": ["TurnPhase.Fight"],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": ["Affiliation.DraTar"],
+        "TargetType": "Starship"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
       "id": "FireAtWill",
       "attributes": {
         "Abilities": ["FireAtWillDefaultAbility", "FireAtWillImprovedAbility"],
@@ -211,6 +241,19 @@
         "AbilityEffectDuration": "EndOfFight",
         "BasePower": "0",
         "PowerModifier": "4"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "MediumPowerMalus",
+      "attributes": {
+        "AbilityEffectDuration": "EndOfFight",
+        "BasePower": "0",
+        "PowerModifier": "-3"
       },
       "components": [
         "AbilityEffectComponent",

@@ -94,6 +94,27 @@
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
     </Record>
+    <Record Id="EvasionManeuver" DisplayName="Evasion Maneuver" Parent="BlueWing">
+        <Abilities>
+            <Item Value="EvasionManeuverAbility"/>
+        </Abilities>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Effect"/>
+        </InitialGameplayTags>
+        <Threat Value="1"/>
+    </Record>
+    <Record Id="EvasionManeuverAbility" DisplayName="Evasion Maneuver (Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="MediumPowerMalus"/>
+        </AbilityEffects>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+        </RequiredTags>
+        <TargetRequiredTags>
+            <Item Value="Affiliation.DraTar"/>
+        </TargetRequiredTags>
+    </Record>
     <Record Id="FireAtWill" DisplayName="Fire At Will" Parent="BlueWing">
         <Abilities>
             <Item Value="FireAtWillDefaultAbility"/>
@@ -167,6 +188,11 @@
         <InitialGameplayTags>
             <Item Value="CardType.Location"/>
         </InitialGameplayTags>
+    </Record>
+    <Record Id="MediumPowerMalus" DisplayName="Medium Power Malus" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <BasePower Value="0"/>
+        <PowerModifier Value="-3"/>
     </Record>
     <Record Id="MoslovAsteroid" DisplayName="Moslov Asteroid" Parent="Locations">
         <Distance Value="2"/>
