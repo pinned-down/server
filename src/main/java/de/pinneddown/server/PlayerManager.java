@@ -37,6 +37,7 @@ public class PlayerManager {
     public DeckList getDeckList(String playerId) {
         HashMap<String, Integer> cards = new HashMap<>();
         cards.put("FireAtWill", 4);
+        cards.put("Defiance", 4);
 
         DeckList deckList = new DeckList();
         deckList.setFlagship("TRBArdor");

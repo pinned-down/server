@@ -2,6 +2,7 @@
 <Records>
     <Record Id="Abilities" DisplayName="Abilities">
         <AbilityEffects Value=""/>
+        <BlockedTags/>
         <RequiredTags Value=""/>
         <TargetBlockedTags Value=""/>
         <TargetRequiredTags Value=""/>
@@ -23,16 +24,51 @@
         </GlobalGameplayTags>
     </Record>
     <Record Id="BlueWing" DisplayName="Blue Wing">
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.BlueWing"/>
         </InitialGameplayTags>
     </Record>
     <Record Id="Damage" DisplayName="Damage">
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="CardType.Damage"/>
         </InitialGameplayTags>
+    </Record>
+    <Record Id="Defiance" DisplayName="Defiance" Parent="BlueWing">
+        <Abilities>
+            <Item Value="DefianceDefaultAbility"/>
+            <Item Value="DefianceImprovedAbility"/>
+        </Abilities>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Effect"/>
+        </InitialGameplayTags>
+        <Threat Value="1"/>
+    </Record>
+    <Record Id="DefianceDefaultAbility" DisplayName="Defiance (Default Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="SmallPowerBonus"/>
+        </AbilityEffects>
+        <BlockedTags>
+            <Item Value="LocationType.Planet"/>
+            <Item Value="LocationType.Station"/>
+        </BlockedTags>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+            <Item Value="LocationType.Space"/>
+        </RequiredTags>
+    </Record>
+    <Record Id="DefianceImprovedAbility" DisplayName="Defiance (Improved Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="LargePowerBonus"/>
+        </AbilityEffects>
+        <BlockedTags>
+            <Item Value="LocationType.Space"/>
+        </BlockedTags>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+        </RequiredTags>
     </Record>
     <Record Id="DirectHit" DisplayName="Direct Hit" Parent="Damage">
         <BasePower Value="0"/>
@@ -41,7 +77,7 @@
         <StructureModifier Value="-35"/>
     </Record>
     <Record Id="Dra'tar" DisplayName="Dra'tar">
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.DraTar"/>
         </InitialGameplayTags>
@@ -49,7 +85,7 @@
     <Record Id="DratarAssaultFrigate" DisplayName="Dra'tar Assault Frigate" Parent="Dra'tar">
         <BasePower Value="9"/>
         <BaseStructure Value="100"/>
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.DraTar"/>
             <Item Value="CardType.Starship"/>
@@ -63,7 +99,7 @@
             <Item Value="FireAtWillDefaultAbility"/>
             <Item Value="FireAtWillImprovedAbility"/>
         </Abilities>
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.BlueWing"/>
             <Item Value="CardType.Effect"/>
@@ -72,8 +108,9 @@
     </Record>
     <Record Id="FireAtWillDefaultAbility" DisplayName="Fire At Will (Default Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="FireAtWillDefaultEffect"/>
+            <Item Value="SmallPowerBonus"/>
         </AbilityEffects>
+        <BlockedTags/>
         <RequiredTags>
             <Item Value="TurnPhase.Fight"/>
         </RequiredTags>
@@ -83,15 +120,11 @@
         <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
-    <Record Id="FireAtWillDefaultEffect" DisplayName="Fire At Will (Default Effect)" Parent="AbilityEffects">
-        <AbilityEffectDuration Value="EndOfFight"/>
-        <BasePower Value="0"/>
-        <PowerModifier Value="2"/>
-    </Record>
     <Record Id="FireAtWillImprovedAbility" DisplayName="Fire At Will (Improved Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="FireAtWillImprovedEffect"/>
+            <Item Value="LargePowerBonus"/>
         </AbilityEffects>
+        <BlockedTags/>
         <RequiredTags>
             <Item Value="TurnPhase.Fight"/>
         </RequiredTags>
@@ -100,11 +133,6 @@
             <Item Value="Affiliation.BlueWing"/>
         </TargetRequiredTags>
         <TargetType Value="Starship"/>
-    </Record>
-    <Record Id="FireAtWillImprovedEffect" DisplayName="Fire At Will (Improved Effect)" Parent="AbilityEffects">
-        <AbilityEffectDuration Value="EndOfFight"/>
-        <BasePower Value="0"/>
-        <PowerModifier Value="4"/>
     </Record>
     <Record Id="GerraraNebula" DisplayName="Gerrara Nebula" Parent="Locations">
         <Distance Value="3"/>
@@ -128,9 +156,14 @@
             <Item Value="LocationType.Space"/>
         </GlobalGameplayTags>
     </Record>
+    <Record Id="LargePowerBonus" DisplayName="Large Power Bonus" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <BasePower Value="0"/>
+        <PowerModifier Value="4"/>
+    </Record>
     <Record Id="Locations" DisplayName="Locations">
         <Distance Value="1"/>
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="CardType.Location"/>
         </InitialGameplayTags>
@@ -158,6 +191,11 @@
             <Item Value="LocationType.Station"/>
         </GlobalGameplayTags>
     </Record>
+    <Record Id="SmallPowerBonus" DisplayName="Small Power Bonus" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <BasePower Value="0"/>
+        <PowerModifier Value="2"/>
+    </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
         <Distance Value="1"/>
         <GlobalGameplayTags>
@@ -177,7 +215,7 @@
         </Abilities>
         <BasePower Value="8"/>
         <BaseStructure Value="100"/>
-        <GlobalGameplayTags/>
+        <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.BlueWing"/>
             <Item Value="Keyword.Flagship"/>
@@ -191,6 +229,7 @@
         <AbilityEffects>
             <Item Value="TRBArdorDamageBonusEffect"/>
         </AbilityEffects>
+        <BlockedTags/>
         <RequiredTags Value=""/>
         <TargetBlockedTags Value=""/>
         <TargetRequiredTags Value=""/>
