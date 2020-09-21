@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.PowerUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,15 +15,18 @@ public class AbilitySystem {
     private EventManager eventManager;
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
+    private PowerUtils powerUtils;
 
     private int totalLocations;
 
     private HashSet<Long> powerPerLocationEffects;
 
-    public AbilitySystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager) {
+    public AbilitySystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
+                         PowerUtils powerUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
+        this.powerUtils = powerUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(ActionType.ACTIVATE_ABILITY, this::onActivateAbility);
@@ -147,11 +151,7 @@ public class AbilitySystem {
             int oldPowerModifier = targetPowerComponent.getPowerModifier();
             int newPowerModifier = oldPowerModifier + (effectPowerComponent.getPowerModifier() * powerFactor);
 
-            targetPowerComponent.setPowerModifier(newPowerModifier);
-
-            StarshipPowerChangedEvent starshipPowerChangedEvent =
-                    new StarshipPowerChangedEvent(targetEntityId, oldPowerModifier, newPowerModifier);
-            eventManager.queueEvent(EventType.STARSHIP_POWER_CHANGED, starshipPowerChangedEvent);
+            powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
         }
     }
 
@@ -168,11 +168,8 @@ public class AbilitySystem {
                     + (totalLocations * powerFactor);
 
             powerPerLocationComponent.setAppliedPowerPerLocation(totalLocations * powerFactor);
-            targetPowerComponent.setPowerModifier(newPowerModifier);
 
-            StarshipPowerChangedEvent starshipPowerChangedEvent =
-                    new StarshipPowerChangedEvent(targetEntityId, oldPowerModifier, newPowerModifier);
-            eventManager.queueEvent(EventType.STARSHIP_POWER_CHANGED, starshipPowerChangedEvent);
+            powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
         }
     }
 }

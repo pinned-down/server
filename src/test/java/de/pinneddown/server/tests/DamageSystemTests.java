@@ -7,6 +7,7 @@ import de.pinneddown.server.events.ReadyToStartEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
 import de.pinneddown.server.systems.DamageSystem;
 import de.pinneddown.server.util.PlayerUtils;
+import de.pinneddown.server.util.PowerUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -59,6 +60,29 @@ public class DamageSystemTests extends GameSystemTestSuite {
         StructureComponent structureComponent = entityManager.getComponent(playerShipId, StructureComponent.class);
 
         assertThat(structureComponent.getStructureModifier()).isEqualTo(damage);
+    }
+
+    @Test
+    void defeatedPlayerShipsLosePower() {
+        // ARRANGE
+        // Setup system.
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+        int damage = -10;
+
+        DamageSystem system = createSystem(eventManager, entityManager, damage);
+
+        eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
+
+        // Setup player ship.
+        long playerShipId = createPlayerShip(entityManager, 0);
+
+        // ACT
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId));
+
+        // ASSERT
+        PowerComponent powerComponent = entityManager.getComponent(playerShipId, PowerComponent.class);
+        assertThat(powerComponent.getPowerModifier()).isLessThan(0);
     }
 
     @Test
@@ -138,17 +162,25 @@ public class DamageSystemTests extends GameSystemTestSuite {
     private DamageSystem createSystem(EventManager eventManager, EntityManager entityManager, int damage) {
         Blueprint damageBlueprint = new Blueprint();
         damageBlueprint.getComponents().add(StructureComponent.class.getSimpleName());
+        damageBlueprint.getComponents().add(PowerComponent.class.getSimpleName());
+        damageBlueprint.getAttributes().put("PowerModifier", -1);
         damageBlueprint.getAttributes().put("StructureModifier", damage);
+
         BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, damageBlueprint);
 
         Random random = new Random();
         PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
+        PowerUtils powerUtils = new PowerUtils(eventManager, entityManager);
 
-        return new DamageSystem(eventManager, entityManager, blueprintManager, random, playerUtils);
+        return new DamageSystem(eventManager, entityManager, blueprintManager, random, playerUtils, powerUtils);
     }
 
     private long createPlayerShip(EntityManager entityManager, long playerEntityId) {
         long playerShipId = entityManager.createEntity();
+
+        PowerComponent powerComponent = new PowerComponent();
+        powerComponent.setBasePower(5);
+        entityManager.addComponent(playerShipId, powerComponent);
 
         StructureComponent structureComponent = new StructureComponent();
         structureComponent.setBaseStructure(100);

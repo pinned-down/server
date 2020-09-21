@@ -9,6 +9,7 @@ import de.pinneddown.server.components.PowerPerLocationComponent;
 import de.pinneddown.server.events.AbilityEffectRemovedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.systems.AbilitySystem;
+import de.pinneddown.server.util.PowerUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -153,7 +154,9 @@ public class AbilitySystemTests extends GameSystemTestSuite {
 
     private AbilitySystem createSystem(EntityManager entityManager, EventManager eventManager, String effect) {
         BlueprintManager blueprintManager = createBlueprintManager(entityManager, effect);
-        AbilitySystem system = new AbilitySystem(eventManager, entityManager, blueprintManager);
+        PowerUtils powerUtils = new PowerUtils(eventManager, entityManager);
+
+        AbilitySystem system = new AbilitySystem(eventManager, entityManager, blueprintManager, powerUtils);
 
         eventManager.queueEvent(EventType.READY_TO_START, null);
 
