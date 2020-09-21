@@ -4,11 +4,13 @@ import de.pinneddown.server.EntityManager;
 import de.pinneddown.server.EventManager;
 import de.pinneddown.server.EventType;
 import de.pinneddown.server.GameEvent;
+import de.pinneddown.server.components.AbilityComponent;
 import de.pinneddown.server.components.GameplayTagsComponent;
 import de.pinneddown.server.events.GlobalGameplayTagsChangedEvent;
 import de.pinneddown.server.events.GlobalGameplayTagsInitializedEvent;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @Component
@@ -94,6 +96,25 @@ public class GameplayTagUtils {
 
         // Notify listeners.
         onGlobalGameplayTagsChanged();
+    }
+
+    public ArrayList<String> combineGameplayTags(ArrayList<String> first, ArrayList<String> second) {
+        ArrayList<String> combined = new ArrayList<>();
+        addGameplayTagsUnique(combined, first);
+        addGameplayTagsUnique(combined, second);
+        return combined;
+    }
+
+    public boolean matchesTagRequirements(long entityId, ArrayList<String> requiredTags,
+                                          ArrayList<String> blockedTags) {
+        ArrayList<String> gameplayTags = getGameplayTags(entityId);
+        return matchesTagRequirements(gameplayTags, requiredTags, blockedTags);
+    }
+
+    public boolean matchesTagRequirements(ArrayList<String> gameplayTags, ArrayList<String> requiredTags,
+                                          ArrayList<String> blockedTags) {
+        return gameplayTags.containsAll(requiredTags) &&
+                gameplayTags.stream().noneMatch(tag -> blockedTags.contains(tag));
     }
 
     private void onGlobalGameplayTagsInitialized(GameEvent gameEvent) {

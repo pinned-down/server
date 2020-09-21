@@ -5,6 +5,7 @@ import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.actions.PlayEffectAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.GameplayTagUtils;
 import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.ThreatUtils;
 import org.springframework.stereotype.Component;
@@ -20,16 +21,18 @@ public class PlayEffectSystem {
     private BlueprintManager blueprintManager;
     private PlayerUtils playerUtils;
     private ThreatUtils threatUtils;
+    private GameplayTagUtils gameplayTagUtils;
 
     private HashMap<String, Long> playerEntities;
 
     public PlayEffectSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
-                            PlayerUtils playerUtils, ThreatUtils threatUtils) {
+                            PlayerUtils playerUtils, ThreatUtils threatUtils, GameplayTagUtils gameplayTagUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
         this.playerUtils = playerUtils;
         this.threatUtils = threatUtils;
+        this.gameplayTagUtils = gameplayTagUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
@@ -113,10 +116,13 @@ public class PlayEffectSystem {
 
     private boolean isValidTarget(long abilityEntityId, long targetEntityId) {
         AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
-        GameplayTagsComponent gameplayTagsComponent =
-                entityManager.getComponent(targetEntityId, GameplayTagsComponent.class);
 
-        return gameplayTagsComponent.getInitialGameplayTags().containsAll(abilityComponent.getTargetRequiredTags()) &&
-                gameplayTagsComponent.getInitialGameplayTags().stream().noneMatch(tag -> abilityComponent.getTargetBlockedTags().contains(tag));
+        ArrayList<String> requiredTags = gameplayTagUtils.combineGameplayTags(abilityComponent.getRequiredTags(),
+                abilityComponent.getTargetRequiredTags());
+        ArrayList<String> blockedTags = gameplayTagUtils.combineGameplayTags(abilityComponent.getBlockedTags(),
+                abilityComponent.getTargetBlockedTags());
+
+        return gameplayTagUtils.matchesTagRequirements(targetEntityId,
+                requiredTags, blockedTags);
     }
 }
