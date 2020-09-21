@@ -24,6 +24,7 @@ public class AbilityEffectDurationSystem {
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_APPLIED, this::onAbilityEffectApplied);
+        this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_REMOVED, this::onAbilityEffectRemoved);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
         this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
     }
@@ -46,6 +47,13 @@ public class AbilityEffectDurationSystem {
                 effectsExpiringAtEndOfFight.add(eventData.getEffectEntityId());
                 break;
         }
+    }
+
+    private void onAbilityEffectRemoved(GameEvent gameEvent) {
+        AbilityEffectRemovedEvent eventData = (AbilityEffectRemovedEvent)gameEvent.getEventData();
+
+        effectEntities.remove(eventData.getEffectEntityId());
+        effectsExpiringAtEndOfFight.remove(eventData.getEffectEntityId());
     }
 
     private void onTurnPhaseStarted(GameEvent gameEvent) {
