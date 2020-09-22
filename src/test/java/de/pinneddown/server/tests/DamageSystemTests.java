@@ -5,6 +5,7 @@ import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.DefeatEvent;
 import de.pinneddown.server.events.ReadyToStartEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
+import de.pinneddown.server.events.StarshipOverloadedEvent;
 import de.pinneddown.server.systems.DamageSystem;
 import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.PowerUtils;
@@ -113,6 +114,30 @@ public class DamageSystemTests extends GameSystemTestSuite {
         assertThat(entityManager.getComponent(playerShipId, StructureComponent.class)).isNull();
         assertThat(entityManager.getComponent(playerShipId, OwnerComponent.class)).isNull();
         assertThat(entityManager.getComponent(playerShipId, BlueprintComponent.class)).isNull();
+    }
+
+    @Test
+    void overloadedShipsTakeDamage() {
+        // ARRANGE
+        // Setup system.
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+        int damage = -10;
+
+        DamageSystem system = createSystem(eventManager, entityManager, damage);
+
+        eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
+
+        // Setup player ship.
+        long playerShipId = createPlayerShip(entityManager, 0);
+
+        // ACT
+        eventManager.queueEvent(EventType.STARSHIP_OVERLOADED, new StarshipOverloadedEvent(playerShipId));
+
+        // ASSERT
+        StructureComponent structureComponent = entityManager.getComponent(playerShipId, StructureComponent.class);
+
+        assertThat(structureComponent.getStructureModifier()).isEqualTo(damage);
     }
 
     @Test

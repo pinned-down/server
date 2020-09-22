@@ -1,5 +1,5 @@
 {
-  "hash": "06ded0a8121509a68d2d1503cc9e1e7d",
+  "hash": "a82f09cd87f9bb38cf7ad9203aedded9",
   "records": [
     {
       "id": "Agniar",
@@ -288,6 +288,18 @@
       "parent_id": "Locations"
     },
     {
+      "id": "Overload",
+      "attributes": {
+        "AbilityEffectDuration": "Instant",
+        "Overloads": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "OverloadComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
       "id": "RahraAsteroidBelt",
       "attributes": {
         "Distance": "2",
@@ -299,6 +311,36 @@
         "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
+    },
+    {
+      "id": "RaiseTheStakes",
+      "attributes": {
+        "Abilities": ["RaiseTheStakesAbility"],
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Effect"],
+        "Threat": "1"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "RaiseTheStakesAbility",
+      "attributes": {
+        "AbilityEffects": ["Overload", "LargePowerBonus"],
+        "BlockedTags": [],
+        "RequiredTags": ["TurnPhase.Fight"],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Starship"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
     },
     {
       "id": "SalazaDocks",

@@ -2,10 +2,7 @@ package de.pinneddown.server.tests;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
-import de.pinneddown.server.components.AbilitiesComponent;
-import de.pinneddown.server.components.AbilityComponent;
-import de.pinneddown.server.components.PowerComponent;
-import de.pinneddown.server.components.PowerPerLocationComponent;
+import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectRemovedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.systems.AbilitySystem;
@@ -23,6 +20,9 @@ public class AbilitySystemTests extends GameSystemTestSuite {
     private static final String PASSIVE_ABILITY_BLUEPRINT_ID = "testPassiveAbility";
     private static final String EFFECT_BLUEPRINT_ID = "testEffect";
     private static final String POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID = "powerPerLocationEffect";
+    private static final String OVERLOAD_EFFECT_BLUEPRINT_ID = "overloadEffect";
+
+    private boolean overloaded;
 
     @Test
     void appliesPowerEffect() {
@@ -124,6 +124,43 @@ public class AbilitySystemTests extends GameSystemTestSuite {
     }
 
     @Test
+    void appliesOverloadEffect() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager, OVERLOAD_EFFECT_BLUEPRINT_ID);
+
+        // Setup card with ability.
+        long entityId = entityManager.createEntity();
+
+        ArrayList<String> abilities = new ArrayList<>();
+        abilities.add(ABILITY_BLUEPRINT_ID);
+
+        AbilitiesComponent abilitiesComponent = new AbilitiesComponent();
+        abilitiesComponent.setAbilities(abilities);
+
+        entityManager.addComponent(entityId, abilitiesComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+
+        StructureComponent structureComponent = new StructureComponent();
+        entityManager.addComponent(targetEntityId, structureComponent);
+
+        // Listen for events.
+        overloaded = false;
+        eventManager.addEventHandler(EventType.STARSHIP_OVERLOADED, this::onStarshipOverloaded);
+
+        // ACT
+        eventManager.queueEvent(ActionType.ACTIVATE_ABILITY,
+                new ActivateAbilityAction(entityId, 0, targetEntityId));
+
+        // ASSERT
+        assertThat(overloaded).isTrue();
+    }
+
+    @Test
     void activatesPassiveAbilities() {
         // ARRANGE
         EventManager eventManager = new EventManager();
@@ -173,6 +210,10 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         powerPerLocationEffectBlueprint.getComponents().add(PowerPerLocationComponent.class.getSimpleName());
         powerPerLocationEffectBlueprint.getAttributes().put("PowerPerLocation", 1);
 
+        Blueprint overloadEffectBlueprint = new Blueprint();
+        overloadEffectBlueprint.getComponents().add(OverloadComponent.class.getSimpleName());
+        overloadEffectBlueprint.getAttributes().put("Overloads", 1);
+
         // Create ability.
         ArrayList<String> effects = new ArrayList<>();
         effects.add(effect);
@@ -194,10 +235,15 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         when(blueprints.getBlueprint(PASSIVE_ABILITY_BLUEPRINT_ID)).thenReturn(passiveAbilityBlueprint);
         when(blueprints.getBlueprint(EFFECT_BLUEPRINT_ID)).thenReturn(effectBlueprint);
         when(blueprints.getBlueprint(POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID)).thenReturn(powerPerLocationEffectBlueprint);
+        when(blueprints.getBlueprint(OVERLOAD_EFFECT_BLUEPRINT_ID)).thenReturn(overloadEffectBlueprint);
 
         BlueprintManager blueprintManager = new BlueprintManager(entityManager);
         blueprintManager.setBlueprints(blueprints);
 
         return blueprintManager;
+    }
+
+    private void onStarshipOverloaded(GameEvent gameEvent) {
+        overloaded = true;
     }
 }

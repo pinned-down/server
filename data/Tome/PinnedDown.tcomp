@@ -5,6 +5,7 @@
     <Name>AbilityEffectComponent</Name>
     <Name>DistanceComponent</Name>
     <Name>GameplayTagsComponent</Name>
+    <Name>OverloadComponent</Name>
     <Name>PowerComponent</Name>
     <Name>PowerPerLocationComponent</Name>
     <Name>StructureComponent</Name>

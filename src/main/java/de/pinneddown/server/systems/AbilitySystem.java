@@ -124,6 +124,9 @@ public class AbilitySystem {
         for (String effectBlueprintId : abilityComponent.getAbilityEffects()) {
             long effectEntityId = blueprintManager.createEntity(effectBlueprintId);
 
+            // Apply overloads.
+            applyOverloads(effectEntityId, targetEntityId);
+
             // Apply power bonus.
             applyPowerBonus(effectEntityId, targetEntityId, 1);
             applyPowerPerLocationBonus(effectEntityId, targetEntityId, 1);
@@ -170,6 +173,16 @@ public class AbilitySystem {
             powerPerLocationComponent.setAppliedPowerPerLocation(totalLocations * powerFactor);
 
             powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
+        }
+    }
+
+    private void applyOverloads(long effectEntityId, long targetEntityId) {
+        OverloadComponent overloadComponent = entityManager.getComponent(effectEntityId, OverloadComponent.class);
+
+        if (overloadComponent != null) {
+            for (int i = 0; i < overloadComponent.getOverloads(); ++i) {
+                eventManager.queueEvent(EventType.STARSHIP_OVERLOADED, new StarshipOverloadedEvent(targetEntityId));
+            }
         }
     }
 }

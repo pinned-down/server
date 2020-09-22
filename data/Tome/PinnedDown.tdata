@@ -2,7 +2,7 @@
 <Records>
     <Record Id="Abilities" DisplayName="Abilities">
         <AbilityEffects Value=""/>
-        <BlockedTags/>
+        <BlockedTags Value=""/>
         <RequiredTags Value=""/>
         <TargetBlockedTags Value=""/>
         <TargetRequiredTags Value=""/>
@@ -131,7 +131,7 @@
         <AbilityEffects>
             <Item Value="SmallPowerBonus"/>
         </AbilityEffects>
-        <BlockedTags/>
+        <BlockedTags Value=""/>
         <RequiredTags>
             <Item Value="TurnPhase.Fight"/>
         </RequiredTags>
@@ -145,7 +145,7 @@
         <AbilityEffects>
             <Item Value="LargePowerBonus"/>
         </AbilityEffects>
-        <BlockedTags/>
+        <BlockedTags Value=""/>
         <RequiredTags>
             <Item Value="TurnPhase.Fight"/>
         </RequiredTags>
@@ -206,11 +206,34 @@
             <Item Value="LocationType.Space"/>
         </GlobalGameplayTags>
     </Record>
+    <Record Id="Overload" DisplayName="Overload" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="Instant"/>
+        <Overloads Value="1"/>
+    </Record>
     <Record Id="RahraAsteroidBelt" DisplayName="Rahra Asteroid Belt" Parent="Locations">
         <Distance Value="2"/>
         <GlobalGameplayTags>
             <Item Value="LocationType.Space"/>
         </GlobalGameplayTags>
+    </Record>
+    <Record Id="RaiseTheStakes" DisplayName="Raise The Stakes" Parent="BlueWing">
+        <Abilities>
+            <Item Value="RaiseTheStakesAbility"/>
+        </Abilities>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Effect"/>
+        </InitialGameplayTags>
+        <Threat Value="1"/>
+    </Record>
+    <Record Id="RaiseTheStakesAbility" DisplayName="Raise The Stakes (Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="Overload"/>
+            <Item Value="LargePowerBonus"/>
+        </AbilityEffects>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+        </RequiredTags>
     </Record>
     <Record Id="SalazaDocks" DisplayName="Salaza Docks" Parent="Locations">
         <GlobalGameplayTags>
@@ -255,7 +278,7 @@
         <AbilityEffects>
             <Item Value="TRBArdorDamageBonusEffect"/>
         </AbilityEffects>
-        <BlockedTags/>
+        <BlockedTags Value=""/>
         <RequiredTags Value=""/>
         <TargetBlockedTags Value=""/>
         <TargetRequiredTags Value=""/>

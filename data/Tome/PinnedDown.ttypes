@@ -2,7 +2,7 @@
 <Types Version="2">
     <Type Name="AbilityEffectDuration">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="EndOfFight;Indefinite"/>
+            <FundamentalFacet Key="Enumeration" Value="EndOfFight;Indefinite;Instant"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

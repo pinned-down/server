@@ -2,10 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
-import de.pinneddown.server.events.CardRemovedEvent;
-import de.pinneddown.server.events.DefeatEvent;
-import de.pinneddown.server.events.StarshipDamagedEvent;
-import de.pinneddown.server.events.StarshipDefeatedEvent;
+import de.pinneddown.server.events.*;
 import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.PowerUtils;
 import org.springframework.stereotype.Component;
@@ -38,6 +35,7 @@ public class DamageSystem {
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
+        this.eventManager.addEventHandler(EventType.STARSHIP_OVERLOADED, this::onStarshipOverloaded);
         this.eventManager.addEventHandler(ActionType.GOD_CHEAT, this::onGodCheat);
     }
 
@@ -64,64 +62,26 @@ public class DamageSystem {
     private void onStarshipDefeated(GameEvent gameEvent) {
         StarshipDefeatedEvent eventData = (StarshipDefeatedEvent)gameEvent.getEventData();
 
-        if (godModeEnabled) {
-            return;
-        }
-
         // Check if player starship.
         long entityId = eventData.getEntityId();
         OwnerComponent ownerComponent = entityManager.getComponent(entityId, OwnerComponent.class);
 
         if (ownerComponent == null) {
+            // Enemy starships are removed immediately by FightPhaseSystem.
             return;
         }
 
         if (!eventData.isOverpowered()) {
-            // Create damage.
-            CardPileComponent cardPileComponent =
-                    entityManager.getComponent(damageDeckEntityId, CardPileComponent.class);
-
-            if (cardPileComponent.getCardPile().isEmpty()) {
-                cardPileComponent.getDiscardPile().shuffleInto(cardPileComponent.getCardPile(), random);
-            }
-
-            String damageBlueprintId = cardPileComponent.getCardPile().pop();
-            long damageEntityId = blueprintManager.createEntity(damageBlueprintId);
-            damageEntities.add(damageEntityId);
-
-            // Add damage.
-            AttachmentComponent attachmentComponent = new AttachmentComponent(damageEntityId, entityId);
-            entityManager.addComponent(damageEntityId, attachmentComponent);
-
-            StructureComponent starshipStructureComponent =
-                    entityManager.getComponent(entityId, StructureComponent.class);
-            StructureComponent damageStructureComponent =
-                    entityManager.getComponent(damageEntityId, StructureComponent.class);
-
-            starshipStructureComponent.setStructureModifier(starshipStructureComponent.getStructureModifier() +
-                    damageStructureComponent.getStructureModifier());
-
-            // Notify listeners.
-            StarshipDamagedEvent starshipDamagedEvent =
-                    new StarshipDamagedEvent(entityId, damageEntityId, damageBlueprintId);
-            eventManager.queueEvent(EventType.STARSHIP_DAMAGED, starshipDamagedEvent);
-
-            // Update power.
-            PowerComponent starshipPowerComponent = entityManager.getComponent(entityId, PowerComponent.class);
-            PowerComponent damagePowerComponent = entityManager.getComponent(damageEntityId, PowerComponent.class);
-
-            if (starshipPowerComponent != null && damagePowerComponent != null) {
-                powerUtils.setPowerModifier(entityId,starshipPowerComponent.getPowerModifier() + damagePowerComponent.getPowerModifier());
-            }
-
-            // Check structure.
-            if (starshipStructureComponent.getCurrentStructure() <= 0) {
-                destroyStarship(entityId);
-            }
+            damageStarship(entityId);
         } else {
-            // Destory immediately.
+            // Destroy immediately.
             destroyStarship(entityId);
         }
+    }
+
+    private void onStarshipOverloaded(GameEvent gameEvent) {
+        StarshipOverloadedEvent eventData = (StarshipOverloadedEvent)gameEvent.getEventData();
+        damageStarship(eventData.getEntityId());
     }
 
     private DeckList getDeckList() {
@@ -134,7 +94,59 @@ public class DamageSystem {
         return deckList;
     }
 
+    private void damageStarship(long entityId) {
+        if (godModeEnabled) {
+            return;
+        }
+
+        // Create damage.
+        CardPileComponent cardPileComponent =
+                entityManager.getComponent(damageDeckEntityId, CardPileComponent.class);
+
+        if (cardPileComponent.getCardPile().isEmpty()) {
+            cardPileComponent.getDiscardPile().shuffleInto(cardPileComponent.getCardPile(), random);
+        }
+
+        String damageBlueprintId = cardPileComponent.getCardPile().pop();
+        long damageEntityId = blueprintManager.createEntity(damageBlueprintId);
+        damageEntities.add(damageEntityId);
+
+        // Add damage.
+        AttachmentComponent attachmentComponent = new AttachmentComponent(damageEntityId, entityId);
+        entityManager.addComponent(damageEntityId, attachmentComponent);
+
+        StructureComponent starshipStructureComponent =
+                entityManager.getComponent(entityId, StructureComponent.class);
+        StructureComponent damageStructureComponent =
+                entityManager.getComponent(damageEntityId, StructureComponent.class);
+
+        starshipStructureComponent.setStructureModifier(starshipStructureComponent.getStructureModifier() +
+                damageStructureComponent.getStructureModifier());
+
+        // Notify listeners.
+        StarshipDamagedEvent starshipDamagedEvent =
+                new StarshipDamagedEvent(entityId, damageEntityId, damageBlueprintId);
+        eventManager.queueEvent(EventType.STARSHIP_DAMAGED, starshipDamagedEvent);
+
+        // Update power.
+        PowerComponent starshipPowerComponent = entityManager.getComponent(entityId, PowerComponent.class);
+        PowerComponent damagePowerComponent = entityManager.getComponent(damageEntityId, PowerComponent.class);
+
+        if (starshipPowerComponent != null && damagePowerComponent != null) {
+            powerUtils.setPowerModifier(entityId,starshipPowerComponent.getPowerModifier() + damagePowerComponent.getPowerModifier());
+        }
+
+        // Check structure.
+        if (starshipStructureComponent.getCurrentStructure() <= 0) {
+            destroyStarship(entityId);
+        }
+    }
+
     private void destroyStarship(long entityId) {
+        if (godModeEnabled) {
+            return;
+        }
+
         // Remove all damage.
         CardPileComponent cardPileComponent =
                 entityManager.getComponent(damageDeckEntityId, CardPileComponent.class);
