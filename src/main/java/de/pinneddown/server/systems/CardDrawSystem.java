@@ -1,14 +1,14 @@
 package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
+import de.pinneddown.server.components.CardDrawComponent;
+import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.PlayerComponent;
-import de.pinneddown.server.events.PlayerDrawDeckSizeChangedEvent;
-import de.pinneddown.server.events.PlayerEntityCreatedEvent;
-import de.pinneddown.server.events.PlayerHandChangedEvent;
-import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import de.pinneddown.server.events.*;
 import de.pinneddown.server.util.PlayerUtils;
 import org.springframework.stereotype.Component;
 
+import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -35,6 +35,7 @@ public class CardDrawSystem {
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.PLAYER_ENTITY_CREATED, this::onPlayerEntityCreated);
         this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
+        this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_APPLIED, this::onAbilityEffectApplied);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
@@ -72,6 +73,28 @@ public class CardDrawSystem {
             drawCard(entityId);
         }
     }
+
+    private void onAbilityEffectApplied(GameEvent gameEvent) {
+        AbilityEffectAppliedEvent eventData = (AbilityEffectAppliedEvent)gameEvent.getEventData();
+
+        CardDrawComponent cardDrawComponent =
+                entityManager.getComponent(eventData.getEffectEntityId(), CardDrawComponent.class);
+
+        if (cardDrawComponent == null) {
+            return;
+        }
+
+        OwnerComponent ownerComponent = entityManager.getComponent(eventData.getTargetEntityId(), OwnerComponent.class);
+
+        if (ownerComponent == null) {
+            return;
+        }
+
+        for (int cards = 0; cards < cardDrawComponent.getCards(); ++cards) {
+            drawCard(ownerComponent.getOwner());
+        }
+    }
+
 
     private void drawCard(long playerEntityId) {
         PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
