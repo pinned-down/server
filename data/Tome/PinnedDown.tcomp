@@ -3,10 +3,12 @@
     <Name>AbilitiesComponent</Name>
     <Name>AbilityComponent</Name>
     <Name>AbilityEffectComponent</Name>
+    <Name>CardDrawComponent</Name>
     <Name>DistanceComponent</Name>
     <Name>GameplayTagsComponent</Name>
     <Name>OverloadComponent</Name>
     <Name>PowerComponent</Name>
+    <Name>PowerDifferenceConditionComponent</Name>
     <Name>PowerPerLocationComponent</Name>
     <Name>StructureComponent</Name>
     <Name>ThreatComponent</Name>

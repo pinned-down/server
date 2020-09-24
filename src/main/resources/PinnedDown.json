@@ -1,5 +1,5 @@
 {
-  "hash": "a82f09cd87f9bb38cf7ad9203aedded9",
+  "hash": "c4ff8c9b2d1d3b48a35dcc6fb6a6bcba",
   "records": [
     {
       "id": "Agniar",
@@ -26,6 +26,20 @@
         "GameplayTagsComponent"
       ],
       "parent_id": "Locations"
+    },
+    {
+      "id": "CardDrawIfHigherPower",
+      "attributes": {
+        "AbilityEffectDuration": "Instant",
+        "Cards": "1",
+        "RequiredPowerDifference": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "CardDrawComponent",
+        "PowerDifferenceConditionComponent"
+      ],
+      "parent_id": "AbilityEffects"
     },
     {
       "id": "Defiance",
@@ -356,6 +370,19 @@
       "parent_id": "Locations"
     },
     {
+      "id": "SinglePowerBonus",
+      "attributes": {
+        "AbilityEffectDuration": "EndOfFight",
+        "BasePower": "0",
+        "PowerModifier": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
       "id": "SmallPowerBonus",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
@@ -382,6 +409,36 @@
         "ThreatComponent"
       ],
       "parent_id": "Locations"
+    },
+    {
+      "id": "TargetEliminated",
+      "attributes": {
+        "Abilities": ["TargetEliminatedAbility"],
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Effect"],
+        "Threat": "1"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "TargetEliminatedAbility",
+      "attributes": {
+        "AbilityEffects": ["SinglePowerBonus", "CardDrawIfHigherPower"],
+        "BlockedTags": [],
+        "RequiredTags": ["TurnPhase.Fight"],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Starship"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
     },
     {
       "id": "TekanaPassage",

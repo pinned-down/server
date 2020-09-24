@@ -29,6 +29,11 @@
             <Item Value="Affiliation.BlueWing"/>
         </InitialGameplayTags>
     </Record>
+    <Record Id="CardDrawIfHigherPower" DisplayName="Card Draw If Higher Power" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="Instant"/>
+        <Cards Value="1"/>
+        <RequiredPowerDifference Value="1"/>
+    </Record>
     <Record Id="Damage" DisplayName="Damage">
         <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
@@ -240,6 +245,11 @@
             <Item Value="LocationType.Station"/>
         </GlobalGameplayTags>
     </Record>
+    <Record Id="SinglePowerBonus" DisplayName="Single Power Bonus" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <BasePower Value="0"/>
+        <PowerModifier Value="1"/>
+    </Record>
     <Record Id="SmallPowerBonus" DisplayName="Small Power Bonus" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
         <BasePower Value="0"/>
@@ -251,6 +261,25 @@
             <Item Value="LocationType.Station"/>
         </GlobalGameplayTags>
         <Threat Value="3"/>
+    </Record>
+    <Record Id="TargetEliminated" DisplayName="Target Eliminated" Parent="BlueWing">
+        <Abilities>
+            <Item Value="TargetEliminatedAbility"/>
+        </Abilities>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Effect"/>
+        </InitialGameplayTags>
+        <Threat Value="1"/>
+    </Record>
+    <Record Id="TargetEliminatedAbility" DisplayName="Target Eliminated (Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="SinglePowerBonus"/>
+            <Item Value="CardDrawIfHigherPower"/>
+        </AbilityEffects>
+        <RequiredTags>
+            <Item Value="TurnPhase.Fight"/>
+        </RequiredTags>
     </Record>
     <Record Id="TekanaPassage" DisplayName="Tekana Passage" Parent="Locations">
         <Distance Value="2"/>

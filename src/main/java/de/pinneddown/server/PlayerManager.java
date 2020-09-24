@@ -40,6 +40,7 @@ public class PlayerManager {
         cards.put("Defiance", 4);
         cards.put("EvasionManeuver", 4);
         cards.put("RaiseTheStakes", 4);
+        cards.put("TargetEliminated", 4);
 
         DeckList deckList = new DeckList();
         deckList.setFlagship("TRBArdor");
