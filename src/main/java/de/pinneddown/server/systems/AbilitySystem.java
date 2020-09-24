@@ -124,6 +124,11 @@ public class AbilitySystem {
         for (String effectBlueprintId : abilityComponent.getAbilityEffects()) {
             long effectEntityId = blueprintManager.createEntity(effectBlueprintId);
 
+            // Check conditions.
+            if (!checkPowerDifferenceCondition(effectEntityId, targetEntityId)) {
+                continue;
+            }
+
             // Apply overloads.
             applyOverloads(effectEntityId, targetEntityId);
 
@@ -144,6 +149,33 @@ public class AbilitySystem {
                     new AbilityEffectAppliedEvent(effectEntityId, targetEntityId);
             eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED, abilityEffectAppliedEvent);
         }
+    }
+
+    private boolean checkPowerDifferenceCondition(long effectEntityId, long targetEntityId) {
+        PowerDifferenceConditionComponent powerDifferenceConditionComponent =
+                entityManager.getComponent(effectEntityId, PowerDifferenceConditionComponent.class);
+
+        if (powerDifferenceConditionComponent == null) {
+            return true;
+        }
+
+        AssignmentComponent assignmentComponent = entityManager.getComponent(targetEntityId, AssignmentComponent.class);
+
+        if (assignmentComponent == null) {
+            return false;
+        }
+
+        long assignedTo = assignmentComponent.getAssignedTo();
+
+        PowerComponent targetPowerComponent = entityManager.getComponent(targetEntityId, PowerComponent.class);
+        PowerComponent assignedToPowerComponent = entityManager.getComponent(assignedTo, PowerComponent.class);
+
+        if (targetPowerComponent == null || assignedToPowerComponent == null) {
+            return false;
+        }
+
+        return targetPowerComponent.getCurrentPower() - assignedToPowerComponent.getCurrentPower() >=
+                powerDifferenceConditionComponent.getRequiredPowerDifference();
     }
 
     private void applyPowerBonus(long effectEntityId, long targetEntityId, int powerFactor) {

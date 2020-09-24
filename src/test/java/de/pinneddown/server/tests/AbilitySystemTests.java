@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ public class AbilitySystemTests extends GameSystemTestSuite {
     private static final String EFFECT_BLUEPRINT_ID = "testEffect";
     private static final String POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID = "powerPerLocationEffect";
     private static final String OVERLOAD_EFFECT_BLUEPRINT_ID = "overloadEffect";
+    private static final String POWER_DIFFERENCE_CONDITION_EFFECT_BLUEPRINT_ID = "powerDifferenceConditionEffect";
 
     private boolean overloaded;
 
@@ -161,6 +163,65 @@ public class AbilitySystemTests extends GameSystemTestSuite {
     }
 
     @Test
+    void applyEffectIfPowerDifferenceConditionFulfilled() {
+        int powerModifier = applyEffectWithPowerDifferenceConditionAndReturnPowerModifier(2, 1);
+
+        // ASSERT
+        assertThat(powerModifier).isGreaterThan(0);
+    }
+
+    @Test
+    void doesNotApplyEffectIfPowerDifferenceConditionNotFulfilled() {
+        int powerModifier = applyEffectWithPowerDifferenceConditionAndReturnPowerModifier(1, 2);
+
+        // ASSERT
+        assertThat(powerModifier).isZero();
+    }
+
+    int applyEffectWithPowerDifferenceConditionAndReturnPowerModifier(int targetPower, int assignedToPower) {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager, POWER_DIFFERENCE_CONDITION_EFFECT_BLUEPRINT_ID);
+
+        // Setup card with ability.
+        long entityId = entityManager.createEntity();
+
+        ArrayList<String> abilities = new ArrayList<>();
+        abilities.add(ABILITY_BLUEPRINT_ID);
+
+        AbilitiesComponent abilitiesComponent = new AbilitiesComponent();
+        abilitiesComponent.setAbilities(abilities);
+
+        entityManager.addComponent(entityId, abilitiesComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+
+        PowerComponent powerComponent = new PowerComponent();
+        powerComponent.setBasePower(targetPower);
+        entityManager.addComponent(targetEntityId, powerComponent);
+
+        // Create assigned starship.
+        long assignedTo = entityManager.createEntity();
+
+        PowerComponent assignedToPowerComponent = new PowerComponent();
+        assignedToPowerComponent.setBasePower(assignedToPower);
+        entityManager.addComponent(assignedTo, assignedToPowerComponent);
+
+        AssignmentComponent assignmentComponent = new AssignmentComponent();
+        assignmentComponent.setAssignedTo(assignedTo);
+        entityManager.addComponent(targetEntityId, assignmentComponent);
+
+        // ACT
+        eventManager.queueEvent(ActionType.ACTIVATE_ABILITY,
+                new ActivateAbilityAction(entityId, 0, targetEntityId));
+
+        return powerComponent.getPowerModifier();
+    }
+
+    @Test
     void activatesPassiveAbilities() {
         // ARRANGE
         EventManager eventManager = new EventManager();
@@ -214,6 +275,12 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         overloadEffectBlueprint.getComponents().add(OverloadComponent.class.getSimpleName());
         overloadEffectBlueprint.getAttributes().put("Overloads", 1);
 
+        Blueprint powerDifferenceConditionEffect = new Blueprint();
+        powerDifferenceConditionEffect.getComponents().add(PowerDifferenceConditionComponent.class.getSimpleName());
+        powerDifferenceConditionEffect.getAttributes().put("RequiredPowerDifference", 1);
+        powerDifferenceConditionEffect.getComponents().add(PowerComponent.class.getSimpleName());
+        powerDifferenceConditionEffect.getAttributes().put("PowerModifier", 1);
+
         // Create ability.
         ArrayList<String> effects = new ArrayList<>();
         effects.add(effect);
@@ -236,6 +303,7 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         when(blueprints.getBlueprint(EFFECT_BLUEPRINT_ID)).thenReturn(effectBlueprint);
         when(blueprints.getBlueprint(POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID)).thenReturn(powerPerLocationEffectBlueprint);
         when(blueprints.getBlueprint(OVERLOAD_EFFECT_BLUEPRINT_ID)).thenReturn(overloadEffectBlueprint);
+        when(blueprints.getBlueprint(POWER_DIFFERENCE_CONDITION_EFFECT_BLUEPRINT_ID)).thenReturn(powerDifferenceConditionEffect);
 
         BlueprintManager blueprintManager = new BlueprintManager(entityManager);
         blueprintManager.setBlueprints(blueprints);
