@@ -1,5 +1,5 @@
 {
-  "hash": "c4ff8c9b2d1d3b48a35dcc6fb6a6bcba",
+  "hash": "58eabb12e3a12d4b108b1c2bd9f09b7d",
   "records": [
     {
       "id": "Agniar",
@@ -498,6 +498,55 @@
       "components": [
         "AbilityEffectComponent",
         "PowerPerLocationComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "TRBFaith",
+      "attributes": {
+        "Abilities": ["TRBFaithThreatReductionAbility"],
+        "BasePower": "8",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "Keyword.Flagship", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "TRBFaithThreatReductionAbility",
+      "attributes": {
+        "AbilityEffects": ["TRBFaithThreatReductionEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Passive"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "TRBFaithThreatReductionEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "ThreatModifiers": {
+            "EvasionManeuver": "-1",
+            "FireAtWill": "-1"
+        }
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "ThreatModifierComponent"
       ],
       "parent_id": "AbilityEffects"
     },

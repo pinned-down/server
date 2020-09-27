@@ -23,7 +23,7 @@
             <Item Value="Keyword.Detector"/>
         </GlobalGameplayTags>
     </Record>
-    <Record Id="BlueWing" DisplayName="Blue Wing">
+    <Record Id="BlueWing" DisplayName="Blue Wing" Parent="Cards">
         <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.BlueWing"/>
@@ -34,7 +34,8 @@
         <Cards Value="1"/>
         <RequiredPowerDifference Value="1"/>
     </Record>
-    <Record Id="Damage" DisplayName="Damage">
+    <Record Id="Cards" DisplayName="Cards"/>
+    <Record Id="Damage" DisplayName="Damage" Parent="Cards">
         <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="CardType.Damage"/>
@@ -81,7 +82,7 @@
         <PowerModifier Value="-1"/>
         <StructureModifier Value="-35"/>
     </Record>
-    <Record Id="Dra'tar" DisplayName="Dra'tar">
+    <Record Id="Dra'tar" DisplayName="Dra'tar" Parent="Cards">
         <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
             <Item Value="Affiliation.DraTar"/>
@@ -187,7 +188,7 @@
         <BasePower Value="0"/>
         <PowerModifier Value="4"/>
     </Record>
-    <Record Id="Locations" DisplayName="Locations">
+    <Record Id="Locations" DisplayName="Locations" Parent="Cards">
         <Distance Value="1"/>
         <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>
@@ -315,6 +316,32 @@
     </Record>
     <Record Id="TRBArdorDamageBonusEffect" DisplayName="TRB Ardor (Damage Bonus Effect)" Parent="AbilityEffects">
         <PowerPerLocation Value="1"/>
+    </Record>
+    <Record Id="TRBFaith" DisplayName="TRB Faith" Parent="BlueWing">
+        <Abilities>
+            <Item Value="TRBFaithThreatReductionAbility"/>
+        </Abilities>
+        <BasePower Value="8"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="Keyword.Flagship"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+    </Record>
+    <Record Id="TRBFaithThreatReductionAbility" DisplayName="TRB Faith (Threat Reduction Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="TRBFaithThreatReductionEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Passive"/>
+    </Record>
+    <Record Id="TRBFaithThreatReductionEffect" DisplayName="TRB Faith (Threat Reduction Effect)" Parent="AbilityEffects">
+        <ThreatModifiers>
+            <Item Key="EvasionManeuver" Value="-1"/>
+            <Item Key="FireAtWill" Value="-1"/>
+        </ThreatModifiers>
     </Record>
     <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
         <Distance Value="3"/>

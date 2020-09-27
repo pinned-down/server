@@ -20,5 +20,6 @@
     <Field Id="TargetRequiredTags" DisplayName="Target Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent" DefaultValue=""/>
     <Field Id="TargetType" DisplayName="Target Type" Description="" Type="TargetType" Component="AbilityComponent" DefaultValue="Starship"/>
     <Field Id="Threat" DisplayName="Threat" Description="" Type="Integer" Component="ThreatComponent" DefaultValue="0"/>
+    <Field Id="ThreatModifiers" DisplayName="Threat Modifiers" Description="" Type="ThreatModifiers" Component="ThreatModifierComponent"/>
     <Field Id="Upkeep" DisplayName="Upkeep" Description="" Type="Integer" Component="UpkeepComponent" DefaultValue="1"/>
 </Fields>

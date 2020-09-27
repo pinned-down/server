@@ -4,7 +4,9 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.PlayEffectAction;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.components.ThreatComponent;
+import de.pinneddown.server.components.ThreatModifierComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
+import de.pinneddown.server.events.ThreatModifiersChangedEvent;
 import de.pinneddown.server.events.ThreatPoolInitializedEvent;
 import de.pinneddown.server.systems.PlayEffectSystem;
 import de.pinneddown.server.util.GameplayTagUtils;
@@ -12,12 +14,15 @@ import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class PlayEffectSystemTests extends GameSystemTestSuite {
     private static final String EFFECT_CARD_BLUEPRINT_ID = "testEffectCard";
+    private static final int EFFECT_CARD_THREAT = 2;
 
     @Test
     void removesCardFromHand() {
@@ -74,10 +79,47 @@ public class PlayEffectSystemTests extends GameSystemTestSuite {
         assertThat(newThreat).isGreaterThan(oldThreat);
     }
 
+    @Test
+    void considersThreatModifiers() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager);
+
+        long threatPoolEntityId = setupThreatPool(entityManager, eventManager);
+
+        // Setup player.
+        String playerId = "player";
+        setupPlayer(entityManager, eventManager, playerId, EFFECT_CARD_BLUEPRINT_ID);
+
+        // Setup target.
+        long targetEntityId = createTarget(entityManager);
+
+        // Check threat.
+        ThreatComponent threatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
+        int oldThreat = threatComponent.getThreat();
+
+        // Add threat modifiers.
+        int threatModifier = -1;
+
+        HashMap<String, Integer> threatModifiers = new HashMap<>();
+        threatModifiers.put(EFFECT_CARD_BLUEPRINT_ID, threatModifier);
+
+        eventManager.queueEvent(EventType.THREAT_MODIFIERS_CHANGED, new ThreatModifiersChangedEvent(threatModifiers));
+
+        // ACT
+        playEffect(eventManager, playerId, EFFECT_CARD_BLUEPRINT_ID, targetEntityId);
+
+        // ASSERT
+        int newThreat = threatComponent.getThreat();
+        assertThat(newThreat).isEqualTo(oldThreat + EFFECT_CARD_THREAT + threatModifier);
+    }
+
     private BlueprintManager createBlueprintManager(EntityManager entityManager) {
         Blueprint effectCardBlueprint = new Blueprint();
         effectCardBlueprint.getComponents().add(ThreatComponent.class.getSimpleName());
-        effectCardBlueprint.getAttributes().put("Threat", 1);
+        effectCardBlueprint.getAttributes().put("Threat", EFFECT_CARD_THREAT);
 
         // Create blueprint manager.
         BlueprintSet blueprints = mock(BlueprintSet.class);

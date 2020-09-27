@@ -45,6 +45,7 @@ public class PlayerController extends WebSocketController {
         eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.PLAYER_DRAW_DECK_SIZE_CHANGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.PLAYER_DISCARD_PILE_CHANGED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.THREAT_MODIFIERS_CHANGED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

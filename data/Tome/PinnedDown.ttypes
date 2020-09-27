@@ -20,6 +20,14 @@
             <ConstrainingFacet Key="RequiredAncestor" Value="Abilities"/>
         </ConstrainingFacets>
     </Type>
+    <Type Name="CardReference">
+        <FundamentalFacets>
+            <FundamentalFacet Key="BaseType" Value="Reference"/>
+        </FundamentalFacets>
+        <ConstrainingFacets>
+            <ConstrainingFacet Key="RequiredAncestor" Value="Cards"/>
+        </ConstrainingFacets>
+    </Type>
     <Type Name="EffectList">
         <FundamentalFacets>
             <FundamentalFacet Key="ItemType" Value="EffectReference"/>
@@ -49,6 +57,13 @@
     <Type Name="TargetType">
         <FundamentalFacets>
             <FundamentalFacet Key="Enumeration" Value="Passive;Starship"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
+    <Type Name="ThreatModifiers">
+        <FundamentalFacets>
+            <FundamentalFacet Key="KeyType" Value="CardReference"/>
+            <FundamentalFacet Key="ValueType" Value="Integer"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

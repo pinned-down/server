@@ -77,12 +77,8 @@ public class PlayerUtils {
         long entityId = blueprintManager.createEntity(card);
 
         // Increase threat.
-        ThreatComponent cardThreatComponent = entityManager.getComponent(entityId, ThreatComponent.class);
-
-        if (cardThreatComponent != null) {
-            int newThreat = threatUtils.getThreat() + cardThreatComponent.getThreat();
-            threatUtils.setThreat(newThreat);
-        }
+        int threat = threatUtils.getThreat(entityId);
+        threatUtils.addThreat(threat);
 
         // Notify listeners.
         CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, card, playerEntityId);

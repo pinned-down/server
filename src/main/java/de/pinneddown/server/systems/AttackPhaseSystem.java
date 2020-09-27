@@ -87,8 +87,7 @@ public class AttackPhaseSystem {
         CardPileComponent attackDeck = entityManager.getComponent(attackDeckEntityId, CardPileComponent.class);
         boolean threatExhausted = false;
 
-        while (!(attackDeck.getCardPile().isEmpty() && attackDeck.getDiscardPile().isEmpty()) &&
-                !threatExhausted) {
+        while (!(attackDeck.getCardPile().isEmpty() && attackDeck.getDiscardPile().isEmpty())) {
             // Check if any cards left.
             if (attackDeck.getCardPile().isEmpty()) {
                 // Shuffle discard pile into deck.
@@ -100,12 +99,10 @@ public class AttackPhaseSystem {
             long entityId = blueprintManager.createEntity(cardBlueprintId);
             enemyStarships.add(entityId);
 
-            ThreatComponent cardThreatComponent = entityManager.getComponent(entityId, ThreatComponent.class);
+            int cardThreat = threatUtils.getThreat(entityId);
 
-            if (cardThreatComponent.getThreat() > newThreat) {
-                threatExhausted = true;
-
-                // Discard excess card.
+            if (cardThreat > newThreat) {
+                // Threat exhausted. Discard excess card.
                 attackDeck.getDiscardPile().push(cardBlueprintId);
                 break;
             }
@@ -114,7 +111,7 @@ public class AttackPhaseSystem {
             CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, cardBlueprintId, 0L);
             eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
-            newThreat -= cardThreatComponent.getThreat();
+            newThreat -= cardThreat;
         }
 
         // Set resulting threat.

@@ -12,5 +12,6 @@
     <Name>PowerPerLocationComponent</Name>
     <Name>StructureComponent</Name>
     <Name>ThreatComponent</Name>
+    <Name>ThreatModifierComponent</Name>
     <Name>UpkeepComponent</Name>
 </Components>
