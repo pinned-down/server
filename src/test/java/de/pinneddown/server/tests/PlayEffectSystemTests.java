@@ -92,12 +92,13 @@ public class PlayEffectSystemTests extends GameSystemTestSuite {
 
     private PlayEffectSystem createSystem(EntityManager entityManager, EventManager eventManager) {
         BlueprintManager blueprintManager = createBlueprintManager(entityManager);
-        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
+
         GameplayTagUtils gameplayTagUtils = new GameplayTagUtils(eventManager, entityManager);
 
         PlayEffectSystem system = new PlayEffectSystem(eventManager, entityManager, blueprintManager, playerUtils,
-                threatUtils, gameplayTagUtils);
+                gameplayTagUtils);
 
         eventManager.queueEvent(EventType.READY_TO_START, null);
 

@@ -9,6 +9,7 @@ import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.CardDrawSystem;
 import de.pinneddown.server.util.PlayerUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CardDrawSystemTests {
+public class CardDrawSystemTests extends GameSystemTestSuite {
     @Test
     void playersDrawInitialCards() {
         // ARRANGE
@@ -112,8 +113,10 @@ public class CardDrawSystemTests {
 
     private CardDrawSystem createSystem(EventManager eventManager, EntityManager entityManager) {
         PlayerManager playerManager = new PlayerManager();
+        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, null);
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
         Random random = new Random();
-        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
 
         CardDrawSystem system = new CardDrawSystem(eventManager, entityManager, playerManager, random, playerUtils);
 

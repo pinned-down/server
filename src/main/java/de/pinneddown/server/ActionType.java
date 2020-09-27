@@ -7,5 +7,6 @@ public enum ActionType {
     RESOLVE_FIGHT,
     GOD_CHEAT,
     PLAY_EFFECT,
-    ACTIVATE_ABILITY
+    ACTIVATE_ABILITY,
+    PLAY_STARSHIP
 }

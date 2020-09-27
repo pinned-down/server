@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 @Component
 public class EntityManager {
+    public static final long INVALID_ENTITY = -1;
+
     private EventManager eventManager;
     private HashMap<Class<? extends EntityComponent>, ComponentManager> componentManagers;
     private long nextEntityId;

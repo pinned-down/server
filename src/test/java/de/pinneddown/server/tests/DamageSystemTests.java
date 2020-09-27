@@ -9,6 +9,7 @@ import de.pinneddown.server.events.StarshipOverloadedEvent;
 import de.pinneddown.server.systems.DamageSystem;
 import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.PowerUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -194,7 +195,9 @@ public class DamageSystemTests extends GameSystemTestSuite {
         BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, damageBlueprint);
 
         Random random = new Random();
-        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager);
+
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
         PowerUtils powerUtils = new PowerUtils(eventManager, entityManager);
 
         return new DamageSystem(eventManager, entityManager, blueprintManager, random, playerUtils, powerUtils);

@@ -4,11 +4,13 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.EndMainPhaseAction;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.systems.MainPhaseSystem;
+import de.pinneddown.server.util.PlayerUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MainPhaseSystemTests {
+public class MainPhaseSystemTests extends GameSystemTestSuite {
     private boolean mainPhaseEnded;
 
     @Test
@@ -17,10 +19,13 @@ public class MainPhaseSystemTests {
         // Set up system.
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
+        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, null);
         PlayerManager playerManager = new PlayerManager();
         PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
+        PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
 
-        MainPhaseSystem system = new MainPhaseSystem(eventManager, entityManager, playerReadyManager);
+        MainPhaseSystem system = new MainPhaseSystem(eventManager, entityManager, playerReadyManager, playerUtils);
 
         // Add single player.
         String playerId = "PlayerA";
