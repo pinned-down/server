@@ -343,6 +343,28 @@
             <Item Key="FireAtWill" Value="-1"/>
         </ThreatModifiers>
     </Record>
+    <Record Id="TRBJustice" DisplayName="TRB Justice" Parent="BlueWing">
+        <Abilities>
+            <Item Value="TRBJusticeDamageBonusAbility"/>
+        </Abilities>
+        <BasePower Value="9"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+    </Record>
+    <Record Id="TRBJusticeDamageBonusAbility" DisplayName="TRB Justice (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="TRBJusticeDamageBonusEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Passive"/>
+    </Record>
+    <Record Id="TRBJusticeDamageBonusEffect" DisplayName="TRB Justice (Damage Bonus Effect)" Parent="AbilityEffects">
+        <PowerPerThreat Value="1"/>
+    </Record>
     <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
         <Distance Value="3"/>
         <GlobalGameplayTags>

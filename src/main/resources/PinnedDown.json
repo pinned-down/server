@@ -1,5 +1,5 @@
 {
-  "hash": "58eabb12e3a12d4b108b1c2bd9f09b7d",
+  "hash": "f58001eb9eed71ba6821486e5dab4664",
   "records": [
     {
       "id": "Agniar",
@@ -547,6 +547,52 @@
       "components": [
         "AbilityEffectComponent",
         "ThreatModifierComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "TRBJustice",
+      "attributes": {
+        "Abilities": ["TRBJusticeDamageBonusAbility"],
+        "BasePower": "9",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "TRBJusticeDamageBonusAbility",
+      "attributes": {
+        "AbilityEffects": ["TRBJusticeDamageBonusEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Passive"
+      },
+      "components": [
+        "AbilityComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "TRBJusticeDamageBonusEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "PowerPerThreat": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerPerAssignedThreatComponent"
       ],
       "parent_id": "AbilityEffects"
     },

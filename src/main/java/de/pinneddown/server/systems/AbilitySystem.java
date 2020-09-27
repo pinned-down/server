@@ -20,6 +20,7 @@ public class AbilitySystem {
     private int totalLocations;
 
     private HashSet<Long> powerPerLocationEffects;
+    private HashSet<Long> powerPerAssignedThreatEffects;
 
     public AbilitySystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
                          PowerUtils powerUtils) {
@@ -34,12 +35,14 @@ public class AbilitySystem {
         this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
         this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_REMOVED, this::onAbilityEffectRemoved);
         this.eventManager.addEventHandler(EventType.CURRENT_LOCATION_CHANGED, this::onCurrentLocationChanged);
+        this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
         totalLocations = 0;
 
         powerPerLocationEffects = new HashSet<>();
+        powerPerAssignedThreatEffects = new HashSet<>();
     }
 
     private void onActivateAbility(GameEvent gameEvent) {
@@ -83,8 +86,10 @@ public class AbilitySystem {
         // Remove power bonus.
         applyPowerBonus(eventData.getEffectEntityId(), eventData.getTargetEntityId(), -1);
         applyPowerPerLocationBonus(eventData.getEffectEntityId(), eventData.getTargetEntityId(), 0);
+        applyPowerPerAssignedThreat(eventData.getEffectEntityId(), eventData.getTargetEntityId(), 0);
 
         powerPerLocationEffects.remove(eventData.getEffectEntityId());
+        powerPerAssignedThreatEffects.remove(eventData.getEffectEntityId());
     }
 
     private void onCardRemoved(GameEvent gameEvent) {
@@ -117,6 +122,16 @@ public class AbilitySystem {
         }
     }
 
+    private void onStarshipAssigned(GameEvent gameEvent) {
+        StarshipAssignedEvent eventData = (StarshipAssignedEvent)gameEvent.getEventData();
+
+        // Update effects.
+        for (long entityId : powerPerAssignedThreatEffects) {
+            AbilityEffectComponent abilityEffectComponent = entityManager.getComponent(entityId, AbilityEffectComponent.class);
+            applyPowerPerAssignedThreat(entityId, abilityEffectComponent.getTargetEntityId(), 1);
+        }
+    }
+
     private void activateAbility(long abilityEntityId, long targetEntityId) {
         AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
 
@@ -135,6 +150,7 @@ public class AbilitySystem {
             // Apply power bonus.
             applyPowerBonus(effectEntityId, targetEntityId, 1);
             applyPowerPerLocationBonus(effectEntityId, targetEntityId, 1);
+            applyPowerPerAssignedThreat(effectEntityId, targetEntityId, 1);
 
             // Store target.
             AbilityEffectComponent abilityEffectComponent =
@@ -206,6 +222,33 @@ public class AbilitySystem {
 
             powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
         }
+    }
+
+    private void applyPowerPerAssignedThreat(long effectEntityId, long targetEntityId, int factor) {
+        powerPerAssignedThreatEffects.add(effectEntityId);
+
+        PowerPerAssignedThreatComponent powerPerAssignedThreatComponent =
+                entityManager.getComponent(effectEntityId, PowerPerAssignedThreatComponent.class);
+        PowerComponent targetPowerComponent = entityManager.getComponent(targetEntityId, PowerComponent.class);
+
+        if (powerPerAssignedThreatComponent == null || targetPowerComponent == null) {
+            return;
+        }
+
+        AssignmentComponent assignmentComponent = entityManager.getComponent(targetEntityId, AssignmentComponent.class);
+        ThreatComponent threatComponent = assignmentComponent != null
+                ? entityManager.getComponent(assignmentComponent.getAssignedTo(), ThreatComponent.class)
+                : null;
+        int threat = threatComponent != null ? threatComponent.getThreat() : 0;
+
+        int oldPowerModifier = targetPowerComponent.getPowerModifier();
+        int newPowerModifier = oldPowerModifier
+                - powerPerAssignedThreatComponent.getAppliedPowerPerThreat()
+                + (threat * factor);
+
+        powerPerAssignedThreatComponent.setAppliedPowerPerThreat(threat * factor);
+
+        powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
     }
 
     private void applyOverloads(long effectEntityId, long targetEntityId) {

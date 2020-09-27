@@ -5,6 +5,7 @@ import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectRemovedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.StarshipAssignedEvent;
 import de.pinneddown.server.systems.AbilitySystem;
 import de.pinneddown.server.util.PowerUtils;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ public class AbilitySystemTests extends GameSystemTestSuite {
     private static final String PASSIVE_ABILITY_BLUEPRINT_ID = "testPassiveAbility";
     private static final String EFFECT_BLUEPRINT_ID = "testEffect";
     private static final String POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID = "powerPerLocationEffect";
+    private static final String POWER_PER_ASSIGNED_THREAT_EFFECT_BLUEPRINT_ID = "powerPerAssignedThreatEffect";
     private static final String OVERLOAD_EFFECT_BLUEPRINT_ID = "overloadEffect";
     private static final String POWER_DIFFERENCE_CONDITION_EFFECT_BLUEPRINT_ID = "powerDifferenceConditionEffect";
 
@@ -92,6 +94,52 @@ public class AbilitySystemTests extends GameSystemTestSuite {
 
         // ASSERT
         assertThat(powerComponent.getPowerModifier()).isGreaterThan(0);
+    }
+
+    @Test
+    void appliesPowerPerAssignedThreatEffect() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager, POWER_PER_ASSIGNED_THREAT_EFFECT_BLUEPRINT_ID);
+
+        // Setup card with ability.
+        long entityId = entityManager.createEntity();
+
+        ArrayList<String> abilities = new ArrayList<>();
+        abilities.add(ABILITY_BLUEPRINT_ID);
+
+        AbilitiesComponent abilitiesComponent = new AbilitiesComponent();
+        abilitiesComponent.setAbilities(abilities);
+
+        entityManager.addComponent(entityId, abilitiesComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+
+        PowerComponent powerComponent = new PowerComponent();
+        entityManager.addComponent(targetEntityId, powerComponent);
+
+        // Create assigned starship.
+        long assignedTo = entityManager.createEntity();
+
+        ThreatComponent threatComponent = new ThreatComponent();
+        threatComponent.setThreat(2);
+        entityManager.addComponent(assignedTo, threatComponent);
+
+        AssignmentComponent assignmentComponent = new AssignmentComponent();
+        assignmentComponent.setAssignedTo(assignedTo);
+        entityManager.addComponent(targetEntityId, assignmentComponent);
+
+        eventManager.queueEvent(EventType.STARSHIP_ASSIGNED, new StarshipAssignedEvent(targetEntityId, assignedTo));
+
+        // ACT
+        eventManager.queueEvent(ActionType.ACTIVATE_ABILITY,
+                new ActivateAbilityAction(entityId, 0, targetEntityId));
+
+        // ASSERT
+        assertThat(powerComponent.getPowerModifier()).isEqualTo(threatComponent.getThreat());
     }
 
     @Test
@@ -271,6 +319,10 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         powerPerLocationEffectBlueprint.getComponents().add(PowerPerLocationComponent.class.getSimpleName());
         powerPerLocationEffectBlueprint.getAttributes().put("PowerPerLocation", 1);
 
+        Blueprint powerPerAssignedThreatEffectBlueprint = new Blueprint();
+        powerPerAssignedThreatEffectBlueprint.getComponents().add(PowerPerAssignedThreatComponent.class.getSimpleName());
+        powerPerAssignedThreatEffectBlueprint.getAttributes().put("PowerPerThreat", 1);
+
         Blueprint overloadEffectBlueprint = new Blueprint();
         overloadEffectBlueprint.getComponents().add(OverloadComponent.class.getSimpleName());
         overloadEffectBlueprint.getAttributes().put("Overloads", 1);
@@ -302,6 +354,7 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         when(blueprints.getBlueprint(PASSIVE_ABILITY_BLUEPRINT_ID)).thenReturn(passiveAbilityBlueprint);
         when(blueprints.getBlueprint(EFFECT_BLUEPRINT_ID)).thenReturn(effectBlueprint);
         when(blueprints.getBlueprint(POWER_PER_LOCATION_EFFECT_BLUEPRINT_ID)).thenReturn(powerPerLocationEffectBlueprint);
+        when(blueprints.getBlueprint(POWER_PER_ASSIGNED_THREAT_EFFECT_BLUEPRINT_ID)).thenReturn(powerPerAssignedThreatEffectBlueprint);
         when(blueprints.getBlueprint(OVERLOAD_EFFECT_BLUEPRINT_ID)).thenReturn(overloadEffectBlueprint);
         when(blueprints.getBlueprint(POWER_DIFFERENCE_CONDITION_EFFECT_BLUEPRINT_ID)).thenReturn(powerDifferenceConditionEffect);
 

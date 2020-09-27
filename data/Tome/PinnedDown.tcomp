@@ -9,6 +9,7 @@
     <Name>OverloadComponent</Name>
     <Name>PowerComponent</Name>
     <Name>PowerDifferenceConditionComponent</Name>
+    <Name>PowerPerAssignedThreatComponent</Name>
     <Name>PowerPerLocationComponent</Name>
     <Name>StructureComponent</Name>
     <Name>ThreatComponent</Name>

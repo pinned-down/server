@@ -13,6 +13,7 @@
     <Field Id="Overloads" DisplayName="Overloads" Description="" Type="Integer" Component="OverloadComponent" DefaultValue="1"/>
     <Field Id="PowerModifier" DisplayName="Power Modifier" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
     <Field Id="PowerPerLocation" DisplayName="Power Per Location" Description="" Type="Integer" Component="PowerPerLocationComponent" DefaultValue="0"/>
+    <Field Id="PowerPerThreat" DisplayName="Power Per Threat" Description="" Type="Integer" Component="PowerPerAssignedThreatComponent" DefaultValue="0"/>
     <Field Id="RequiredPowerDifference" DisplayName="Required Power Difference" Description="" Type="Integer" Component="PowerDifferenceConditionComponent" DefaultValue="1"/>
     <Field Id="RequiredTags" DisplayName="Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent" DefaultValue=""/>
     <Field Id="StructureModifier" DisplayName="StructureModifier" Description="" Type="Integer" Component="StructureComponent" DefaultValue="0"/>
