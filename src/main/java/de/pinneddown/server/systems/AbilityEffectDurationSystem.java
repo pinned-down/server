@@ -61,18 +61,8 @@ public class AbilityEffectDurationSystem {
 
         if (eventData.getTurnPhase() == TurnPhase.JUMP) {
             for (long effectEntityId : effectsExpiringAtEndOfFight) {
-                entityManager.removeEntity(effectEntityId);
-
-                // Notify listeners.
-                AbilityEffectComponent abilityEffectComponent =
-                        entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
-
-                AbilityEffectRemovedEvent abilityEffectRemovedEvent =
-                        new AbilityEffectRemovedEvent(effectEntityId, abilityEffectComponent.getTargetEntityId());
-                eventManager.queueEvent(EventType.ABILITY_EFFECT_REMOVED, abilityEffectRemovedEvent);
+                removeEffect(effectEntityId);
             }
-
-            effectsExpiringAtEndOfFight.clear();
         }
     }
 
@@ -80,22 +70,26 @@ public class AbilityEffectDurationSystem {
         CardRemovedEvent eventData = (CardRemovedEvent)gameEvent.getEventData();
 
         // Remove indefinite effects.
-        ArrayList<Long> expiredEffects = new ArrayList<>();
-
         for (long effectEntityId : effectEntities) {
             AbilityEffectComponent abilityEffectComponent =
                     entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
 
             if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE &&
                 abilityEffectComponent.getTargetEntityId() == eventData.getEntityId()) {
-                expiredEffects.add(effectEntityId);
+                removeEffect(effectEntityId);
             }
         }
+    }
 
-        for (long effectEntityId : expiredEffects) {
-            entityManager.removeEntity(effectEntityId);
+    private void removeEffect(long effectEntityId) {
+        entityManager.removeEntity(effectEntityId);
 
-            effectEntities.remove(effectEntityId);
-        }
+        // Notify listeners.
+        AbilityEffectComponent abilityEffectComponent =
+                entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
+
+        AbilityEffectRemovedEvent abilityEffectRemovedEvent =
+                new AbilityEffectRemovedEvent(effectEntityId, abilityEffectComponent.getTargetEntityId());
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_REMOVED, abilityEffectRemovedEvent);
     }
 }
