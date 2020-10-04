@@ -1,13 +1,12 @@
 package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
-import de.pinneddown.server.components.AbilityEffectComponent;
-import de.pinneddown.server.components.AssignmentComponent;
-import de.pinneddown.server.components.PowerComponent;
-import de.pinneddown.server.components.PowerDifferenceConditionComponent;
+import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.GameplayTagUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,17 +14,21 @@ import java.util.Map;
 public class AbilityEffectConditionSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
+    private GameplayTagUtils gameplayTagUtils;
 
     private HashMap<Long, Long> indefiniteEffects;
 
-    public AbilityEffectConditionSystem(EventManager eventManager, EntityManager entityManager) {
+    public AbilityEffectConditionSystem(EventManager eventManager, EntityManager entityManager,
+                                        GameplayTagUtils gameplayTagUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
+        this.gameplayTagUtils = gameplayTagUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_APPLIED, this::onAbilityEffectApplied);
         this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
         this.eventManager.addEventHandler(EventType.STARSHIP_POWER_CHANGED, this::onStarshipPowerChanged);
+        this.eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::onGlobalGameplayTagsChanged);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
@@ -54,6 +57,12 @@ public class AbilityEffectConditionSystem {
     private void onStarshipPowerChanged(GameEvent gameEvent) {
         StarshipPowerChangedEvent eventData = (StarshipPowerChangedEvent)gameEvent.getEventData();
         checkConditionsAndApplyEffect(eventData.getEntityId());
+    }
+
+    private void onGlobalGameplayTagsChanged(GameEvent gameEvent) {
+        for (Map.Entry<Long, Long> indefiniteEffect : indefiniteEffects.entrySet()) {
+            checkConditionsAndApplyEffect(indefiniteEffect.getKey(), indefiniteEffect.getValue());
+        }
     }
 
     private void checkConditionsAndApplyEffect(long effectEntityId) {
@@ -93,6 +102,10 @@ public class AbilityEffectConditionSystem {
             return false;
         }
 
+        if (!checkTargetGameplayTagsCondition(effectEntityId, targetEntityId)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -121,5 +134,19 @@ public class AbilityEffectConditionSystem {
 
         return targetPowerComponent.getCurrentPower() - assignedToPowerComponent.getCurrentPower() >=
                 powerDifferenceConditionComponent.getRequiredPowerDifference();
+    }
+
+    private boolean checkTargetGameplayTagsCondition(long effectEntityId, long targetEntityId) {
+        TargetGameplayTagsConditionComponent targetGameplayTagsConditionComponent =
+                entityManager.getComponent(effectEntityId, TargetGameplayTagsConditionComponent.class);
+
+        if (targetGameplayTagsConditionComponent == null) {
+            return true;
+        }
+
+        return gameplayTagUtils.matchesTagRequirements(
+                targetEntityId,
+                targetGameplayTagsConditionComponent.getTargetRequiredTags(),
+                targetGameplayTagsConditionComponent.getTargetBlockedTags());
     }
 }

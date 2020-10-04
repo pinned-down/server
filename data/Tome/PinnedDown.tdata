@@ -4,8 +4,8 @@
         <AbilityEffects Value=""/>
         <BlockedTags Value=""/>
         <RequiredTags Value=""/>
-        <TargetBlockedTags Value=""/>
-        <TargetRequiredTags Value=""/>
+        <TargetBlockedTags/>
+        <TargetRequiredTags/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="AbilityEffects" DisplayName="Ability Effects">
@@ -144,7 +144,6 @@
         <TargetBlockedTags>
             <Item Value="Affiliation.BlueWing"/>
         </TargetBlockedTags>
-        <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="FireAtWillImprovedAbility" DisplayName="Fire At Will (Improved Ability)" Parent="Abilities">
@@ -155,7 +154,6 @@
         <RequiredTags>
             <Item Value="TurnPhase.Fight"/>
         </RequiredTags>
-        <TargetBlockedTags Value=""/>
         <TargetRequiredTags>
             <Item Value="Affiliation.BlueWing"/>
         </TargetRequiredTags>
@@ -306,8 +304,6 @@
         </AbilityEffects>
         <BlockedTags Value=""/>
         <RequiredTags Value=""/>
-        <TargetBlockedTags Value=""/>
-        <TargetRequiredTags Value=""/>
         <TargetType Value="Passive"/>
     </Record>
     <Record Id="TRBArdorDamageBonusEffect" DisplayName="TRB Ardor (Damage Bonus Effect)" Parent="AbilityEffects">
@@ -360,6 +356,32 @@
     </Record>
     <Record Id="TRBJusticeDamageBonusEffect" DisplayName="TRB Justice (Damage Bonus Effect)" Parent="AbilityEffects">
         <PowerPerThreat Value="1"/>
+    </Record>
+    <Record Id="TRBTruth" DisplayName="TRB Truth" Parent="BlueWing">
+        <Abilities>
+            <Item Value="TRBTruthDamageBonusAbility"/>
+        </Abilities>
+        <BasePower Value="7"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+    </Record>
+    <Record Id="TRBTruthDamageBonusAbility" DisplayName="TRB Truth (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="TRBTruthDamageBonusEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Passive"/>
+    </Record>
+    <Record Id="TRBTruthDamageBonusEffect" DisplayName="TRB Truth (Damage Bonus Effect)" Parent="AbilityEffects">
+        <PowerBonus Value="2"/>
+        <TargetBlockedTags/>
+        <TargetRequiredTags>
+            <Item Value="LocationType.Space"/>
+        </TargetRequiredTags>
     </Record>
     <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
         <Distance Value="3"/>

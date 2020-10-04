@@ -8,16 +8,13 @@ public class AbilityComponent implements EntityComponent {
     private ArrayList<String> abilityEffects;
     private ArrayList<String> requiredTags;
     private ArrayList<String> blockedTags;
-    private ArrayList<String> targetBlockedTags;
-    private ArrayList<String> targetRequiredTags;
+
     private String targetType;
 
     public AbilityComponent() {
         abilityEffects = new ArrayList<>();
         requiredTags = new ArrayList<>();
         blockedTags = new ArrayList<>();
-        targetBlockedTags = new ArrayList<>();
-        targetRequiredTags = new ArrayList<>();
     }
 
     public ArrayList<String> getAbilityEffects() {
@@ -42,22 +39,6 @@ public class AbilityComponent implements EntityComponent {
 
     public void setBlockedTags(ArrayList<String> blockedTags) {
         this.blockedTags = blockedTags;
-    }
-
-    public ArrayList<String> getTargetBlockedTags() {
-        return targetBlockedTags;
-    }
-
-    public void setTargetBlockedTags(ArrayList<String> targetBlockedTags) {
-        this.targetBlockedTags = targetBlockedTags;
-    }
-
-    public ArrayList<String> getTargetRequiredTags() {
-        return targetRequiredTags;
-    }
-
-    public void setTargetRequiredTags(ArrayList<String> targetRequiredTags) {
-        this.targetRequiredTags = targetRequiredTags;
     }
 
     public String getTargetType() {

@@ -5,6 +5,7 @@ import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.actions.PlayEffectAction;
 import de.pinneddown.server.components.AbilitiesComponent;
 import de.pinneddown.server.components.AbilityComponent;
+import de.pinneddown.server.components.TargetGameplayTagsConditionComponent;
 import de.pinneddown.server.events.CardRemovedEvent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.util.GameplayTagUtils;
@@ -86,11 +87,13 @@ public class PlayEffectSystem {
 
     private boolean isValidTarget(long abilityEntityId, long targetEntityId) {
         AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
+        TargetGameplayTagsConditionComponent targetGameplayTagsConditionComponent =
+                entityManager.getComponent(abilityEntityId, TargetGameplayTagsConditionComponent.class);
 
         ArrayList<String> requiredTags = gameplayTagUtils.combineGameplayTags(abilityComponent.getRequiredTags(),
-                abilityComponent.getTargetRequiredTags());
+                targetGameplayTagsConditionComponent.getTargetRequiredTags());
         ArrayList<String> blockedTags = gameplayTagUtils.combineGameplayTags(abilityComponent.getBlockedTags(),
-                abilityComponent.getTargetBlockedTags());
+                targetGameplayTagsConditionComponent.getTargetBlockedTags());
 
         return gameplayTagUtils.matchesTagRequirements(targetEntityId,
                 requiredTags, blockedTags);

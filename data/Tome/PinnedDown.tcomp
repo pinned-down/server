@@ -13,6 +13,7 @@
     <Name>PowerPerAssignedThreatComponent</Name>
     <Name>PowerPerLocationComponent</Name>
     <Name>StructureComponent</Name>
+    <Name>TargetGameplayTagsConditionComponent</Name>
     <Name>ThreatComponent</Name>
     <Name>ThreatModifierComponent</Name>
     <Name>UpkeepComponent</Name>

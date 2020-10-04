@@ -1,5 +1,5 @@
 {
-  "hash": "40c356641c31bbed0fa815eea86886cd",
+  "hash": "ce7f5c5b7a902cb02e9df0c97d103b67",
   "records": [
     {
       "id": "Agniar",
@@ -67,7 +67,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -82,7 +83,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -148,7 +150,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -178,7 +181,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -193,7 +197,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -350,7 +355,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -432,7 +438,8 @@
         "TargetType": "Starship"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -481,7 +488,8 @@
         "TargetType": "Passive"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -527,7 +535,8 @@
         "TargetType": "Passive"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -576,7 +585,8 @@
         "TargetType": "Passive"
       },
       "components": [
-        "AbilityComponent"
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
     },
@@ -589,6 +599,56 @@
       "components": [
         "AbilityEffectComponent",
         "PowerPerAssignedThreatComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "TRBTruth",
+      "attributes": {
+        "Abilities": ["TRBTruthDamageBonusAbility"],
+        "BasePower": "7",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "TRBTruthDamageBonusAbility",
+      "attributes": {
+        "AbilityEffects": ["TRBTruthDamageBonusEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Passive"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "TRBTruthDamageBonusEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "PowerBonus": "2",
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": ["LocationType.Space"]
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerBonusComponent",
+        "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "AbilityEffects"
     },

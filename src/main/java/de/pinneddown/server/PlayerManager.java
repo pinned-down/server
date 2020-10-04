@@ -43,6 +43,7 @@ public class PlayerManager {
         cards.put("TargetEliminated", 4);
         cards.put("TRBFaith", 4);
         cards.put("TRBJustice", 4);
+        cards.put("TRBTruth", 4);
 
         DeckList deckList = new DeckList();
         deckList.setFlagship("TRBArdor");
