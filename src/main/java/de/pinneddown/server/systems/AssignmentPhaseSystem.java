@@ -7,6 +7,7 @@ import de.pinneddown.server.components.AssignmentComponent;
 import de.pinneddown.server.components.GameplayTagsComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.ErrorEvent;
 import de.pinneddown.server.events.StarshipAssignedEvent;
 import de.pinneddown.server.events.TurnPhaseStartedEvent;
 import de.pinneddown.server.util.AssignmentUtils;
@@ -88,6 +89,7 @@ public class AssignmentPhaseSystem {
         }
 
         if (actualAssigments < requiredAssignments) {
+            this.eventManager.queueEvent(EventType.ERROR, new ErrorEvent(eventData.getActionId(), ErrorCode.MISSING_ASSIGNMENTS));
             return;
         }
 
