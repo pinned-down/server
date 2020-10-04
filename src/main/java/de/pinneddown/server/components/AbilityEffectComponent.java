@@ -6,6 +6,7 @@ import de.pinneddown.server.EntityComponent;
 public class AbilityEffectComponent implements EntityComponent {
     private String abilityEffectDuration;
     private long targetEntityId;
+    private boolean active;
 
     public String getAbilityEffectDuration() {
         return abilityEffectDuration;
@@ -29,5 +30,13 @@ public class AbilityEffectComponent implements EntityComponent {
 
     public void setTargetEntityId(long targetEntityId) {
         this.targetEntityId = targetEntityId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

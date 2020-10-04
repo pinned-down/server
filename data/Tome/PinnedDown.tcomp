@@ -7,6 +7,7 @@
     <Name>DistanceComponent</Name>
     <Name>GameplayTagsComponent</Name>
     <Name>OverloadComponent</Name>
+    <Name>PowerBonusComponent</Name>
     <Name>PowerComponent</Name>
     <Name>PowerDifferenceConditionComponent</Name>
     <Name>PowerPerAssignedThreatComponent</Name>

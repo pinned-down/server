@@ -185,8 +185,7 @@
     </Record>
     <Record Id="LargePowerBonus" DisplayName="Large Power Bonus" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
-        <BasePower Value="0"/>
-        <PowerModifier Value="4"/>
+        <PowerBonus Value="4"/>
     </Record>
     <Record Id="Locations" DisplayName="Locations" Parent="Cards">
         <Distance Value="1"/>
@@ -197,8 +196,7 @@
     </Record>
     <Record Id="MediumPowerMalus" DisplayName="Medium Power Malus" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
-        <BasePower Value="0"/>
-        <PowerModifier Value="-3"/>
+        <PowerBonus Value="-3"/>
     </Record>
     <Record Id="MoslovAsteroid" DisplayName="Moslov Asteroid" Parent="Locations">
         <Distance Value="2"/>
@@ -248,13 +246,11 @@
     </Record>
     <Record Id="SinglePowerBonus" DisplayName="Single Power Bonus" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
-        <BasePower Value="0"/>
-        <PowerModifier Value="1"/>
+        <PowerBonus Value="1"/>
     </Record>
     <Record Id="SmallPowerBonus" DisplayName="Small Power Bonus" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
-        <BasePower Value="0"/>
-        <PowerModifier Value="2"/>
+        <PowerBonus Value="2"/>
     </Record>
     <Record Id="SolmarBorderStation" DisplayName="Solmar Border Station" Parent="Locations">
         <Distance Value="1"/>

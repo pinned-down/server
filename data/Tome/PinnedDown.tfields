@@ -11,6 +11,7 @@
     <Field Id="GlobalGameplayTags" DisplayName="Global Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
     <Field Id="InitialGameplayTags" DisplayName="Initial Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
     <Field Id="Overloads" DisplayName="Overloads" Description="" Type="Integer" Component="OverloadComponent" DefaultValue="1"/>
+    <Field Id="PowerBonus" DisplayName="Power Bonus" Description="" Type="Integer" Component="PowerBonusComponent" DefaultValue="0"/>
     <Field Id="PowerModifier" DisplayName="Power Modifier" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
     <Field Id="PowerPerLocation" DisplayName="Power Per Location" Description="" Type="Integer" Component="PowerPerLocationComponent" DefaultValue="0"/>
     <Field Id="PowerPerThreat" DisplayName="Power Per Threat" Description="" Type="Integer" Component="PowerPerAssignedThreatComponent" DefaultValue="0"/>
@@ -21,6 +22,6 @@
     <Field Id="TargetRequiredTags" DisplayName="Target Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent" DefaultValue=""/>
     <Field Id="TargetType" DisplayName="Target Type" Description="" Type="TargetType" Component="AbilityComponent" DefaultValue="Starship"/>
     <Field Id="Threat" DisplayName="Threat" Description="" Type="Integer" Component="ThreatComponent" DefaultValue="0"/>
-    <Field Id="ThreatModifiers" DisplayName="Threat Modifiers" Description="" Type="ThreatModifiers" Component="ThreatModifierComponent"/>
+    <Field Id="ThreatModifiers" DisplayName="Threat Modifiers" Description="" Type="ThreatModifiers" Component="ThreatModifierComponent" DefaultValue=""/>
     <Field Id="Upkeep" DisplayName="Upkeep" Description="" Type="Integer" Component="UpkeepComponent" DefaultValue="1"/>
 </Fields>

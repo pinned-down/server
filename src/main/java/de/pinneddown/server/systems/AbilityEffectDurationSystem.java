@@ -2,10 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.AbilityEffectComponent;
-import de.pinneddown.server.events.AbilityEffectAppliedEvent;
-import de.pinneddown.server.events.AbilityEffectRemovedEvent;
-import de.pinneddown.server.events.CardRemovedEvent;
-import de.pinneddown.server.events.TurnPhaseStartedEvent;
+import de.pinneddown.server.events.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -87,6 +84,10 @@ public class AbilityEffectDurationSystem {
         // Notify listeners.
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
+
+        AbilityEffectDeactivatedEvent abilityEffectDeactivatedEvent =
+                new AbilityEffectDeactivatedEvent(effectEntityId, abilityEffectComponent.getTargetEntityId());
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_DEACTIVATED, abilityEffectDeactivatedEvent);
 
         AbilityEffectRemovedEvent abilityEffectRemovedEvent =
                 new AbilityEffectRemovedEvent(effectEntityId, abilityEffectComponent.getTargetEntityId());

@@ -1,9 +1,7 @@
 package de.pinneddown.server.tests;
 
-import de.pinneddown.server.Blueprint;
-import de.pinneddown.server.BlueprintManager;
-import de.pinneddown.server.BlueprintSet;
-import de.pinneddown.server.EntityManager;
+import de.pinneddown.server.*;
+import de.pinneddown.server.components.AbilityEffectComponent;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -18,5 +16,13 @@ public class GameSystemTestSuite {
         blueprintManager.setBlueprints(blueprints);
 
         return blueprintManager;
+    }
+
+    protected long createIndefiniteEffect(EntityManager entityManager) {
+        long entityId = entityManager.createEntity();
+        AbilityEffectComponent abilityEffectComponent = new AbilityEffectComponent();
+        abilityEffectComponent.setAbilityEffectDuration(AbilityEffectDuration.INDEFINITE.toString());
+        entityManager.addComponent(entityId, abilityEffectComponent);
+        return entityId;
     }
 }

@@ -1,5 +1,5 @@
 {
-  "hash": "f58001eb9eed71ba6821486e5dab4664",
+  "hash": "40c356641c31bbed0fa815eea86886cd",
   "records": [
     {
       "id": "Agniar",
@@ -253,12 +253,11 @@
       "id": "LargePowerBonus",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
-        "BasePower": "0",
-        "PowerModifier": "4"
+        "PowerBonus": "4"
       },
       "components": [
         "AbilityEffectComponent",
-        "PowerComponent"
+        "PowerBonusComponent"
       ],
       "parent_id": "AbilityEffects"
     },
@@ -266,12 +265,11 @@
       "id": "MediumPowerMalus",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
-        "BasePower": "0",
-        "PowerModifier": "-3"
+        "PowerBonus": "-3"
       },
       "components": [
         "AbilityEffectComponent",
-        "PowerComponent"
+        "PowerBonusComponent"
       ],
       "parent_id": "AbilityEffects"
     },
@@ -373,12 +371,11 @@
       "id": "SinglePowerBonus",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
-        "BasePower": "0",
-        "PowerModifier": "1"
+        "PowerBonus": "1"
       },
       "components": [
         "AbilityEffectComponent",
-        "PowerComponent"
+        "PowerBonusComponent"
       ],
       "parent_id": "AbilityEffects"
     },
@@ -386,12 +383,11 @@
       "id": "SmallPowerBonus",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
-        "BasePower": "0",
-        "PowerModifier": "2"
+        "PowerBonus": "2"
       },
       "components": [
         "AbilityEffectComponent",
-        "PowerComponent"
+        "PowerBonusComponent"
       ],
       "parent_id": "AbilityEffects"
     },
