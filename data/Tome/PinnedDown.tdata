@@ -383,6 +383,30 @@
             <Item Value="LocationType.Space"/>
         </TargetRequiredTags>
     </Record>
+    <Record Id="TRBUnity" DisplayName="TRB Unity" Parent="BlueWing">
+        <Abilities>
+            <Item Value="TRBUnityDamageBonusAbility"/>
+        </Abilities>
+        <BasePower Value="8"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.BlueWing"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+    </Record>
+    <Record Id="TRBUnityDamage Bonus Effect" DisplayName="TRB Unity (Damage Bonus Effect)" Parent="AbilityEffects">
+        <MaxFleetSize Value="999"/>
+        <MinFleetSize Value="3"/>
+        <PowerBonus Value="2"/>
+    </Record>
+    <Record Id="TRBUnityDamageBonusAbility" DisplayName="TRB Unity (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="TRBUnityDamage Bonus Effect"/>
+        </AbilityEffects>
+        <TargetType Value="Passive"/>
+    </Record>
     <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
         <Distance Value="3"/>
         <GlobalGameplayTags>

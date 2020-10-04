@@ -1,12 +1,10 @@
 package de.pinneddown.server.tests;
 
 import com.google.common.collect.Lists;
-import de.pinneddown.server.EntityManager;
-import de.pinneddown.server.EventManager;
-import de.pinneddown.server.EventType;
-import de.pinneddown.server.GameEvent;
+import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectAppliedEvent;
+import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.systems.AbilityEffectConditionSystem;
 import de.pinneddown.server.util.GameplayTagUtils;
 import org.junit.jupiter.api.Test;
@@ -18,12 +16,12 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
 
     @Test
     void applyEffectIfPowerDifferenceConditionFulfilled() {
-        applyEffectWithPowerDifferenceConditionAndAssertEffectApplied(2, 1, true);
+        activateEffectWithPowerDifferenceConditionAndAssertEffectApplied(2, 1, true);
     }
 
     @Test
     void doesNotApplyEffectIfPowerDifferenceConditionNotFulfilled() {
-        applyEffectWithPowerDifferenceConditionAndAssertEffectApplied(1, 2, false);
+        activateEffectWithPowerDifferenceConditionAndAssertEffectApplied(1, 2, false);
     }
 
     @Test
@@ -93,6 +91,21 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         assertThat(effectActivated).isFalse();
     }
 
+    @Test
+    void applyEffectIfFleetSizeConditionFulfilled() {
+        activateEffectWithFleetSizeConditionAndAssertEffectApplied(2, 1,3,true);
+    }
+
+    @Test
+    void doesNotApplyEffectIfFleetSizeTooSmall() {
+        activateEffectWithFleetSizeConditionAndAssertEffectApplied(1, 2,3,false);
+    }
+
+    @Test
+    void doesNotApplyEffectIfFleetSizeTooLarge() {
+        activateEffectWithFleetSizeConditionAndAssertEffectApplied(3, 1,2,false);
+    }
+
     private AbilityEffectConditionSystem createSystem(EventManager eventManager, EntityManager entityManager) {
         GameplayTagUtils gameplayTagUtils = new GameplayTagUtils(eventManager, entityManager);
 
@@ -103,7 +116,8 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         return system;
     }
 
-    private void applyEffectWithPowerDifferenceConditionAndAssertEffectApplied(int targetPower, int assignedToPower, boolean assertActivated) {
+    private void activateEffectWithPowerDifferenceConditionAndAssertEffectApplied(int targetPower, int assignedToPower,
+                                                                                  boolean assertActivated) {
         // ARRANGE
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
@@ -145,7 +159,60 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         assertThat(effectActivated).isEqualTo(assertActivated);
     }
 
+    private void activateEffectWithFleetSizeConditionAndAssertEffectApplied(int fleetSize, int minFleetSize,
+                                                                            int maxFleetSize, boolean assertActivated) {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        AbilityEffectConditionSystem system = createSystem(eventManager, entityManager);
+
+        // Create effect.
+        long effectEntityId = createIndefiniteEffect(entityManager);
+        FleetSizeConditionComponent fleetSizeConditionComponent = new FleetSizeConditionComponent();
+        fleetSizeConditionComponent.setMinFleetSize(minFleetSize);
+        fleetSizeConditionComponent.setMaxFleetSize(maxFleetSize);
+        entityManager.addComponent(effectEntityId, fleetSizeConditionComponent);
+
+        // Create target.
+        long targetEntityId = playStarship(entityManager, eventManager);
+
+        // Create fleet.
+        for (int i = 1; i < fleetSize; ++i) {
+            playStarship(entityManager, eventManager);
+        }
+
+        // Register for event.
+        effectActivated = false;
+
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_ACTIVATED, this::onAbilityEffectActivated);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED,
+                new AbilityEffectAppliedEvent(effectEntityId, targetEntityId));
+
+        // ASSERT
+        assertThat(effectActivated).isEqualTo(assertActivated);
+    }
+
     private void onAbilityEffectActivated(GameEvent gameEvent) {
         effectActivated = true;
+    }
+
+    private long playStarship(EntityManager entityManager, EventManager eventManager) {
+        long entityId = entityManager.createEntity();
+
+        OwnerComponent ownerComponent = new OwnerComponent();
+        ownerComponent.setOwner(123L);
+        entityManager.addComponent(entityId, ownerComponent);
+
+        GameplayTagsComponent gameplayTagsComponent = new GameplayTagsComponent();
+        gameplayTagsComponent.setInitialGameplayTags(Lists.newArrayList(GameplayTags.CARDTYPE_STARSHIP));
+        entityManager.addComponent(entityId, gameplayTagsComponent);
+
+        eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(entityId, null,
+                ownerComponent.getOwner()));
+
+        return entityId;
     }
 }

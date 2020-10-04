@@ -5,6 +5,7 @@
     <Name>AbilityEffectComponent</Name>
     <Name>CardDrawComponent</Name>
     <Name>DistanceComponent</Name>
+    <Name>FleetSizeConditionComponent</Name>
     <Name>GameplayTagsComponent</Name>
     <Name>OverloadComponent</Name>
     <Name>PowerBonusComponent</Name>

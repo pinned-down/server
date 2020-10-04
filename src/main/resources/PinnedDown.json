@@ -1,5 +1,5 @@
 {
-  "hash": "ce7f5c5b7a902cb02e9df0c97d103b67",
+  "hash": "6f260019743a878bc37225fdb2fa1253",
   "records": [
     {
       "id": "Agniar",
@@ -649,6 +649,56 @@
         "AbilityEffectComponent",
         "PowerBonusComponent",
         "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "TRBUnity",
+      "attributes": {
+        "Abilities": ["TRBUnityDamageBonusAbility"],
+        "BasePower": "8",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.BlueWing", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent"
+      ],
+      "parent_id": "BlueWing"
+    },
+    {
+      "id": "TRBUnityDamageBonusAbility",
+      "attributes": {
+        "AbilityEffects": ["TRBUnityDamage Bonus Effect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Passive"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "TRBUnityDamage Bonus Effect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "MaxFleetSize": "999",
+        "MinFleetSize": "3",
+        "PowerBonus": "2"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "FleetSizeConditionComponent",
+        "PowerBonusComponent"
       ],
       "parent_id": "AbilityEffects"
     },

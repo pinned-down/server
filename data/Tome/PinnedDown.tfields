@@ -10,6 +10,8 @@
     <Field Id="Distance" DisplayName="Distance" Description="" Type="Integer" Component="DistanceComponent" DefaultValue="1"/>
     <Field Id="GlobalGameplayTags" DisplayName="Global Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
     <Field Id="InitialGameplayTags" DisplayName="Initial Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
+    <Field Id="MaxFleetSize" DisplayName="Maximum Fleet Size" Description="" Type="Integer" Component="FleetSizeConditionComponent" DefaultValue="999"/>
+    <Field Id="MinFleetSize" DisplayName="Minimum Fleet Size" Description="" Type="Integer" Component="FleetSizeConditionComponent" DefaultValue="0"/>
     <Field Id="Overloads" DisplayName="Overloads" Description="" Type="Integer" Component="OverloadComponent" DefaultValue="1"/>
     <Field Id="PowerBonus" DisplayName="Power Bonus" Description="" Type="Integer" Component="PowerBonusComponent" DefaultValue="0"/>
     <Field Id="PowerModifier" DisplayName="Power Modifier" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>

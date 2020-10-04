@@ -17,6 +17,7 @@ public class AbilityEffectConditionSystem {
     private GameplayTagUtils gameplayTagUtils;
 
     private HashMap<Long, Long> indefiniteEffects;
+    private ArrayList<Long> starshipEntities;
 
     public AbilityEffectConditionSystem(EventManager eventManager, EntityManager entityManager,
                                         GameplayTagUtils gameplayTagUtils) {
@@ -29,10 +30,13 @@ public class AbilityEffectConditionSystem {
         this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
         this.eventManager.addEventHandler(EventType.STARSHIP_POWER_CHANGED, this::onStarshipPowerChanged);
         this.eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::onGlobalGameplayTagsChanged);
+        this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
+        this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
         indefiniteEffects = new HashMap<>();
+        starshipEntities = new ArrayList<>();
     }
 
     private void onAbilityEffectApplied(GameEvent gameEvent) {
@@ -60,6 +64,30 @@ public class AbilityEffectConditionSystem {
     }
 
     private void onGlobalGameplayTagsChanged(GameEvent gameEvent) {
+        updateAllEffects();
+    }
+
+    private void onCardPlayed(GameEvent gameEvent) {
+        CardPlayedEvent eventData = (CardPlayedEvent)gameEvent.getEventData();
+
+        if (gameplayTagUtils.hasGameplayTag(eventData.getEntityId(), GameplayTags.CARDTYPE_STARSHIP)) {
+            starshipEntities.add(eventData.getEntityId());
+        }
+
+        updateAllEffects();
+    }
+
+    private void onCardRemoved(GameEvent gameEvent) {
+        CardPlayedEvent eventData = (CardPlayedEvent)gameEvent.getEventData();
+
+        if (gameplayTagUtils.hasGameplayTag(eventData.getEntityId(), GameplayTags.CARDTYPE_STARSHIP)) {
+            starshipEntities.remove(eventData.getEntityId());
+        }
+
+        updateAllEffects();
+    }
+
+    private void updateAllEffects() {
         for (Map.Entry<Long, Long> indefiniteEffect : indefiniteEffects.entrySet()) {
             checkConditionsAndApplyEffect(indefiniteEffect.getKey(), indefiniteEffect.getValue());
         }
@@ -106,6 +134,10 @@ public class AbilityEffectConditionSystem {
             return false;
         }
 
+        if (!checkFleetSizeCondition(effectEntityId, targetEntityId)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -148,5 +180,34 @@ public class AbilityEffectConditionSystem {
                 targetEntityId,
                 targetGameplayTagsConditionComponent.getTargetRequiredTags(),
                 targetGameplayTagsConditionComponent.getTargetBlockedTags());
+    }
+
+    private boolean checkFleetSizeCondition(long effectEntityId, long targetEntityId) {
+        FleetSizeConditionComponent fleetSizeConditionComponent =
+                entityManager.getComponent(effectEntityId, FleetSizeConditionComponent.class);
+
+        if (fleetSizeConditionComponent == null) {
+            return true;
+        }
+
+        // Get fleet size.
+        OwnerComponent effectTargetOwnerComponent = entityManager.getComponent(targetEntityId, OwnerComponent.class);
+
+        if (effectTargetOwnerComponent == null) {
+            return true;
+        }
+
+        int fleetSize = 0;
+
+        for (long starshipEntityId : starshipEntities) {
+            OwnerComponent starshipOwnerComponent = entityManager.getComponent(starshipEntityId, OwnerComponent.class);
+
+            if (starshipOwnerComponent != null && starshipOwnerComponent.getOwner() == effectTargetOwnerComponent.getOwner()) {
+                ++fleetSize;
+            }
+        }
+
+        return fleetSize >= fleetSizeConditionComponent.getMinFleetSize() &&
+                fleetSize <= fleetSizeConditionComponent.getMaxFleetSize();
     }
 }

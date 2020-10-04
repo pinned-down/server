@@ -80,6 +80,11 @@ public class GameplayTagUtils {
         }
     }
 
+    public boolean hasGameplayTag(long entityId, String gameplayTag) {
+        ArrayList<String> gameplayTags = getGameplayTags(entityId);
+        return gameplayTags.contains(gameplayTag);
+    }
+
     public void addGlobalGameplayTag(String gameplayTag) {
         GameplayTagsComponent globalGameplayTagsComponent =
                 entityManager.getComponent(globalGameplayTagsEntityId, GameplayTagsComponent.class);
