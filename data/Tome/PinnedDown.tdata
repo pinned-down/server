@@ -4,8 +4,8 @@
         <AbilityEffects Value=""/>
         <BlockedTags Value=""/>
         <RequiredTags Value=""/>
-        <TargetBlockedTags/>
-        <TargetRequiredTags/>
+        <TargetBlockedTags Value=""/>
+        <TargetRequiredTags Value=""/>
         <TargetType Value="Starship"/>
     </Record>
     <Record Id="AbilityEffects" DisplayName="Ability Effects">
@@ -378,7 +378,7 @@
     </Record>
     <Record Id="TRBTruthDamageBonusEffect" DisplayName="TRB Truth (Damage Bonus Effect)" Parent="AbilityEffects">
         <PowerBonus Value="2"/>
-        <TargetBlockedTags/>
+        <TargetBlockedTags Value=""/>
         <TargetRequiredTags>
             <Item Value="LocationType.Space"/>
         </TargetRequiredTags>
@@ -396,16 +396,16 @@
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
     </Record>
-    <Record Id="TRBUnityDamage Bonus Effect" DisplayName="TRB Unity (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="TRBUnityDamageBonusAbility" DisplayName="TRB Unity (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="TRBUnityDamageBonusEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Passive"/>
+    </Record>
+    <Record Id="TRBUnityDamageBonusEffect" DisplayName="TRB Unity (Damage Bonus Effect)" Parent="AbilityEffects">
         <MaxFleetSize Value="999"/>
         <MinFleetSize Value="3"/>
         <PowerBonus Value="2"/>
-    </Record>
-    <Record Id="TRBUnityDamageBonusAbility" DisplayName="TRB Unity (Damage Bonus Ability)" Parent="Abilities">
-        <AbilityEffects>
-            <Item Value="TRBUnityDamage Bonus Effect"/>
-        </AbilityEffects>
-        <TargetType Value="Passive"/>
     </Record>
     <Record Id="VolarPulsar" DisplayName="Volar Pulsar" Parent="Locations">
         <Distance Value="3"/>

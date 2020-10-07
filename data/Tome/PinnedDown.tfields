@@ -20,8 +20,8 @@
     <Field Id="RequiredPowerDifference" DisplayName="Required Power Difference" Description="" Type="Integer" Component="PowerDifferenceConditionComponent" DefaultValue="1"/>
     <Field Id="RequiredTags" DisplayName="Required Tags" Description="" Type="GameplayTagList" Component="AbilityComponent" DefaultValue=""/>
     <Field Id="StructureModifier" DisplayName="StructureModifier" Description="" Type="Integer" Component="StructureComponent" DefaultValue="0"/>
-    <Field Id="TargetBlockedTags" DisplayName="Target Blocked Tags" Description="" Type="GameplayTagList" Component="TargetGameplayTagsConditionComponent"/>
-    <Field Id="TargetRequiredTags" DisplayName="Target Required Tags" Description="" Type="GameplayTagList" Component="TargetGameplayTagsConditionComponent"/>
+    <Field Id="TargetBlockedTags" DisplayName="Target Blocked Tags" Description="" Type="GameplayTagList" Component="TargetGameplayTagsConditionComponent" DefaultValue=""/>
+    <Field Id="TargetRequiredTags" DisplayName="Target Required Tags" Description="" Type="GameplayTagList" Component="TargetGameplayTagsConditionComponent" DefaultValue=""/>
     <Field Id="TargetType" DisplayName="Target Type" Description="" Type="TargetType" Component="AbilityComponent" DefaultValue="Starship"/>
     <Field Id="Threat" DisplayName="Threat" Description="" Type="Integer" Component="ThreatComponent" DefaultValue="0"/>
     <Field Id="ThreatModifiers" DisplayName="Threat Modifiers" Description="" Type="ThreatModifiers" Component="ThreatModifierComponent" DefaultValue=""/>
