@@ -47,6 +47,8 @@ public class PlayerController extends WebSocketController {
         eventManager.addEventHandler(EventType.PLAYER_DISCARD_PILE_CHANGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.THREAT_MODIFIERS_CHANGED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.ERROR, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_ACTIVATED, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_DEACTIVATED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

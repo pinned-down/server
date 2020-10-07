@@ -37,7 +37,7 @@ public class AbilityEffectSystemTests extends GameSystemTestSuite {
 
         // ACT
         eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
-                new AbilityEffectActivatedEvent(effectEntityId, targetEntityId));
+                new AbilityEffectActivatedEvent(effectEntityId, null, null, targetEntityId));
 
         // ASSERT
         assertThat(powerComponent.getPowerModifier()).isGreaterThan(0);
@@ -100,7 +100,7 @@ public class AbilityEffectSystemTests extends GameSystemTestSuite {
 
         // ACT
         eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
-                new AbilityEffectActivatedEvent(effectEntityId, targetEntityId));
+                new AbilityEffectActivatedEvent(effectEntityId, null, null, targetEntityId));
 
         // ASSERT
         assertThat(powerComponent.getPowerModifier()).isGreaterThan(0);
@@ -143,7 +143,7 @@ public class AbilityEffectSystemTests extends GameSystemTestSuite {
 
         // ACT
         eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
-                new AbilityEffectActivatedEvent(effectEntityId, targetEntityId));
+                new AbilityEffectActivatedEvent(effectEntityId, null, null, targetEntityId));
 
         // ASSERT
         assertThat(powerComponent.getPowerModifier()).isEqualTo(threatComponent.getThreat());

@@ -113,8 +113,18 @@ public class AbilityEffectConditionSystem {
             // Activate effect.
             abilityEffectComponent.setActive(true);
 
+            BlueprintComponent blueprintComponent = entityManager.getComponent(effectEntityId, BlueprintComponent.class);
+            String blueprintId = blueprintComponent != null ? blueprintComponent.getBlueprintId() : null;
+
+            InstigatorComponent instigatorComponent = entityManager.getComponent(effectEntityId, InstigatorComponent.class);
+            long instigatorEntityId = instigatorComponent != null ? instigatorComponent.getEntityId() : EntityManager.INVALID_ENTITY;
+            BlueprintComponent instigatorBlueprintComponent = instigatorEntityId != EntityManager.INVALID_ENTITY
+                    ? entityManager.getComponent(instigatorEntityId, BlueprintComponent.class)
+                    : null;
+            String instigatorBlueprintId = instigatorBlueprintComponent != null ? instigatorBlueprintComponent.getBlueprintId() : null;
+
             eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
-                    new AbilityEffectActivatedEvent(effectEntityId, targetEntityId));
+                    new AbilityEffectActivatedEvent(effectEntityId, blueprintId, instigatorBlueprintId, targetEntityId));
         } else if (!allConditionsFulfilled && abilityEffectComponent.isActive()) {
             // Deactivate effect.
             abilityEffectComponent.setActive(false);

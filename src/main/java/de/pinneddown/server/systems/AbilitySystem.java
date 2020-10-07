@@ -2,10 +2,7 @@ package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
-import de.pinneddown.server.components.AbilitiesComponent;
-import de.pinneddown.server.components.AbilityComponent;
-import de.pinneddown.server.components.AbilityEffectComponent;
-import de.pinneddown.server.components.OverloadComponent;
+import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectAppliedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.events.CardRemovedEvent;
@@ -92,8 +89,10 @@ public class AbilitySystem {
         for (String effectBlueprintId : abilityComponent.getAbilityEffects()) {
             long effectEntityId = blueprintManager.createEntity(effectBlueprintId);
 
-            // Apply overloads.
-            applyOverloads(effectEntityId, targetEntityId);
+            // Store instigator.
+            InstigatorComponent instigatorComponent = new InstigatorComponent();
+            instigatorComponent.setEntityId(abilityEntityId);
+            entityManager.addComponent(effectEntityId, instigatorComponent);
 
             // Store target.
             AbilityEffectComponent abilityEffectComponent =
@@ -102,6 +101,9 @@ public class AbilitySystem {
             if (abilityEffectComponent != null) {
                 abilityEffectComponent.setTargetEntityId(targetEntityId);
             }
+
+            // Apply overloads.
+            applyOverloads(effectEntityId, targetEntityId);
 
             // Notify listeners.
             AbilityEffectAppliedEvent abilityEffectAppliedEvent =
