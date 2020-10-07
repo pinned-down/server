@@ -78,7 +78,7 @@ public class AbilityEffectConditionSystem {
     }
 
     private void onCardRemoved(GameEvent gameEvent) {
-        CardPlayedEvent eventData = (CardPlayedEvent)gameEvent.getEventData();
+        CardRemovedEvent eventData = (CardRemovedEvent)gameEvent.getEventData();
 
         if (gameplayTagUtils.hasGameplayTag(eventData.getEntityId(), GameplayTags.CARDTYPE_STARSHIP)) {
             starshipEntities.remove(eventData.getEntityId());
