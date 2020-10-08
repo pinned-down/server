@@ -44,7 +44,8 @@ public class ThreatSystem {
         eventManager.queueEvent(EventType.THREAT_POOL_INITIALIZED, eventData);
 
         // Set initial threat.
-        threatUtils.setThreat(threatPoolEntityId, INITIAL_THREAT);
+        threatUtils.setThreat(threatPoolEntityId, INITIAL_THREAT, ThreatChangeReason.INITIAL_THREAT,
+                EntityManager.INVALID_ENTITY);
 
         // Reset modifiers.
         activeThreatModifiersEntityId = entityManager.createEntity();

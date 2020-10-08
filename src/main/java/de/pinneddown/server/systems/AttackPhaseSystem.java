@@ -74,18 +74,18 @@ public class AttackPhaseSystem {
     }
 
     private void onAttackPhaseStarted() {
-        int currentThreat = threatUtils.getThreat();
-        int newThreat = currentThreat;
+        int newThreat = threatUtils.getThreat();
 
         // Add threat for locations.
         newThreat += totalDistance;
+        threatUtils.setThreat(newThreat, ThreatChangeReason.TOTAL_DISTANCE, EntityManager.INVALID_ENTITY);
 
         // Add threat for player starships.
         newThreat += playerStarships.size();
+        threatUtils.setThreat(newThreat, ThreatChangeReason.FLEET_SIZE, EntityManager.INVALID_ENTITY);
 
         // Play attack cards.
         CardPileComponent attackDeck = entityManager.getComponent(attackDeckEntityId, CardPileComponent.class);
-        boolean threatExhausted = false;
 
         while (!(attackDeck.getCardPile().isEmpty() && attackDeck.getDiscardPile().isEmpty())) {
             // Check if any cards left.
@@ -112,10 +112,10 @@ public class AttackPhaseSystem {
             eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
             newThreat -= cardThreat;
-        }
 
-        // Set resulting threat.
-        threatUtils.setThreat(newThreat);
+            // Set resulting threat.
+            threatUtils.setThreat(newThreat, ThreatChangeReason.ENEMY_CARD_PLAYED, entityId);
+        }
 
         // Enter next phase.
         eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.ASSIGNMENT));
@@ -138,10 +138,10 @@ public class AttackPhaseSystem {
                 entityManager.removeEntity(entityId);
 
                 ++newThreat;
+
+                threatUtils.setThreat(newThreat, ThreatChangeReason.ENEMY_CARD_DISCARDED, entityId);
             }
         }
-
-        threatUtils.setThreat(newThreat);
 
         enemyStarships.clear();
     }

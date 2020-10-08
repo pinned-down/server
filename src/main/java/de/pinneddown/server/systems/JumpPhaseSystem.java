@@ -82,7 +82,8 @@ public class JumpPhaseSystem {
         // Add upkeep threat.
         for (long upkeepEntityId : upkeepEntities) {
             UpkeepComponent upkeepComponent = entityManager.getComponent(upkeepEntityId, UpkeepComponent.class);
-            threatUtils.setThreat(threatUtils.getThreat() + upkeepComponent.getUpkeep());
+            threatUtils.setThreat(threatUtils.getThreat() + upkeepComponent.getUpkeep(),
+                    ThreatChangeReason.UPKEEP, upkeepEntityId);
         }
 
         eventManager.queueEvent(EventType.TURN_PHASE_STARTED, new TurnPhaseStartedEvent(TurnPhase.MAIN));

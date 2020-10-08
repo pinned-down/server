@@ -78,7 +78,7 @@ public class PlayerUtils {
 
         // Increase threat.
         int threat = threatUtils.getThreat(entityId);
-        threatUtils.addThreat(threat);
+        threatUtils.addThreat(threat, ThreatChangeReason.PLAYER_CARD_PLAYED, entityId);
 
         // Notify listeners.
         CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, card, playerEntityId);

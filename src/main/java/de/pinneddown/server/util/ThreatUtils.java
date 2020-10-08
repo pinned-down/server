@@ -42,24 +42,30 @@ public class ThreatUtils {
         return threat + threatModifier;
     }
 
-    public void addThreat(int additionalThreat) {
-        setThreat(getThreat() + additionalThreat);
+    public void addThreat(int additionalThreat, ThreatChangeReason reason, long reasonEntityId) {
+        setThreat(getThreat() + additionalThreat, reason, reasonEntityId);
     }
 
-    public void setThreat(int newThreat) {
-        setThreat(this.threatPoolEntityId, newThreat);
+    public void setThreat(int newThreat, ThreatChangeReason reason, long reasonEntityId) {
+        setThreat(this.threatPoolEntityId, newThreat, reason, reasonEntityId);
     }
 
-    public void setThreat(long threatPoolEntityId, int newThreat) {
+    public void setThreat(long threatPoolEntityId, int newThreat, ThreatChangeReason reason, long reasonEntityId) {
+        // Update threat.
         ThreatComponent threatPoolThreatComponent = entityManager.getComponent(threatPoolEntityId, ThreatComponent.class);
+        int oldThreat = threatPoolThreatComponent.getThreat();
 
-        if (threatPoolThreatComponent.getThreat() == newThreat) {
+        if (oldThreat == newThreat) {
             return;
         }
 
         threatPoolThreatComponent.setThreat(newThreat);
 
-        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(newThreat);
+        // Get reason.
+        BlueprintComponent blueprintComponent = entityManager.getComponent(reasonEntityId, BlueprintComponent.class);
+        String reasonBlueprintId = blueprintComponent != null ? blueprintComponent.getBlueprintId() : null;
+
+        ThreatChangedEvent threatChangedEvent = new ThreatChangedEvent(oldThreat, newThreat, reason, reasonBlueprintId);
         eventManager.queueEvent(EventType.THREAT_CHANGED, threatChangedEvent);
     }
 
