@@ -51,4 +51,12 @@ public class CardPile {
     }
 
     public boolean remove(String card) { return cards.remove(card); }
+
+    public String getRandomCard(Random random) {
+        if (size() > 0) {
+            return cards.get(random.nextInt(size()));
+        }
+
+        return null;
+    }
 }

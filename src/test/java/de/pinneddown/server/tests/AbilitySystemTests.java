@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.StarshipDefeatedEvent;
 import de.pinneddown.server.systems.AbilitySystem;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.when;
 public class AbilitySystemTests extends GameSystemTestSuite {
     private static final String ABILITY_BLUEPRINT_ID = "testAbility";
     private static final String PASSIVE_ABILITY_BLUEPRINT_ID = "testPassiveAbility";
+    private static final String DOMINANT_ABILITY_BLUEPRINT_ID = "testDominantAbility";
     private static final String EFFECT_BLUEPRINT_ID = "testEffect";
     private static final String OVERLOAD_EFFECT_BLUEPRINT_ID = "overloadEffect";
 
@@ -89,6 +91,35 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         assertThat(abilityEffectApplied).isTrue();
     }
 
+    @Test
+    void activatesDominantAbilities() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        createSystem(entityManager, eventManager, EFFECT_BLUEPRINT_ID);
+
+        // Setup card with ability.
+        long entityId = entityManager.createEntity();
+
+        ArrayList<String> abilities = new ArrayList<>();
+        abilities.add(DOMINANT_ABILITY_BLUEPRINT_ID);
+
+        AbilitiesComponent abilitiesComponent = new AbilitiesComponent();
+        abilitiesComponent.setAbilities(abilities);
+        entityManager.addComponent(entityId, abilitiesComponent);
+
+        // Register for events.
+        abilityEffectApplied = false;
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_APPLIED, this::onAbilityEffectApplied);
+
+        // ACT
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(0L, entityId));
+
+        // ASSERT
+        assertThat(abilityEffectApplied).isTrue();
+    }
+
     private AbilitySystem createSystem(EntityManager entityManager, EventManager eventManager, String effect) {
         BlueprintManager blueprintManager = createBlueprintManager(entityManager, effect);
 
@@ -121,13 +152,20 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         Blueprint passiveAbilityBlueprint = new Blueprint();
         passiveAbilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
         passiveAbilityBlueprint.getAttributes().put("AbilityEffects", effects);
-        passiveAbilityBlueprint.getAttributes().put("TargetType", TargetType.PASSIVE);
+        passiveAbilityBlueprint.getAttributes().put("AbilityActivationType", "Passive");
+
+        // Create dominant ability.
+        Blueprint dominantAbilityBlueprint = new Blueprint();
+        dominantAbilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
+        dominantAbilityBlueprint.getAttributes().put("AbilityEffects", effects);
+        dominantAbilityBlueprint.getAttributes().put("AbilityActivationType", "Dominant");
 
         // Create blueprint manager.
         BlueprintSet blueprints = mock(BlueprintSet.class);
 
         when(blueprints.getBlueprint(ABILITY_BLUEPRINT_ID)).thenReturn(abilityBlueprint);
         when(blueprints.getBlueprint(PASSIVE_ABILITY_BLUEPRINT_ID)).thenReturn(passiveAbilityBlueprint);
+        when(blueprints.getBlueprint(DOMINANT_ABILITY_BLUEPRINT_ID)).thenReturn(dominantAbilityBlueprint);
         when(blueprints.getBlueprint(EFFECT_BLUEPRINT_ID)).thenReturn(effectBlueprint);
         when(blueprints.getBlueprint(OVERLOAD_EFFECT_BLUEPRINT_ID)).thenReturn(overloadEffectBlueprint);
 

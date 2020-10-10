@@ -1,6 +1,7 @@
 package de.pinneddown.server.systems;
 
 import de.pinneddown.server.*;
+import de.pinneddown.server.components.CardDiscardComponent;
 import de.pinneddown.server.components.CardDrawComponent;
 import de.pinneddown.server.components.OwnerComponent;
 import de.pinneddown.server.components.PlayerComponent;
@@ -77,24 +78,30 @@ public class CardDrawSystem {
     private void onAbilityEffectApplied(GameEvent gameEvent) {
         AbilityEffectAppliedEvent eventData = (AbilityEffectAppliedEvent)gameEvent.getEventData();
 
-        CardDrawComponent cardDrawComponent =
-                entityManager.getComponent(eventData.getEffectEntityId(), CardDrawComponent.class);
-
-        if (cardDrawComponent == null) {
-            return;
-        }
-
         OwnerComponent ownerComponent = entityManager.getComponent(eventData.getTargetEntityId(), OwnerComponent.class);
 
         if (ownerComponent == null) {
             return;
         }
 
-        for (int cards = 0; cards < cardDrawComponent.getCards(); ++cards) {
-            drawCard(ownerComponent.getOwner());
+        CardDrawComponent cardDrawComponent =
+                entityManager.getComponent(eventData.getEffectEntityId(), CardDrawComponent.class);
+
+        if (cardDrawComponent != null) {
+            for (int cards = 0; cards < cardDrawComponent.getCards(); ++cards) {
+                drawCard(ownerComponent.getOwner());
+            }
+        }
+
+        CardDiscardComponent cardDiscardComponent =
+                entityManager.getComponent(eventData.getEffectEntityId(), CardDiscardComponent.class);
+
+        if (cardDiscardComponent != null) {
+            for (int cards = 0; cards < cardDiscardComponent.getDiscardedRandomCards(); ++cards) {
+                discardCard(ownerComponent.getOwner());
+            }
         }
     }
-
 
     private void drawCard(long playerEntityId) {
         PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
@@ -109,5 +116,18 @@ public class CardDrawSystem {
         // Notify listeners.
         eventManager.queueEvent(EventType.PLAYER_DRAW_DECK_SIZE_CHANGED,
                 new PlayerDrawDeckSizeChangedEvent(playerEntityId, playerComponent.getDrawDeck().size()));
+    }
+
+    private void discardCard(long playerEntityId) {
+        PlayerComponent playerComponent = entityManager.getComponent(playerEntityId, PlayerComponent.class);
+
+        if (playerComponent.getHand().isEmpty()) {
+            return;
+        }
+
+        String card = playerComponent.getHand().getRandomCard(random);
+
+        playerUtils.removeHandCard(playerEntityId, card);
+        playerUtils.addCardToDiscardPile(playerEntityId, card);
     }
 }

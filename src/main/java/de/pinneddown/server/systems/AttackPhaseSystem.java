@@ -184,6 +184,7 @@ public class AttackPhaseSystem {
         HashMap<String, Integer> cards = new HashMap<>();
 
         cards.put("DratarAssaultFrigate", 2);
+        cards.put("DBAgony", 1);
 
         deckList.setCards(cards);
         return deckList;

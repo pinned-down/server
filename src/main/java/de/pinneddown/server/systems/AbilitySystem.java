@@ -3,10 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
-import de.pinneddown.server.events.AbilityEffectAppliedEvent;
-import de.pinneddown.server.events.CardPlayedEvent;
-import de.pinneddown.server.events.CardRemovedEvent;
-import de.pinneddown.server.events.StarshipOverloadedEvent;
+import de.pinneddown.server.events.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -25,6 +22,7 @@ public class AbilitySystem {
         this.eventManager.addEventHandler(ActionType.ACTIVATE_ABILITY, this::onActivateAbility);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
+        this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
     }
 
     private void onActivateAbility(GameEvent gameEvent) {
@@ -54,7 +52,7 @@ public class AbilitySystem {
         for (long abilityEntityId : abilityEntities) {
             AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
 
-            if (!TargetType.PASSIVE.equals(abilityComponent.getTargetType())) {
+            if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.PASSIVE) {
                 continue;
             }
 
@@ -80,6 +78,31 @@ public class AbilitySystem {
         }
 
         abilities.forEach(abilityEntity -> entityManager.removeEntity(abilityEntity));
+    }
+
+    private void onStarshipDefeated(GameEvent gameEvent) {
+        StarshipDefeatedEvent eventData = (StarshipDefeatedEvent)gameEvent.getEventData();
+
+        AbilitiesComponent abilitiesComponent =
+                entityManager.getComponent(eventData.getDefeatedBy(), AbilitiesComponent.class);
+
+        if (abilitiesComponent == null) {
+            return;
+        }
+
+        ArrayList<Long> abilityEntities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
+
+        for (long abilityEntityId : abilityEntities) {
+            AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
+
+            if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.DOMINANT) {
+                continue;
+            }
+
+            long targetEntityId = abilityComponent.getTargetTypeEnum() == TargetType.ASSIGNED_TO
+                    ? eventData.getEntityId() : eventData.getDefeatedBy();
+            activateAbility(abilityEntityId, targetEntityId);
+        }
     }
 
     private void activateAbility(long abilityEntityId, long targetEntityId) {

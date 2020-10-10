@@ -3,6 +3,7 @@
     <Name>AbilitiesComponent</Name>
     <Name>AbilityComponent</Name>
     <Name>AbilityEffectComponent</Name>
+    <Name>CardDiscardComponent</Name>
     <Name>CardDrawComponent</Name>
     <Name>DistanceComponent</Name>
     <Name>FleetSizeConditionComponent</Name>

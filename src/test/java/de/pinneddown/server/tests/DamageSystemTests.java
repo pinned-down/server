@@ -56,7 +56,7 @@ public class DamageSystemTests extends GameSystemTestSuite {
         long playerShipId = createPlayerShip(entityManager, 0);
 
         // ACT
-        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId));
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId, 0L));
 
         // ASSERT
         StructureComponent structureComponent = entityManager.getComponent(playerShipId, StructureComponent.class);
@@ -80,7 +80,7 @@ public class DamageSystemTests extends GameSystemTestSuite {
         long playerShipId = createPlayerShip(entityManager, 0);
 
         // ACT
-        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId));
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId, 0L));
 
         // ASSERT
         PowerComponent powerComponent = entityManager.getComponent(playerShipId, PowerComponent.class);
@@ -106,7 +106,7 @@ public class DamageSystemTests extends GameSystemTestSuite {
         long playerShipId = createPlayerShip(entityManager, playerEntityId);
 
         // ACT
-        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(playerShipId);
+        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(playerShipId, 0L);
         starshipDefeatedEvent.setOverpowered(true);
 
         eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);
@@ -170,7 +170,7 @@ public class DamageSystemTests extends GameSystemTestSuite {
         eventManager.addEventHandler(EventType.DEFEAT, this::onDefeat);
 
         // ACT
-        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(playerShipId);
+        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(playerShipId, 0L);
         starshipDefeatedEvent.setOverpowered(true);
 
         eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);

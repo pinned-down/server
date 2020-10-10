@@ -1,5 +1,5 @@
 {
-  "hash": "6f260019743a878bc37225fdb2fa1253",
+  "hash": "a67136b480afbf09052de3dfcc4f2b10",
   "records": [
     {
       "id": "Agniar",
@@ -42,6 +42,44 @@
       "parent_id": "AbilityEffects"
     },
     {
+      "id": "DBAgony",
+      "attributes": {
+        "Abilities": ["DBAgonyDiscardAbility"],
+        "BasePower": "14",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "5"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DBAgonyDiscardAbility",
+      "attributes": {
+        "AbilityActivationType": "Dominant",
+        "AbilityEffects": ["RandomCardDiscard"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "AssignedTo"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
       "id": "Defiance",
       "attributes": {
         "Abilities": ["DefianceDefaultAbility", "DefianceImprovedAbility"],
@@ -59,6 +97,7 @@
     {
       "id": "DefianceDefaultAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["SmallPowerBonus"],
         "BlockedTags": ["LocationType.Planet", "LocationType.Station"],
         "RequiredTags": ["TurnPhase.Fight", "LocationType.Space"],
@@ -75,6 +114,7 @@
     {
       "id": "DefianceImprovedAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["LargePowerBonus"],
         "BlockedTags": ["LocationType.Space"],
         "RequiredTags": ["TurnPhase.Fight"],
@@ -142,6 +182,7 @@
     {
       "id": "EvasionManeuverAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["MediumPowerMalus"],
         "BlockedTags": [],
         "RequiredTags": ["TurnPhase.Fight"],
@@ -173,6 +214,7 @@
     {
       "id": "FireAtWillDefaultAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["SmallPowerBonus"],
         "BlockedTags": [],
         "RequiredTags": ["TurnPhase.Fight"],
@@ -189,6 +231,7 @@
     {
       "id": "FireAtWillImprovedAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["LargePowerBonus"],
         "BlockedTags": [],
         "RequiredTags": ["TurnPhase.Fight"],
@@ -347,6 +390,7 @@
     {
       "id": "RaiseTheStakesAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["Overload", "LargePowerBonus"],
         "BlockedTags": [],
         "RequiredTags": ["TurnPhase.Fight"],
@@ -359,6 +403,18 @@
         "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
+    },
+    {
+      "id": "RandomCardDiscard",
+      "attributes": {
+        "AbilityEffectDuration": "Instant",
+        "DiscardedRandomCards": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "CardDiscardComponent"
+      ],
+      "parent_id": "AbilityEffects"
     },
     {
       "id": "SalazaDocks",
@@ -430,6 +486,7 @@
     {
       "id": "TargetEliminatedAbility",
       "attributes": {
+        "AbilityActivationType": "Immediate",
         "AbilityEffects": ["SinglePowerBonus", "CardDrawIfHigherPower"],
         "BlockedTags": [],
         "RequiredTags": ["TurnPhase.Fight"],
@@ -480,12 +537,13 @@
     {
       "id": "TRBArdorDamageBonusAbility",
       "attributes": {
+        "AbilityActivationType": "Passive",
         "AbilityEffects": ["TRBArdorDamageBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
         "TargetRequiredTags": [],
-        "TargetType": "Passive"
+        "TargetType": "Self"
       },
       "components": [
         "AbilityComponent",
@@ -527,12 +585,13 @@
     {
       "id": "TRBFaithThreatReductionAbility",
       "attributes": {
+        "AbilityActivationType": "Passive",
         "AbilityEffects": ["TRBFaithThreatReductionEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
         "TargetRequiredTags": [],
-        "TargetType": "Passive"
+        "TargetType": "Global"
       },
       "components": [
         "AbilityComponent",
@@ -577,12 +636,13 @@
     {
       "id": "TRBJusticeDamageBonusAbility",
       "attributes": {
+        "AbilityActivationType": "Passive",
         "AbilityEffects": ["TRBJusticeDamageBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
         "TargetRequiredTags": [],
-        "TargetType": "Passive"
+        "TargetType": "Self"
       },
       "components": [
         "AbilityComponent",
@@ -624,12 +684,13 @@
     {
       "id": "TRBTruthDamageBonusAbility",
       "attributes": {
+        "AbilityActivationType": "Passive",
         "AbilityEffects": ["TRBTruthDamageBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
         "TargetRequiredTags": [],
-        "TargetType": "Passive"
+        "TargetType": "Self"
       },
       "components": [
         "AbilityComponent",
@@ -674,12 +735,13 @@
     {
       "id": "TRBUnityDamageBonusAbility",
       "attributes": {
-        "AbilityEffects": ["TRBUnityDamage Bonus Effect"],
+        "AbilityActivationType": "Passive",
+        "AbilityEffects": ["TRBUnityDamageBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
         "TargetRequiredTags": [],
-        "TargetType": "Passive"
+        "TargetType": "Self"
       },
       "components": [
         "AbilityComponent",
@@ -688,7 +750,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "TRBUnityDamage Bonus Effect",
+      "id": "TRBUnityDamageBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "MaxFleetSize": "999",

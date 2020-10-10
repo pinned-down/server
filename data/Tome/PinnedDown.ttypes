@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Types Version="2">
+    <Type Name="AbilityActivationType">
+        <FundamentalFacets>
+            <FundamentalFacet Key="Enumeration" Value="Dominant;Immediate;Passive"/>
+        </FundamentalFacets>
+        <ConstrainingFacets/>
+    </Type>
     <Type Name="AbilityEffectDuration">
         <FundamentalFacets>
             <FundamentalFacet Key="Enumeration" Value="EndOfFight;Indefinite;Instant"/>
@@ -56,7 +62,7 @@
     </Type>
     <Type Name="TargetType">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Passive;Starship"/>
+            <FundamentalFacet Key="Enumeration" Value="AssignedTo;Global;Self;Starship"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

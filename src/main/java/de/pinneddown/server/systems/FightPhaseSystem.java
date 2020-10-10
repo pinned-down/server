@@ -99,12 +99,12 @@ public class FightPhaseSystem {
             // Notify listeners.
             boolean overpowered = playerPowerComponent.getCurrentPower() >= enemyPowerComponent.getCurrentPower() * 2;
 
-            onStarshipDefeated(enemyEntityId, overpowered);
+            onStarshipDefeated(enemyEntityId, playerEntityId, overpowered);
         } else {
             // Damage or destroy player starship.
             boolean overpowered = enemyPowerComponent.getCurrentPower() >= playerPowerComponent.getCurrentPower() * 2;
 
-            onStarshipDefeated(playerEntityId, overpowered);
+            onStarshipDefeated(playerEntityId, enemyEntityId, overpowered);
         }
 
         // Unassign starship.
@@ -117,8 +117,8 @@ public class FightPhaseSystem {
         }
     }
 
-    private void onStarshipDefeated(long entityId, boolean overpowered) {
-        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(entityId);
+    private void onStarshipDefeated(long entityId, long defeatedBy, boolean overpowered) {
+        StarshipDefeatedEvent starshipDefeatedEvent = new StarshipDefeatedEvent(entityId, defeatedBy);
         starshipDefeatedEvent.setOverpowered(overpowered);
 
         eventManager.queueEvent(EventType.STARSHIP_DEFEATED, starshipDefeatedEvent);
