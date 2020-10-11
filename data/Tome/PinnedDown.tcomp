@@ -13,6 +13,7 @@
     <Name>PowerComponent</Name>
     <Name>PowerDifferenceConditionComponent</Name>
     <Name>PowerPerAssignedThreatComponent</Name>
+    <Name>PowerPerFleetSizeComponent</Name>
     <Name>PowerPerLocationComponent</Name>
     <Name>StructureComponent</Name>
     <Name>TargetGameplayTagsConditionComponent</Name>

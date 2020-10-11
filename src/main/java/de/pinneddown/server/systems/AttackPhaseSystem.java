@@ -183,8 +183,10 @@ public class AttackPhaseSystem {
         DeckList deckList = new DeckList();
         HashMap<String, Integer> cards = new HashMap<>();
 
-        cards.put("DratarAssaultFrigate", 2);
+        cards.put("DratarAssaultFrigate", 4);
+        cards.put("DratarAssaultCruiser", 4);
         cards.put("DBAgony", 1);
+        cards.put("DSFBane", 1);
 
         deckList.setCards(cards);
         return deckList;

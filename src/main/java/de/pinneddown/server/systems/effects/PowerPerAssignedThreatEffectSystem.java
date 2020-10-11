@@ -55,14 +55,6 @@ public class PowerPerAssignedThreatEffectSystem {
     }
 
     private void applyPowerPerAssignedThreat(long effectEntityId, long targetEntityId, int factor) {
-        // Check if we need to watch that effect.
-        AbilityEffectComponent abilityEffectComponent =
-                entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
-
-        if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
-            powerPerAssignedThreatEffects.add(effectEntityId);
-        }
-
         // Update power bonus.
         PowerPerAssignedThreatComponent powerPerAssignedThreatComponent =
                 entityManager.getComponent(effectEntityId, PowerPerAssignedThreatComponent.class);
@@ -86,5 +78,13 @@ public class PowerPerAssignedThreatEffectSystem {
         powerPerAssignedThreatComponent.setAppliedPowerPerThreat(threat * factor);
 
         powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
+
+        // Check if we need to watch that effect.
+        AbilityEffectComponent abilityEffectComponent =
+                entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
+
+        if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
+            powerPerAssignedThreatEffects.add(effectEntityId);
+        }
     }
 }

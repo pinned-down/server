@@ -117,7 +117,7 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
 
-        AttackPhaseSystem system = createSystem(entityManager, eventManager, 0);
+        AttackPhaseSystem system = createSystem(entityManager, eventManager, enemyThreatCost);
         ThreatComponent threatComponent = setupThreatPool(entityManager, eventManager);
 
         threatComponent.setThreat(availableThreat);

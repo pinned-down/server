@@ -61,28 +61,30 @@ public class PowerPerLocationEffectSystem {
     }
 
     private void applyPowerPerLocationBonus(long effectEntityId, long targetEntityId, int powerFactor) {
+        // Update power bonus.
+        PowerPerLocationComponent powerPerLocationComponent =
+                entityManager.getComponent(effectEntityId, PowerPerLocationComponent.class);
+        PowerComponent targetPowerComponent = entityManager.getComponent(targetEntityId, PowerComponent.class);
+
+        if (powerPerLocationComponent == null || targetPowerComponent == null) {
+            return;
+        }
+
+        int oldPowerModifier = targetPowerComponent.getPowerModifier();
+        int newPowerModifier = oldPowerModifier
+                - powerPerLocationComponent.getAppliedPowerPerLocation()
+                + (totalLocations * powerFactor);
+
+        powerPerLocationComponent.setAppliedPowerPerLocation(totalLocations * powerFactor);
+
+        powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
+
         // Check if we need to watch that effect.
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
 
         if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
             powerPerLocationEffects.add(effectEntityId);
-        }
-
-        // Update power bonus.
-        PowerPerLocationComponent powerPerLocationComponent =
-                entityManager.getComponent(effectEntityId, PowerPerLocationComponent.class);
-        PowerComponent targetPowerComponent = entityManager.getComponent(targetEntityId, PowerComponent.class);
-
-        if (powerPerLocationComponent != null && targetPowerComponent != null) {
-            int oldPowerModifier = targetPowerComponent.getPowerModifier();
-            int newPowerModifier = oldPowerModifier
-                    - powerPerLocationComponent.getAppliedPowerPerLocation()
-                    + (totalLocations * powerFactor);
-
-            powerPerLocationComponent.setAppliedPowerPerLocation(totalLocations * powerFactor);
-
-            powerUtils.setPowerModifier(targetEntityId, newPowerModifier);
         }
     }
 }

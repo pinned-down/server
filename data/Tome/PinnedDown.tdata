@@ -111,6 +111,17 @@
             <Item Value="Affiliation.DraTar"/>
         </InitialGameplayTags>
     </Record>
+    <Record Id="DratarAssaultCruiser" DisplayName="Dra'tar Assault Cruiser" Parent="Dra'tar">
+        <BasePower Value="10"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="3"/>
+    </Record>
     <Record Id="DratarAssaultFrigate" DisplayName="Dra'tar Assault Frigate" Parent="Dra'tar">
         <BasePower Value="9"/>
         <BaseStructure Value="100"/>
@@ -122,6 +133,30 @@
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
+    </Record>
+    <Record Id="DSFBane" DisplayName="DSF Bane" Parent="Dra'tar">
+        <Abilities>
+            <Item Value="DSFBaneDamageBonusAbility"/>
+        </Abilities>
+        <BasePower Value="7"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="2"/>
+    </Record>
+    <Record Id="DSFBaneDamageBonusAbility" DisplayName="DSF Bane (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="DSFBaneDamageBonusEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Self"/>
+    </Record>
+    <Record Id="DSFBaneDamageBonusEffect" DisplayName="DSF Bane (Damage Bonus Effect)" Parent="AbilityEffects">
+        <FleetGameplayTagFilter Value="Affiliation.DraTar"/>
+        <PowerPerFleetSize Value="1"/>
     </Record>
     <Record Id="EvasionManeuver" DisplayName="Evasion Maneuver" Parent="BlueWing">
         <Abilities>

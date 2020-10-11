@@ -1,5 +1,5 @@
 {
-  "hash": "a67136b480afbf09052de3dfcc4f2b10",
+  "hash": "a70667b1202b102cc06f976d4d1bda2c",
   "records": [
     {
       "id": "Agniar",
@@ -146,6 +146,25 @@
       "parent_id": "Damage"
     },
     {
+      "id": "DratarAssaultCruiser",
+      "attributes": {
+        "BasePower": "10",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "3"
+      },
+      "components": [
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
       "id": "DratarAssaultFrigate",
       "attributes": {
         "BasePower": "9",
@@ -163,6 +182,57 @@
         "ThreatComponent"
       ],
       "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DSFBane",
+      "attributes": {
+        "Abilities": ["DSFBaneDamageBonusAbility"],
+        "BasePower": "7",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "2"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DSFBaneDamageBonusAbility",
+      "attributes": {
+        "AbilityActivationType": "Passive",
+        "AbilityEffects": ["DSFBaneDamageBonusEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Self"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "DSFBaneDamageBonusEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "FleetGameplayTagFilter": "Affiliation.DraTar",
+        "PowerPerFleetSize": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "PowerPerFleetSizeComponent"
+      ],
+      "parent_id": "AbilityEffects"
     },
     {
       "id": "EvasionManeuver",

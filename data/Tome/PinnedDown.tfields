@@ -10,6 +10,7 @@
     <Field Id="Cards" DisplayName="Cards" Description="" Type="Integer" Component="CardDrawComponent" DefaultValue="1"/>
     <Field Id="DiscardedRandomCards" DisplayName="Discarded Random Cards" Description="" Type="Integer" Component="CardDiscardComponent" DefaultValue="0"/>
     <Field Id="Distance" DisplayName="Distance" Description="" Type="Integer" Component="DistanceComponent" DefaultValue="1"/>
+    <Field Id="FleetGameplayTagFilter" DisplayName="Fleet Gameplay Tag Filter" Description="" Type="GameplayTag" Component="PowerPerFleetSizeComponent" DefaultValue="Affiliation.BlueWing"/>
     <Field Id="GlobalGameplayTags" DisplayName="Global Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
     <Field Id="InitialGameplayTags" DisplayName="Initial Gameplay Tags" Description="" Type="GameplayTagList" Component="GameplayTagsComponent" DefaultValue=""/>
     <Field Id="MaxFleetSize" DisplayName="Maximum Fleet Size" Description="" Type="Integer" Component="FleetSizeConditionComponent" DefaultValue="999"/>
@@ -17,6 +18,7 @@
     <Field Id="Overloads" DisplayName="Overloads" Description="" Type="Integer" Component="OverloadComponent" DefaultValue="1"/>
     <Field Id="PowerBonus" DisplayName="Power Bonus" Description="" Type="Integer" Component="PowerBonusComponent" DefaultValue="0"/>
     <Field Id="PowerModifier" DisplayName="Power Modifier" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
+    <Field Id="PowerPerFleetSize" DisplayName="Power Per Fleet Size" Description="" Type="Integer" Component="PowerPerFleetSizeComponent" DefaultValue="0"/>
     <Field Id="PowerPerLocation" DisplayName="Power Per Location" Description="" Type="Integer" Component="PowerPerLocationComponent" DefaultValue="0"/>
     <Field Id="PowerPerThreat" DisplayName="Power Per Threat" Description="" Type="Integer" Component="PowerPerAssignedThreatComponent" DefaultValue="0"/>
     <Field Id="RequiredPowerDifference" DisplayName="Required Power Difference" Description="" Type="Integer" Component="PowerDifferenceConditionComponent" DefaultValue="1"/>
