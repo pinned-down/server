@@ -187,6 +187,7 @@ public class AttackPhaseSystem {
         cards.put("DratarAssaultCruiser", 4);
         cards.put("DBAgony", 1);
         cards.put("DSFBane", 1);
+        cards.put("DSFCurse", 1);
 
         deckList.setCards(cards);
         return deckList;

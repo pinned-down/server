@@ -1,5 +1,5 @@
 {
-  "hash": "a70667b1202b102cc06f976d4d1bda2c",
+  "hash": "7b5361939c90840dabddbf65a3d3b5d0",
   "records": [
     {
       "id": "Agniar",
@@ -184,6 +184,18 @@
       "parent_id": "Dra'tar"
     },
     {
+      "id": "DrawBattleDestiny",
+      "attributes": {
+        "AbilityEffectDuration": "EndOfFight",
+        "BattleDestinyCardsDrawn": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "BattleDestinyComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
       "id": "DSFBane",
       "attributes": {
         "Abilities": ["DSFBaneDamageBonusAbility"],
@@ -233,6 +245,44 @@
         "PowerPerFleetSizeComponent"
       ],
       "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "DSFCurse",
+      "attributes": {
+        "Abilities": ["DSFCurseBattleDestinyAbility"],
+        "BasePower": "8",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "2"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DSFCurseBattleDestinyAbility",
+      "attributes": {
+        "AbilityActivationType": "Fight",
+        "AbilityEffects": ["DrawBattleDestiny"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Self"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
     },
     {
       "id": "EvasionManeuver",

@@ -7,6 +7,7 @@ import de.pinneddown.server.events.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Component
 public class AbilitySystem {
@@ -14,15 +15,23 @@ public class AbilitySystem {
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
 
+    private HashSet<Long> fightAbilityEntities;
+
     public AbilitySystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
 
+        this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(ActionType.ACTIVATE_ABILITY, this::onActivateAbility);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
         this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
+        this.eventManager.addEventHandler(EventType.TURN_PHASE_STARTED, this::onTurnPhaseStarted);
+    }
+
+    private void onReadyToStart(GameEvent gameEvent) {
+        fightAbilityEntities = new HashSet<>();
     }
 
     private void onActivateAbility(GameEvent gameEvent) {
@@ -52,6 +61,11 @@ public class AbilitySystem {
         for (long abilityEntityId : abilityEntities) {
             AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
 
+            if (abilityComponent.getActivationTypeEnum() == AbilityActivationType.FIGHT) {
+                fightAbilityEntities.add(entityId);
+                continue;
+            }
+
             if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.PASSIVE) {
                 continue;
             }
@@ -62,6 +76,8 @@ public class AbilitySystem {
 
     private void onCardRemoved(GameEvent gameEvent) {
         CardRemovedEvent eventData = (CardRemovedEvent)gameEvent.getEventData();
+
+        fightAbilityEntities.remove(eventData.getEntityId());
 
         // Remove ability entities.
         AbilitiesComponent abilitiesComponent =
@@ -102,6 +118,32 @@ public class AbilitySystem {
             long targetEntityId = abilityComponent.getTargetTypeEnum() == TargetType.ASSIGNED_TO
                     ? eventData.getEntityId() : eventData.getDefeatedBy();
             activateAbility(abilityEntityId, targetEntityId);
+        }
+    }
+
+    private void onTurnPhaseStarted(GameEvent gameEvent) {
+        TurnPhaseStartedEvent eventData = (TurnPhaseStartedEvent)gameEvent.getEventData();
+
+        if (eventData.getTurnPhase() != TurnPhase.FIGHT) {
+            return;
+        }
+
+        // Active fight abilities.
+        for (long entityId : fightAbilityEntities) {
+            AbilitiesComponent abilitiesComponent =
+                    entityManager.getComponent(entityId, AbilitiesComponent.class);
+
+            ArrayList<Long> abilityEntities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
+
+            for (long abilityEntityId : abilityEntities) {
+                AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
+
+                if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.FIGHT) {
+                    continue;
+                }
+
+                activateAbility(abilityEntityId, entityId);
+            }
         }
     }
 

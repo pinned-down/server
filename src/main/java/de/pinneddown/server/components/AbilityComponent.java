@@ -32,6 +32,8 @@ public class AbilityComponent implements EntityComponent {
             return AbilityActivationType.DOMINANT;
         } else if ("Immediate".equals(abilityActivationType)) {
             return AbilityActivationType.IMMEDIATE;
+        } else if ("Fight".equals(abilityActivationType)) {
+            return AbilityActivationType.FIGHT;
         } else {
             return AbilityActivationType.PASSIVE;
         }

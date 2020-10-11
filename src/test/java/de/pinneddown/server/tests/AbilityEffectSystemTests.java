@@ -1,21 +1,18 @@
 package de.pinneddown.server.tests;
 
-import de.pinneddown.server.EntityManager;
-import de.pinneddown.server.EventManager;
-import de.pinneddown.server.EventType;
-import de.pinneddown.server.GameplayTags;
+import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectActivatedEvent;
 import de.pinneddown.server.events.AbilityEffectDeactivatedEvent;
+import de.pinneddown.server.events.AttackDeckInitializedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
-import de.pinneddown.server.systems.effects.PowerBonusEffectSystem;
-import de.pinneddown.server.systems.effects.PowerPerAssignedThreatEffectSystem;
-import de.pinneddown.server.systems.effects.PowerPerFleetSizeEffectSystem;
-import de.pinneddown.server.systems.effects.PowerPerLocationEffectSystem;
+import de.pinneddown.server.systems.effects.*;
 import de.pinneddown.server.util.GameplayTagUtils;
 import de.pinneddown.server.util.PowerUtils;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
+
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -199,5 +196,51 @@ public class AbilityEffectSystemTests extends GameSystemTestSuite {
 
         // ASSERT
         assertThat(powerComponent.getPowerModifier()).isEqualTo(powerPerFleetSizeComponent.getPowerPerFleetSize() * fleetSize);
+    }
+
+    @Test
+    void appliesBattleDestinyEffect() {
+        // ARRANGE
+        int battleDestiny = 2;
+        String battleDestinyCardBlueprintId = "TestCard";
+
+        Blueprint destinyCardBlueprint = new Blueprint();
+        destinyCardBlueprint.setId(battleDestinyCardBlueprintId);
+        destinyCardBlueprint.getComponents().add(ThreatComponent.class.getSimpleName());
+        destinyCardBlueprint.getAttributes().put("Threat", battleDestiny);
+
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, destinyCardBlueprint);
+        PowerUtils powerUtils = new PowerUtils(eventManager, entityManager);
+        Random random = new Random();
+
+        BattleDestinyEffectSystem system = new BattleDestinyEffectSystem(eventManager, entityManager, blueprintManager, powerUtils, random);
+
+        // Create attack deck.
+        long attackDeckEntityId = entityManager.createEntity();
+        CardPileComponent cardPileComponent = new CardPileComponent();
+        cardPileComponent.getCardPile().push(battleDestinyCardBlueprintId);
+        entityManager.addComponent(attackDeckEntityId, cardPileComponent);
+
+        eventManager.queueEvent(EventType.ATTACK_DECK_INITIALIZED, new AttackDeckInitializedEvent(attackDeckEntityId));
+
+        // Create effect.
+        long effectEntityId = createIndefiniteEffect(entityManager);
+        BattleDestinyComponent battleDestinyComponent = new BattleDestinyComponent();
+        battleDestinyComponent.setBattleDestinyCardsDrawn(1);
+        entityManager.addComponent(effectEntityId, battleDestinyComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+        PowerComponent powerComponent = new PowerComponent();
+        entityManager.addComponent(targetEntityId, powerComponent);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
+                new AbilityEffectActivatedEvent(effectEntityId, null, null, targetEntityId));
+
+        // ASSERT
+        assertThat(powerComponent.getPowerModifier()).isEqualTo(battleDestiny);
     }
 }

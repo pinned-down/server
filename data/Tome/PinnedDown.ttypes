@@ -2,7 +2,7 @@
 <Types Version="2">
     <Type Name="AbilityActivationType">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Dominant;Immediate;Passive"/>
+            <FundamentalFacet Key="Enumeration" Value="Dominant;Fight;Immediate;Passive"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

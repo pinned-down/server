@@ -134,6 +134,10 @@
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
     </Record>
+    <Record Id="DrawBattleDestiny" DisplayName="Draw Battle Destiny" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="EndOfFight"/>
+        <BattleDestinyCardsDrawn Value="1"/>
+    </Record>
     <Record Id="DSFBane" DisplayName="DSF Bane" Parent="Dra'tar">
         <Abilities>
             <Item Value="DSFBaneDamageBonusAbility"/>
@@ -157,6 +161,23 @@
     <Record Id="DSFBaneDamageBonusEffect" DisplayName="DSF Bane (Damage Bonus Effect)" Parent="AbilityEffects">
         <FleetGameplayTagFilter Value="Affiliation.DraTar"/>
         <PowerPerFleetSize Value="1"/>
+    </Record>
+    <Record Id="DSFCurse" DisplayName="DSF Curse" Parent="Dra'tar">
+        <Abilities>
+            <Item Value="DSFCurseBattleDestinyAbility"/>
+        </Abilities>
+        <BasePower Value="8"/>
+        <BaseStructure Value="100"/>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="2"/>
+    </Record>
+    <Record Id="DSFCurseBattleDestinyAbility" DisplayName="DSF Curse (Battle Destiny Ability)" Parent="Abilities">
+        <AbilityActivationType Value="Fight"/>
+        <AbilityEffects>
+            <Item Value="DrawBattleDestiny"/>
+        </AbilityEffects>
+        <TargetType Value="Self"/>
     </Record>
     <Record Id="EvasionManeuver" DisplayName="Evasion Maneuver" Parent="BlueWing">
         <Abilities>
