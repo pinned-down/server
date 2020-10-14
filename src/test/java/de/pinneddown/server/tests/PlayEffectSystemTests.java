@@ -4,7 +4,6 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.PlayEffectAction;
 import de.pinneddown.server.components.PlayerComponent;
 import de.pinneddown.server.components.ThreatComponent;
-import de.pinneddown.server.components.ThreatModifierComponent;
 import de.pinneddown.server.events.PlayerEntityCreatedEvent;
 import de.pinneddown.server.events.ThreatModifiersChangedEvent;
 import de.pinneddown.server.events.ThreatPoolInitializedEvent;
@@ -17,10 +16,8 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class PlayEffectSystemTests extends GameSystemTestSuite {
+public class PlayEffectSystemTests {
     private static final String EFFECT_CARD_BLUEPRINT_ID = "testEffectCard";
     private static final int EFFECT_CARD_THREAT = 2;
 
@@ -122,14 +119,8 @@ public class PlayEffectSystemTests extends GameSystemTestSuite {
         effectCardBlueprint.getAttributes().put("Threat", EFFECT_CARD_THREAT);
 
         // Create blueprint manager.
-        BlueprintSet blueprints = mock(BlueprintSet.class);
-
-        when(blueprints.getBlueprint(EFFECT_CARD_BLUEPRINT_ID)).thenReturn(effectCardBlueprint);
-
-        BlueprintManager blueprintManager = new BlueprintManager(entityManager);
-        blueprintManager.setBlueprints(blueprints);
-
-        return blueprintManager;
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+        return testUtils.createBlueprintManager(entityManager, effectCardBlueprint);
     }
 
     private PlayEffectSystem createSystem(EntityManager entityManager, EventManager eventManager) {

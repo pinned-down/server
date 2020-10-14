@@ -19,6 +19,12 @@ public class Blueprint {
         this.components = new ArrayList<>();
     }
 
+    public Blueprint(String blueprintId) {
+        this();
+
+        this.id = blueprintId;
+    }
+    
     public String getId() {
         return id;
     }

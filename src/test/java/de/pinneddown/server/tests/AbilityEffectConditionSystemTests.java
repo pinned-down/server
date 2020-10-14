@@ -7,12 +7,20 @@ import de.pinneddown.server.events.AbilityEffectAppliedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
 import de.pinneddown.server.systems.AbilityEffectConditionSystem;
 import de.pinneddown.server.util.GameplayTagUtils;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
+public class AbilityEffectConditionSystemTests {
+    private GameSystemTestUtils testUtils;
     private boolean effectActivated;
+
+    @BeforeEach
+    void beforeEach() {
+        this.testUtils = new GameSystemTestUtils();
+    }
 
     @Test
     void applyEffectIfPowerDifferenceConditionFulfilled() {
@@ -35,7 +43,7 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         // Create effect.
         String testTag = "TestTag";
 
-        long effectEntityId = createIndefiniteEffect(entityManager);
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
         TargetGameplayTagsConditionComponent targetGameplayTagsConditionComponent = new TargetGameplayTagsConditionComponent();
         targetGameplayTagsConditionComponent.setTargetRequiredTags(Lists.newArrayList(testTag));
         entityManager.addComponent(effectEntityId, targetGameplayTagsConditionComponent);
@@ -70,7 +78,7 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         // Create effect.
         String testTag = "TestTag";
 
-        long effectEntityId = createIndefiniteEffect(entityManager);
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
         TargetGameplayTagsConditionComponent targetGameplayTagsConditionComponent = new TargetGameplayTagsConditionComponent();
         targetGameplayTagsConditionComponent.setTargetRequiredTags(Lists.newArrayList(testTag));
         entityManager.addComponent(effectEntityId, targetGameplayTagsConditionComponent);
@@ -125,7 +133,7 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         AbilityEffectConditionSystem system = createSystem(eventManager, entityManager);
 
         // Create effect.
-        long effectEntityId = createIndefiniteEffect(entityManager);
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
         PowerDifferenceConditionComponent powerDifferenceConditionComponent = new PowerDifferenceConditionComponent();
         powerDifferenceConditionComponent.setRequiredPowerDifference(1);
         entityManager.addComponent(effectEntityId, powerDifferenceConditionComponent);
@@ -168,7 +176,7 @@ public class AbilityEffectConditionSystemTests extends GameSystemTestSuite {
         AbilityEffectConditionSystem system = createSystem(eventManager, entityManager);
 
         // Create effect.
-        long effectEntityId = createIndefiniteEffect(entityManager);
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
         FleetSizeConditionComponent fleetSizeConditionComponent = new FleetSizeConditionComponent();
         fleetSizeConditionComponent.setMinFleetSize(minFleetSize);
         fleetSizeConditionComponent.setMaxFleetSize(maxFleetSize);

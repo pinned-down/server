@@ -17,7 +17,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JumpPhaseSystemTests extends GameSystemTestSuite {
+public class JumpPhaseSystemTests {
     private boolean victory;
 
     @Test
@@ -138,11 +138,13 @@ public class JumpPhaseSystemTests extends GameSystemTestSuite {
     }
 
     private JumpPhaseSystem createSystem(EventManager eventManager, EntityManager entityManager, int locationDistance) {
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+
         Blueprint locationBlueprint = new Blueprint();
         locationBlueprint.getComponents().add(DistanceComponent.class.getSimpleName());
         locationBlueprint.getAttributes().put("Distance", locationDistance);
 
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, locationBlueprint);
+        BlueprintManager blueprintManager = testUtils.createBlueprintManager(entityManager, locationBlueprint);
 
         Random random = new Random();
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);

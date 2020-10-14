@@ -10,16 +10,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MainPhaseSystemTests extends GameSystemTestSuite {
+public class MainPhaseSystemTests {
     private boolean mainPhaseEnded;
 
     @Test
     void mainPhaseEndsWhenAllPlayersAreReady() {
         // ARRANGE
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+
         // Set up system.
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, null);
+        BlueprintManager blueprintManager = testUtils.createBlueprintManager(entityManager);
         PlayerManager playerManager = new PlayerManager();
         PlayerReadyManager playerReadyManager = new PlayerReadyManager(playerManager);
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);

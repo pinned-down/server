@@ -17,7 +17,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DamageSystemTests extends GameSystemTestSuite {
+public class DamageSystemTests {
     private DefeatEvent defeatEvent;
 
     @Test
@@ -186,13 +186,15 @@ public class DamageSystemTests extends GameSystemTestSuite {
     }
 
     private DamageSystem createSystem(EventManager eventManager, EntityManager entityManager, int damage) {
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+
         Blueprint damageBlueprint = new Blueprint();
         damageBlueprint.getComponents().add(StructureComponent.class.getSimpleName());
         damageBlueprint.getComponents().add(PowerComponent.class.getSimpleName());
         damageBlueprint.getAttributes().put("PowerModifier", -1);
         damageBlueprint.getAttributes().put("StructureModifier", damage);
 
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, damageBlueprint);
+        BlueprintManager blueprintManager = testUtils.createBlueprintManager(entityManager, damageBlueprint);
 
         Random random = new Random();
 

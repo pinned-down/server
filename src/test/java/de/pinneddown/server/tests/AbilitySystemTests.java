@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class AbilitySystemTests extends GameSystemTestSuite {
+public class AbilitySystemTests {
     private static final String ABILITY_BLUEPRINT_ID = "testAbility";
     private static final String PASSIVE_ABILITY_BLUEPRINT_ID = "testPassiveAbility";
     private static final String DOMINANT_ABILITY_BLUEPRINT_ID = "testDominantAbility";
@@ -165,11 +163,11 @@ public class AbilitySystemTests extends GameSystemTestSuite {
 
     private BlueprintManager createBlueprintManager(EntityManager entityManager, String effect) {
         // Create effecs.
-        Blueprint effectBlueprint = new Blueprint();
+        Blueprint effectBlueprint = new Blueprint(EFFECT_BLUEPRINT_ID);
         effectBlueprint.getComponents().add(PowerComponent.class.getSimpleName());
         effectBlueprint.getAttributes().put("PowerModifier", 1);
 
-        Blueprint overloadEffectBlueprint = new Blueprint();
+        Blueprint overloadEffectBlueprint = new Blueprint(OVERLOAD_EFFECT_BLUEPRINT_ID);
         overloadEffectBlueprint.getComponents().add(OverloadComponent.class.getSimpleName());
         overloadEffectBlueprint.getAttributes().put("Overloads", 1);
 
@@ -177,40 +175,42 @@ public class AbilitySystemTests extends GameSystemTestSuite {
         ArrayList<String> effects = new ArrayList<>();
         effects.add(effect);
 
-        Blueprint abilityBlueprint = new Blueprint();
+        Blueprint abilityBlueprint = new Blueprint(ABILITY_BLUEPRINT_ID);
         abilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
         abilityBlueprint.getAttributes().put("AbilityEffects", effects);
 
         // Create passive ability.
-        Blueprint passiveAbilityBlueprint = new Blueprint();
+        Blueprint passiveAbilityBlueprint = new Blueprint(PASSIVE_ABILITY_BLUEPRINT_ID);
         passiveAbilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
         passiveAbilityBlueprint.getAttributes().put("AbilityEffects", effects);
         passiveAbilityBlueprint.getAttributes().put("AbilityActivationType", "Passive");
 
         // Create dominant ability.
-        Blueprint dominantAbilityBlueprint = new Blueprint();
+        Blueprint dominantAbilityBlueprint = new Blueprint(DOMINANT_ABILITY_BLUEPRINT_ID);
         dominantAbilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
         dominantAbilityBlueprint.getAttributes().put("AbilityEffects", effects);
         dominantAbilityBlueprint.getAttributes().put("AbilityActivationType", "Dominant");
 
         // Create fight ability.
-        Blueprint fightAbilityBlueprint = new Blueprint();
+        Blueprint fightAbilityBlueprint = new Blueprint(FIGHT_ABILITY_BLUEPRINT_ID);
         fightAbilityBlueprint.getComponents().add(AbilityComponent.class.getSimpleName());
         fightAbilityBlueprint.getAttributes().put("AbilityEffects", effects);
         fightAbilityBlueprint.getAttributes().put("AbilityActivationType", "Fight");
 
         // Create blueprint manager.
-        BlueprintSet blueprints = mock(BlueprintSet.class);
+        ArrayList<Blueprint> blueprints = new ArrayList<>();
+        blueprints.add(abilityBlueprint);
+        blueprints.add(passiveAbilityBlueprint);
+        blueprints.add(dominantAbilityBlueprint);
+        blueprints.add(fightAbilityBlueprint);
+        blueprints.add(effectBlueprint);
+        blueprints.add(overloadEffectBlueprint);
 
-        when(blueprints.getBlueprint(ABILITY_BLUEPRINT_ID)).thenReturn(abilityBlueprint);
-        when(blueprints.getBlueprint(PASSIVE_ABILITY_BLUEPRINT_ID)).thenReturn(passiveAbilityBlueprint);
-        when(blueprints.getBlueprint(DOMINANT_ABILITY_BLUEPRINT_ID)).thenReturn(dominantAbilityBlueprint);
-        when(blueprints.getBlueprint(FIGHT_ABILITY_BLUEPRINT_ID)).thenReturn(fightAbilityBlueprint);
-        when(blueprints.getBlueprint(EFFECT_BLUEPRINT_ID)).thenReturn(effectBlueprint);
-        when(blueprints.getBlueprint(OVERLOAD_EFFECT_BLUEPRINT_ID)).thenReturn(overloadEffectBlueprint);
+        BlueprintSet blueprintSet = new BlueprintSet();
+        blueprintSet.setBlueprints(blueprints);
 
         BlueprintManager blueprintManager = new BlueprintManager(entityManager);
-        blueprintManager.setBlueprints(blueprints);
+        blueprintManager.setBlueprints(blueprintSet);
 
         return blueprintManager;
     }

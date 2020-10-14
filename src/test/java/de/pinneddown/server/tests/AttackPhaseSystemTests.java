@@ -16,7 +16,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AttackPhaseSystemTests extends GameSystemTestSuite {
+public class AttackPhaseSystemTests {
     private ArrayList<Long> cardsPlayed;
 
     @BeforeEach
@@ -169,7 +169,9 @@ public class AttackPhaseSystemTests extends GameSystemTestSuite {
         Blueprint enemyBlueprint = new Blueprint();
         enemyBlueprint.getComponents().add(ThreatComponent.class.getSimpleName());
         enemyBlueprint.getAttributes().put("Threat", enemyThreatCost);
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, enemyBlueprint);
+
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+        BlueprintManager blueprintManager = testUtils.createBlueprintManager(entityManager, enemyBlueprint);
 
         Random random = new Random();
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);

@@ -18,7 +18,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CardDrawSystemTests extends GameSystemTestSuite {
+public class CardDrawSystemTests {
     @Test
     void playersDrawInitialCards() {
         // ARRANGE
@@ -155,8 +155,10 @@ public class CardDrawSystemTests extends GameSystemTestSuite {
     }
 
     private CardDrawSystem createSystem(EventManager eventManager, EntityManager entityManager) {
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+
         PlayerManager playerManager = new PlayerManager();
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, null);
+        BlueprintManager blueprintManager = testUtils.createBlueprintManager(entityManager);
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
         PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
         Random random = new Random();

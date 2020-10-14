@@ -12,10 +12,12 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class FlagshipSystemTests extends GameSystemTestSuite {
+public class FlagshipSystemTests {
     @Test
     void playersPutFlagshipsIntoPlay() throws IOException {
         // ARRANGE
+        GameSystemTestUtils testUtils = new GameSystemTestUtils();
+
         EventManager eventManager = new EventManager();
         EntityManager entityManager = new EntityManager(eventManager);
         PlayerManager playerManager = new PlayerManager();
@@ -23,7 +25,7 @@ public class FlagshipSystemTests extends GameSystemTestSuite {
         Blueprint flagshipBlueprint = new Blueprint();
         flagshipBlueprint.getComponents().add(OwnerComponent.class.getSimpleName());
 
-        BlueprintManager blueprintManager = createMockBlueprintManager(entityManager, flagshipBlueprint);
+        BlueprintManager blueprintManager = testUtils.createBlueprintManager(entityManager, flagshipBlueprint);
 
         FlagshipSystem system = new FlagshipSystem(eventManager, playerManager, entityManager, blueprintManager);
 

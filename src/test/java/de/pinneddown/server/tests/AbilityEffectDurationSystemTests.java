@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AbilityEffectDurationSystemTests extends GameSystemTestSuite {
+public class AbilityEffectDurationSystemTests {
     @Test
     void removesEffectAtEndOfFight() {
         // ARRANGE
