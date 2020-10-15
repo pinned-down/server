@@ -108,7 +108,7 @@ public class FightPhaseSystem {
         }
 
         // Unassign starship.
-        assignmentUtils.assignTo(playerEntityId, -1);
+        assignmentUtils.assignTo(playerEntityId, EntityManager.INVALID_ENTITY);
         assignedStarships.remove(playerEntityId);
 
         // Check if all fights resolved.

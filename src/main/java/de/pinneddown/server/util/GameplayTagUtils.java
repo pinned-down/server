@@ -6,6 +6,7 @@ import de.pinneddown.server.EventType;
 import de.pinneddown.server.GameEvent;
 import de.pinneddown.server.components.AbilityComponent;
 import de.pinneddown.server.components.GameplayTagsComponent;
+import de.pinneddown.server.events.GameplayTagsChangedEvent;
 import de.pinneddown.server.events.GlobalGameplayTagsChangedEvent;
 import de.pinneddown.server.events.GlobalGameplayTagsInitializedEvent;
 import org.springframework.stereotype.Component;
@@ -55,12 +56,30 @@ public class GameplayTagUtils {
         gameplayTags.add(gameplayTag);
     }
 
-    public void addGameplayTagUnique(ArrayList<String> gameplayTags, String gameplayTag) {
-        if (gameplayTags.contains(gameplayTag)) {
+    public void addGameplayTagUnique(long entityId, String gameplayTag) {
+        GameplayTagsComponent entityGameplayTagsComponent =
+                entityManager.getComponent(entityId, GameplayTagsComponent.class);
+
+        if (entityGameplayTagsComponent == null) {
             return;
         }
 
+        if (!addGameplayTagUnique(entityGameplayTagsComponent.getTemporaryGameplayTags(), gameplayTag)) {
+            return;
+        }
+
+        // Notify listeners.
+        ArrayList<String> gameplayTags = getGameplayTags(entityId);
+        eventManager.queueEvent(EventType.GAMEPLAY_TAGS_CHANGED, new GameplayTagsChangedEvent(entityId, gameplayTags));
+    }
+
+    public boolean addGameplayTagUnique(ArrayList<String> gameplayTags, String gameplayTag) {
+        if (gameplayTags.contains(gameplayTag)) {
+            return false;
+        }
+
         gameplayTags.add(gameplayTag);
+        return true;
     }
 
     public void addGameplayTagsUnique(ArrayList<String> gameplayTags, ArrayList<String> newTags) {

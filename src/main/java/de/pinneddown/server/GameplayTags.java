@@ -5,6 +5,8 @@ public class GameplayTags {
 
     public static final String KEYWORD_FLAGSHIP = "Keyword.Flagship";
 
+    public static final String STATUS_DAMAGED = "Status.Damaged";
+
     public static final String TURNPHASE = "TurnPhase";
     public static final String TURNPHASE_MAIN = "TurnPhase.Main";
     public static final String TURNPHASE_ATTACK = "TurnPhase.Attack";

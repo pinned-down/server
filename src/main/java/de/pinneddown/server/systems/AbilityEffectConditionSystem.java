@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
 import de.pinneddown.server.util.GameplayTagUtils;
+import jdk.nashorn.internal.ir.Assignment;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class AbilityEffectConditionSystem {
         this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_REMOVED, this::onAbilityEffectRemoved);
         this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
         this.eventManager.addEventHandler(EventType.STARSHIP_POWER_CHANGED, this::onStarshipPowerChanged);
+        this.eventManager.addEventHandler(EventType.GAMEPLAY_TAGS_CHANGED, this::onGameplayTagsChanged);
         this.eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::onGlobalGameplayTagsChanged);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
@@ -62,11 +64,16 @@ public class AbilityEffectConditionSystem {
     private void onStarshipAssigned(GameEvent gameEvent) {
         StarshipAssignedEvent eventData = (StarshipAssignedEvent)gameEvent.getEventData();
         checkConditionsAndApplyEffect(eventData.getAssignedStarship());
+        checkConditionsAndApplyEffect(eventData.getAssignedTo());
     }
 
     private void onStarshipPowerChanged(GameEvent gameEvent) {
         StarshipPowerChangedEvent eventData = (StarshipPowerChangedEvent)gameEvent.getEventData();
         checkConditionsAndApplyEffect(eventData.getEntityId());
+    }
+
+    private void onGameplayTagsChanged(GameEvent gameEvent) {
+        updateAllEffects();
     }
 
     private void onGlobalGameplayTagsChanged(GameEvent gameEvent) {
@@ -154,6 +161,10 @@ public class AbilityEffectConditionSystem {
             return false;
         }
 
+        if (!checkAssignedStarshipGameplayTagsCondition(effectEntityId, targetEntityId)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -225,5 +236,29 @@ public class AbilityEffectConditionSystem {
 
         return fleetSize >= fleetSizeConditionComponent.getMinFleetSize() &&
                 fleetSize <= fleetSizeConditionComponent.getMaxFleetSize();
+    }
+
+    private boolean checkAssignedStarshipGameplayTagsCondition(long effectEntityId, long targetEntityId) {
+        AssignedStarshipGameplayTagsConditionComponent assignedStarshipGameplayTagsConditionComponent =
+                entityManager.getComponent(effectEntityId, AssignedStarshipGameplayTagsConditionComponent.class);
+
+        if (assignedStarshipGameplayTagsConditionComponent == null) {
+            return true;
+        }
+
+        // Check if assigned.
+        AssignmentComponent assignmentComponent = entityManager.getComponent(targetEntityId, AssignmentComponent.class);
+
+        if (assignmentComponent == null) {
+            return false;
+        }
+
+        // Check gameplay tags.
+        long assignedTo = assignmentComponent.getAssignedTo();
+
+        return gameplayTagUtils.matchesTagRequirements(
+                assignedTo,
+                assignedStarshipGameplayTagsConditionComponent.getAssignedStarshipRequiredTags(),
+                assignedStarshipGameplayTagsConditionComponent.getAssignedStarshipBlockedTags());
     }
 }

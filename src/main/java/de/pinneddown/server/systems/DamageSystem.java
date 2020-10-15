@@ -3,6 +3,7 @@ package de.pinneddown.server.systems;
 import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.GameplayTagUtils;
 import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.PowerUtils;
 import org.springframework.stereotype.Component;
@@ -19,19 +20,21 @@ public class DamageSystem {
     private Random random;
     private PlayerUtils playerUtils;
     private PowerUtils powerUtils;
+    private GameplayTagUtils gameplayTagUtils;
 
     private long damageDeckEntityId;
     private HashSet<Long> damageEntities;
     private boolean godModeEnabled;
 
     public DamageSystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
-                        Random random, PlayerUtils playerUtils, PowerUtils powerUtils) {
+                        Random random, PlayerUtils playerUtils, PowerUtils powerUtils, GameplayTagUtils gameplayTagUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
         this.random = random;
         this.playerUtils = playerUtils;
         this.powerUtils = powerUtils;
+        this.gameplayTagUtils = gameplayTagUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.STARSHIP_DEFEATED, this::onStarshipDefeated);
@@ -128,6 +131,12 @@ public class DamageSystem {
                 new StarshipDamagedEvent(entityId, damageEntityId, damageBlueprintId);
         eventManager.queueEvent(EventType.STARSHIP_DAMAGED, starshipDamagedEvent);
 
+        // Check structure.
+        if (starshipStructureComponent.getCurrentStructure() <= 0) {
+            destroyStarship(entityId);
+            return;
+        }
+
         // Update power.
         PowerComponent starshipPowerComponent = entityManager.getComponent(entityId, PowerComponent.class);
         PowerComponent damagePowerComponent = entityManager.getComponent(damageEntityId, PowerComponent.class);
@@ -136,10 +145,8 @@ public class DamageSystem {
             powerUtils.setPowerModifier(entityId,starshipPowerComponent.getPowerModifier() + damagePowerComponent.getPowerModifier());
         }
 
-        // Check structure.
-        if (starshipStructureComponent.getCurrentStructure() <= 0) {
-            destroyStarship(entityId);
-        }
+        // Update gameplay tags.
+        gameplayTagUtils.addGameplayTagUnique(entityId, GameplayTags.STATUS_DAMAGED);
     }
 
     private void destroyStarship(long entityId) {

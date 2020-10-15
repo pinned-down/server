@@ -4,6 +4,8 @@
     <Field Id="AbilityActivationType" DisplayName="Ability Activation Type" Description="" Type="AbilityActivationType" Component="AbilityComponent" DefaultValue="Passive"/>
     <Field Id="AbilityEffectDuration" DisplayName="Ability Effect Duration" Description="" Type="AbilityEffectDuration" Component="AbilityEffectComponent" DefaultValue="Indefinite"/>
     <Field Id="AbilityEffects" DisplayName="Ability Effects" Description="" Type="EffectList" Component="AbilityComponent" DefaultValue=""/>
+    <Field Id="AssignedStarshipBlockedTags" DisplayName="Assigned Starship Blocked Tags" Description="" Type="GameplayTagList" Component="AssignedStarshipGameplayTagsConditionComponent"/>
+    <Field Id="AssignedStarshipRequiredTags" DisplayName="Assigned Starship Required Tags" Description="" Type="GameplayTagList" Component="AssignedStarshipGameplayTagsConditionComponent"/>
     <Field Id="BasePower" DisplayName="Base Power" Description="" Type="Integer" Component="PowerComponent" DefaultValue="0"/>
     <Field Id="BaseStructure" DisplayName="Base Structure" Description="" Type="Integer" Component="StructureComponent" DefaultValue="100"/>
     <Field Id="BattleDestinyCardsDrawn" DisplayName="Battle Destiny Cards Drawn" Description="" Type="Integer" Component="BattleDestinyComponent" DefaultValue="0"/>

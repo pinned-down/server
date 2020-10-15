@@ -97,6 +97,7 @@ public class AttackPhaseSystem {
             // Check top-most card.
             String cardBlueprintId = attackDeck.getCardPile().pop();
             long entityId = blueprintManager.createEntity(cardBlueprintId);
+            entityManager.addComponent(entityId, new AssignmentComponent());
             enemyStarships.add(entityId);
 
             int cardThreat = threatUtils.getThreat(entityId);
@@ -185,9 +186,11 @@ public class AttackPhaseSystem {
 
         cards.put("DratarAssaultFrigate", 4);
         cards.put("DratarAssaultCruiser", 4);
+        cards.put("DratarBehemoth", 3);
         cards.put("DBAgony", 1);
         cards.put("DSFBane", 1);
         cards.put("DSFCurse", 1);
+        cards.put("DSFDecay", 1);
 
         deckList.setCards(cards);
         return deckList;

@@ -94,9 +94,8 @@ public class FightPhaseSystemTests {
         // Setup player ship.
         long playerShipId = createStarship(entityManager, 2);
 
-        AssignmentComponent assignmentComponent = new AssignmentComponent();
+        AssignmentComponent assignmentComponent = entityManager.getComponent(playerShipId, AssignmentComponent.class);
         assignmentComponent.setAssignedTo(enemyShipId);
-        entityManager.addComponent(playerShipId, assignmentComponent);
 
         // Register listener.
         eventData = null;
@@ -181,6 +180,7 @@ public class FightPhaseSystemTests {
         powerComponent.setBasePower(power);
         entityManager.addComponent(entityId, powerComponent);
         entityManager.addComponent(entityId, new BlueprintComponent());
+        entityManager.addComponent(entityId, new AssignmentComponent());
 
         return entityId;
     }

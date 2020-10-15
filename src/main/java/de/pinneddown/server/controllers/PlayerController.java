@@ -50,6 +50,7 @@ public class PlayerController extends WebSocketController {
         eventManager.addEventHandler(EventType.ABILITY_EFFECT_ACTIVATED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.ABILITY_EFFECT_DEACTIVATED, this::sendEventToClients);
         eventManager.addEventHandler(EventType.BATTLE_DESTINY_DRAWN, this::sendEventToClients);
+        eventManager.addEventHandler(EventType.GAMEPLAY_TAGS_CHANGED, this::sendEventToClients);
     }
 
     @MessageMapping("/join")

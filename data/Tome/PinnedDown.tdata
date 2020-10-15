@@ -134,6 +134,17 @@
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
     </Record>
+    <Record Id="DratarBehemoth" DisplayName="Dra'tar Behemoth" Parent="Dra'tar">
+        <BasePower Value="12"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="4"/>
+    </Record>
     <Record Id="DrawBattleDestiny" DisplayName="Draw Battle Destiny" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
         <BattleDestinyCardsDrawn Value="1"/>
@@ -178,6 +189,33 @@
             <Item Value="DrawBattleDestiny"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
+    </Record>
+    <Record Id="DSFDecay" DisplayName="DSF Decay" Parent="Dra'tar">
+        <Abilities>
+            <Item Value="DSFDecayDamageBonusAbility"/>
+        </Abilities>
+        <BasePower Value="8"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="2"/>
+    </Record>
+    <Record Id="DSFDecayDamageBonusAbility" DisplayName="DSF Decay (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="DSFDecayDamageBonusEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Self"/>
+    </Record>
+    <Record Id="DSFDecayDamageBonusEffect" DisplayName="DSF Decay (Damage Bonus Effect)" Parent="AbilityEffects">
+        <AssignedStarshipBlockedTags/>
+        <AssignedStarshipRequiredTags>
+            <Item Value="Status.Damaged"/>
+        </AssignedStarshipRequiredTags>
+        <PowerBonus Value="2"/>
     </Record>
     <Record Id="EvasionManeuver" DisplayName="Evasion Maneuver" Parent="BlueWing">
         <Abilities>

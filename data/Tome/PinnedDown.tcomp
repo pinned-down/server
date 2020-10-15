@@ -3,6 +3,7 @@
     <Name>AbilitiesComponent</Name>
     <Name>AbilityComponent</Name>
     <Name>AbilityEffectComponent</Name>
+    <Name>AssignedStarshipGameplayTagsConditionComponent</Name>
     <Name>BattleDestinyComponent</Name>
     <Name>CardDiscardComponent</Name>
     <Name>CardDrawComponent</Name>

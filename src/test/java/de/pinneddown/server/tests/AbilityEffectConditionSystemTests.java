@@ -114,6 +114,87 @@ public class AbilityEffectConditionSystemTests {
         activateEffectWithFleetSizeConditionAndAssertEffectApplied(3, 1,2,false);
     }
 
+    @Test
+    void applyEffectIfAssignedStarshipGameplayTagsConditionFulfilled() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        AbilityEffectConditionSystem system = createSystem(eventManager, entityManager);
+
+        // Create effect.
+        String testTag = "TestTag";
+
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
+        AssignedStarshipGameplayTagsConditionComponent assignedStarshipGameplayTagsConditionComponent =
+                new AssignedStarshipGameplayTagsConditionComponent();
+        assignedStarshipGameplayTagsConditionComponent.setAssignedStarshipRequiredTags(Lists.newArrayList(testTag));
+        entityManager.addComponent(effectEntityId, assignedStarshipGameplayTagsConditionComponent);
+
+        // Create assigned starship.
+        long assignedTo = entityManager.createEntity();
+        GameplayTagsComponent gameplayTagsComponent = new GameplayTagsComponent();
+        gameplayTagsComponent.setTemporaryGameplayTags(Lists.newArrayList(testTag));
+        entityManager.addComponent(assignedTo, gameplayTagsComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+        AssignmentComponent assignmentComponent = new AssignmentComponent();
+        assignmentComponent.setAssignedTo(assignedTo);
+        entityManager.addComponent(targetEntityId, assignmentComponent);
+
+        // Register for event.
+        effectActivated = false;
+
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_ACTIVATED, this::onAbilityEffectActivated);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED,
+                new AbilityEffectAppliedEvent(effectEntityId, targetEntityId));
+
+        // ASSERT
+        assertThat(effectActivated).isTrue();
+    }
+
+    @Test
+    void doesNotApplyEffectIfAssignedStarshipGameplayTagsConditionIsNotFulfilled() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        AbilityEffectConditionSystem system = createSystem(eventManager, entityManager);
+
+        // Create effect.
+        String testTag = "TestTag";
+
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
+        AssignedStarshipGameplayTagsConditionComponent assignedStarshipGameplayTagsConditionComponent =
+                new AssignedStarshipGameplayTagsConditionComponent();
+        assignedStarshipGameplayTagsConditionComponent.setAssignedStarshipRequiredTags(Lists.newArrayList(testTag));
+        entityManager.addComponent(effectEntityId, assignedStarshipGameplayTagsConditionComponent);
+
+        // Create assigned starship.
+        long assignedTo = entityManager.createEntity();
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+        AssignmentComponent assignmentComponent = new AssignmentComponent();
+        assignmentComponent.setAssignedTo(assignedTo);
+        entityManager.addComponent(targetEntityId, assignmentComponent);
+
+        // Register for event.
+        effectActivated = false;
+
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_ACTIVATED, this::onAbilityEffectActivated);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED,
+                new AbilityEffectAppliedEvent(effectEntityId, targetEntityId));
+
+        // ASSERT
+        assertThat(effectActivated).isFalse();
+    }
+
     private AbilityEffectConditionSystem createSystem(EventManager eventManager, EntityManager entityManager) {
         GameplayTagUtils gameplayTagUtils = new GameplayTagUtils(eventManager, entityManager);
 

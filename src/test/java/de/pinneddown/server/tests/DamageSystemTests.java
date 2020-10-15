@@ -7,6 +7,7 @@ import de.pinneddown.server.events.ReadyToStartEvent;
 import de.pinneddown.server.events.StarshipDefeatedEvent;
 import de.pinneddown.server.events.StarshipOverloadedEvent;
 import de.pinneddown.server.systems.DamageSystem;
+import de.pinneddown.server.util.GameplayTagUtils;
 import de.pinneddown.server.util.PlayerUtils;
 import de.pinneddown.server.util.PowerUtils;
 import de.pinneddown.server.util.ThreatUtils;
@@ -85,6 +86,30 @@ public class DamageSystemTests {
         // ASSERT
         PowerComponent powerComponent = entityManager.getComponent(playerShipId, PowerComponent.class);
         assertThat(powerComponent.getPowerModifier()).isLessThan(0);
+    }
+
+    @Test
+    void defeatedPlayerShipsAreTagged() {
+        // ARRANGE
+        // Setup system.
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+        int damage = -10;
+
+        DamageSystem system = createSystem(eventManager, entityManager, damage);
+
+        eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
+
+        // Setup player ship.
+        long playerShipId = createPlayerShip(entityManager, 0);
+
+        // ACT
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId, 0L));
+
+        // ASSERT
+        GameplayTagsComponent gameplayTagsComponent = entityManager.getComponent(playerShipId, GameplayTagsComponent.class);
+
+        assertThat(gameplayTagsComponent.getTemporaryGameplayTags()).contains(GameplayTags.STATUS_DAMAGED);
     }
 
     @Test
@@ -201,8 +226,10 @@ public class DamageSystemTests {
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
         PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
         PowerUtils powerUtils = new PowerUtils(eventManager, entityManager);
+        GameplayTagUtils gameplayTagUtils = new GameplayTagUtils(eventManager, entityManager);
 
-        return new DamageSystem(eventManager, entityManager, blueprintManager, random, playerUtils, powerUtils);
+        return new DamageSystem(eventManager, entityManager, blueprintManager, random, playerUtils, powerUtils,
+                gameplayTagUtils);
     }
 
     private long createPlayerShip(EntityManager entityManager, long playerEntityId) {
@@ -221,6 +248,7 @@ public class DamageSystemTests {
         entityManager.addComponent(playerShipId, ownerComponent);
 
         entityManager.addComponent(playerShipId, new BlueprintComponent());
+        entityManager.addComponent(playerShipId, new GameplayTagsComponent());
 
         return playerShipId;
     }

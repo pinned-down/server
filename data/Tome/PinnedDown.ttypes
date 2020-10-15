@@ -50,7 +50,7 @@
     </Type>
     <Type Name="GameplayTag">
         <FundamentalFacets>
-            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;CardType.Damage;CardType.Effect;CardType.Location;CardType.Starship;Keyword.Detector;Keyword.Flagship;LocationType.Planet;LocationType.Space;LocationType.Station;TurnPhase.Fight"/>
+            <FundamentalFacet Key="Enumeration" Value="Affiliation.BlueWing;Affiliation.DraTar;CardType.Damage;CardType.Effect;CardType.Location;CardType.Starship;Keyword.Detector;Keyword.Flagship;LocationType.Planet;LocationType.Space;LocationType.Station;Status.Damaged;TurnPhase.Fight"/>
         </FundamentalFacets>
         <ConstrainingFacets/>
     </Type>

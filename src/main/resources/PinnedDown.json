@@ -1,5 +1,5 @@
 {
-  "hash": "7b5361939c90840dabddbf65a3d3b5d0",
+  "hash": "611391d6a1fa50ae5f5f79cecb974deb",
   "records": [
     {
       "id": "Agniar",
@@ -184,6 +184,25 @@
       "parent_id": "Dra'tar"
     },
     {
+      "id": "DratarBehemoth",
+      "attributes": {
+        "BasePower": "12",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "4"
+      },
+      "components": [
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
       "id": "DrawBattleDestiny",
       "attributes": {
         "AbilityEffectDuration": "EndOfFight",
@@ -283,6 +302,59 @@
         "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
+    },
+    {
+      "id": "DSFDecay",
+      "attributes": {
+        "Abilities": ["DSFDecayDamageBonusAbility"],
+        "BasePower": "8",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "2"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DSFDecayDamageBonusAbility",
+      "attributes": {
+        "AbilityActivationType": "Passive",
+        "AbilityEffects": ["DSFDecayDamageBonusEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Self"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "DSFDecayDamageBonusEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "AssignedStarshipBlockedTags": [],
+        "AssignedStarshipRequiredTags": ["Status.Damaged"],
+        "PowerBonus": "2"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "AssignedStarshipGameplayTagsConditionComponent",
+        "PowerBonusComponent"
+      ],
+      "parent_id": "AbilityEffects"
     },
     {
       "id": "EvasionManeuver",
