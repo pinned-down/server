@@ -27,7 +27,7 @@ public class AbilityComponent implements EntityComponent {
         this.abilityActivationType = abilityActivationType;
     }
 
-    public AbilityActivationType getActivationTypeEnum() {
+    public AbilityActivationType getAbilityActivationTypeEnum() {
         if ("Dominant".equals(abilityActivationType)) {
             return AbilityActivationType.DOMINANT;
         } else if ("Immediate".equals(abilityActivationType)) {

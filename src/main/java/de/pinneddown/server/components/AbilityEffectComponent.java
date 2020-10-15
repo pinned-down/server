@@ -16,7 +16,7 @@ public class AbilityEffectComponent implements EntityComponent {
         this.abilityEffectDuration = abilityEffectDuration;
     }
 
-    public AbilityEffectDuration getDuration() {
+    public AbilityEffectDuration getAbilityEffectDurationEnum() {
         if (abilityEffectDuration.equals("EndOfFight")) {
             return AbilityEffectDuration.END_OF_FIGHT;
         } else {

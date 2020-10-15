@@ -83,7 +83,7 @@ public class PowerPerAssignedThreatEffectSystem {
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
 
-        if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
+        if (abilityEffectComponent.getAbilityEffectDurationEnum() == AbilityEffectDuration.INDEFINITE) {
             powerPerAssignedThreatEffects.add(effectEntityId);
         }
     }

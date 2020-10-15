@@ -39,7 +39,7 @@ public class AbilityEffectDurationSystem {
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(eventData.getEffectEntityId(), AbilityEffectComponent.class);
 
-        switch (abilityEffectComponent.getDuration()) {
+        switch (abilityEffectComponent.getAbilityEffectDurationEnum()) {
             case END_OF_FIGHT:
                 effectsExpiringAtEndOfFight.add(eventData.getEffectEntityId());
                 break;
@@ -71,7 +71,7 @@ public class AbilityEffectDurationSystem {
             AbilityEffectComponent abilityEffectComponent =
                     entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
 
-            if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE &&
+            if (abilityEffectComponent.getAbilityEffectDurationEnum() == AbilityEffectDuration.INDEFINITE &&
                 abilityEffectComponent.getTargetEntityId() == eventData.getEntityId()) {
                 removeEffect(effectEntityId);
             }

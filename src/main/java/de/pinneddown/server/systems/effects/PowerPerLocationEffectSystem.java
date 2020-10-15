@@ -83,7 +83,7 @@ public class PowerPerLocationEffectSystem {
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
 
-        if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
+        if (abilityEffectComponent.getAbilityEffectDurationEnum() == AbilityEffectDuration.INDEFINITE) {
             powerPerLocationEffects.add(effectEntityId);
         }
     }

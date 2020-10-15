@@ -97,7 +97,7 @@ public class PowerPerFleetSizeEffectSystem {
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(effectEntityId, AbilityEffectComponent.class);
 
-        if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
+        if (abilityEffectComponent.getAbilityEffectDurationEnum() == AbilityEffectDuration.INDEFINITE) {
             powerPerFleetSizeEffects.add(effectEntityId);
         }
     }

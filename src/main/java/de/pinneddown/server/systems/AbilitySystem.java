@@ -61,12 +61,12 @@ public class AbilitySystem {
         for (long abilityEntityId : abilityEntities) {
             AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
 
-            if (abilityComponent.getActivationTypeEnum() == AbilityActivationType.FIGHT) {
+            if (abilityComponent.getAbilityActivationTypeEnum() == AbilityActivationType.FIGHT) {
                 fightAbilityEntities.add(entityId);
                 continue;
             }
 
-            if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.PASSIVE) {
+            if (abilityComponent.getAbilityActivationTypeEnum() != AbilityActivationType.PASSIVE) {
                 continue;
             }
 
@@ -111,7 +111,7 @@ public class AbilitySystem {
         for (long abilityEntityId : abilityEntities) {
             AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
 
-            if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.DOMINANT) {
+            if (abilityComponent.getAbilityActivationTypeEnum() != AbilityActivationType.DOMINANT) {
                 continue;
             }
 
@@ -138,7 +138,7 @@ public class AbilitySystem {
             for (long abilityEntityId : abilityEntities) {
                 AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
 
-                if (abilityComponent.getActivationTypeEnum() != AbilityActivationType.FIGHT) {
+                if (abilityComponent.getAbilityActivationTypeEnum() != AbilityActivationType.FIGHT) {
                     continue;
                 }
 

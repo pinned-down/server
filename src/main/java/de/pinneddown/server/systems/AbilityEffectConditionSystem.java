@@ -46,7 +46,7 @@ public class AbilityEffectConditionSystem {
         AbilityEffectComponent abilityEffectComponent =
                 entityManager.getComponent(eventData.getEffectEntityId(), AbilityEffectComponent.class);
 
-        if (abilityEffectComponent.getDuration() == AbilityEffectDuration.INDEFINITE) {
+        if (abilityEffectComponent.getAbilityEffectDurationEnum() == AbilityEffectDuration.INDEFINITE) {
             indefiniteEffects.put(eventData.getEffectEntityId(), eventData.getTargetEntityId());
         }
 
