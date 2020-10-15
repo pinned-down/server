@@ -167,23 +167,10 @@ public class AbilitySystem {
                 abilityEffectComponent.setTargetEntityId(targetEntityId);
             }
 
-            // Apply overloads.
-            applyOverloads(effectEntityId, targetEntityId);
-
             // Notify listeners.
             AbilityEffectAppliedEvent abilityEffectAppliedEvent =
                     new AbilityEffectAppliedEvent(effectEntityId, targetEntityId);
             eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED, abilityEffectAppliedEvent);
-        }
-    }
-
-    private void applyOverloads(long effectEntityId, long targetEntityId) {
-        OverloadComponent overloadComponent = entityManager.getComponent(effectEntityId, OverloadComponent.class);
-
-        if (overloadComponent != null) {
-            for (int i = 0; i < overloadComponent.getOverloads(); ++i) {
-                eventManager.queueEvent(EventType.STARSHIP_OVERLOADED, new StarshipOverloadedEvent(targetEntityId));
-            }
         }
     }
 }

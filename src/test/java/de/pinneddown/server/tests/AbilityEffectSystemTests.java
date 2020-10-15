@@ -1,6 +1,7 @@
 package de.pinneddown.server.tests;
 
 import de.pinneddown.server.*;
+import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectActivatedEvent;
 import de.pinneddown.server.events.AbilityEffectDeactivatedEvent;
@@ -13,12 +14,14 @@ import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AbilityEffectSystemTests {
     private GameSystemTestUtils testUtils;
+    private boolean overloaded;
 
     @BeforeEach
     void beforeEach() {
@@ -250,5 +253,38 @@ public class AbilityEffectSystemTests {
 
         // ASSERT
         assertThat(powerComponent.getPowerModifier()).isEqualTo(battleDestiny);
+    }
+
+    @Test
+    void appliesOverloadEffect() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        OverloadEffectSystem system = new OverloadEffectSystem(eventManager, entityManager);
+
+        // Create effect.
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
+        OverloadComponent overloadComponent = new OverloadComponent();
+        overloadComponent.setOverloads(1);
+        entityManager.addComponent(effectEntityId, overloadComponent);
+
+        // Create target.
+        long targetEntityId = entityManager.createEntity();
+
+        // Listen for events.
+        overloaded = false;
+        eventManager.addEventHandler(EventType.STARSHIP_OVERLOADED, this::onStarshipOverloaded);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
+                new AbilityEffectActivatedEvent(effectEntityId, null, null, targetEntityId));
+
+        // ASSERT
+        assertThat(overloaded).isTrue();
+    }
+
+    private void onStarshipOverloaded(GameEvent gameEvent) {
+        overloaded = true;
     }
 }
