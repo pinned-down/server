@@ -9,7 +9,7 @@ public class GlobalGameplayTagsChangedEvent {
     }
 
     public GlobalGameplayTagsChangedEvent(ArrayList<String> globalGameplayTags) {
-        this.globalGameplayTags = globalGameplayTags;
+        this.globalGameplayTags = new ArrayList<>(globalGameplayTags);
     }
 
     public ArrayList<String> getGlobalGameplayTags() {
@@ -17,6 +17,6 @@ public class GlobalGameplayTagsChangedEvent {
     }
 
     public void setGlobalGameplayTags(ArrayList<String> globalGameplayTags) {
-        this.globalGameplayTags = globalGameplayTags;
+        this.globalGameplayTags = new ArrayList<>(globalGameplayTags);
     }
 }

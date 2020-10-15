@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ReadyToStartEvent {
-    private Collection<String> players;
+    private ArrayList<String> players;
 
     public ReadyToStartEvent() {
     }
 
     public ReadyToStartEvent(Collection<String> players) {
-        this.players = players;
+        this.players = new ArrayList<>(players);
     }
 
     public Collection<String> getPlayers() {
@@ -18,6 +18,6 @@ public class ReadyToStartEvent {
     }
 
     public void setPlayers(Collection<String> players) {
-        this.players = players;
+        this.players = new ArrayList<>(players);
     }
 }

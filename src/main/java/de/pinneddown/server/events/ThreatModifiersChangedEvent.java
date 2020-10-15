@@ -9,7 +9,7 @@ public class ThreatModifiersChangedEvent {
     }
 
     public ThreatModifiersChangedEvent(HashMap<String, Integer> threatModifiers) {
-        this.threatModifiers = threatModifiers;
+        this.threatModifiers = new HashMap<>(threatModifiers);
     }
 
     public HashMap<String, Integer> getThreatModifiers() {
@@ -17,6 +17,6 @@ public class ThreatModifiersChangedEvent {
     }
 
     public void setThreatModifiers(HashMap<String, Integer> threatModifiers) {
-        this.threatModifiers = threatModifiers;
+        this.threatModifiers = new HashMap<>(threatModifiers);
     }
 }

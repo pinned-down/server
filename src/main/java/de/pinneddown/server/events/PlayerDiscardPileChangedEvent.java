@@ -11,7 +11,7 @@ public class PlayerDiscardPileChangedEvent {
 
     public PlayerDiscardPileChangedEvent(long playerEntityId, ArrayList<String> cards) {
         this.playerEntityId = playerEntityId;
-        this.cards = cards;
+        this.cards = new ArrayList<>(cards);
     }
 
     public long getPlayerEntityId() {
@@ -27,6 +27,6 @@ public class PlayerDiscardPileChangedEvent {
     }
 
     public void setCards(ArrayList<String> cards) {
-        this.cards = cards;
+        this.cards = new ArrayList<>(cards);
     }
 }
