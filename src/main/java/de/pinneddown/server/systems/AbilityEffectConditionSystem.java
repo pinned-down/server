@@ -27,6 +27,7 @@ public class AbilityEffectConditionSystem {
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_APPLIED, this::onAbilityEffectApplied);
+        this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_REMOVED, this::onAbilityEffectRemoved);
         this.eventManager.addEventHandler(EventType.STARSHIP_ASSIGNED, this::onStarshipAssigned);
         this.eventManager.addEventHandler(EventType.STARSHIP_POWER_CHANGED, this::onStarshipPowerChanged);
         this.eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::onGlobalGameplayTagsChanged);
@@ -51,6 +52,11 @@ public class AbilityEffectConditionSystem {
         }
 
         checkConditionsAndApplyEffect(eventData.getEffectEntityId(), eventData.getTargetEntityId());
+    }
+
+    private void onAbilityEffectRemoved(GameEvent gameEvent) {
+        AbilityEffectRemovedEvent eventData = (AbilityEffectRemovedEvent)gameEvent.getEventData();
+        indefiniteEffects.remove(eventData.getEffectEntityId());
     }
 
     private void onStarshipAssigned(GameEvent gameEvent) {
