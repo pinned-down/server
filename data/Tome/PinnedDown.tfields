@@ -11,6 +11,7 @@
     <Field Id="BattleDestinyCardsDrawn" DisplayName="Battle Destiny Cards Drawn" Description="" Type="Integer" Component="BattleDestinyComponent" DefaultValue="0"/>
     <Field Id="BlockedTags" DisplayName="Blocked Tags" Description="" Type="GameplayTagList" Component="AbilityComponent" DefaultValue=""/>
     <Field Id="Cards" DisplayName="Cards" Description="" Type="Integer" Component="CardDrawComponent" DefaultValue="1"/>
+    <Field Id="DamageBonus" DisplayName="Damage Bonus" Description="" Type="Integer" Component="DamageBonusComponent" DefaultValue="0"/>
     <Field Id="DiscardedRandomCards" DisplayName="Discarded Random Cards" Description="" Type="Integer" Component="CardDiscardComponent" DefaultValue="0"/>
     <Field Id="Distance" DisplayName="Distance" Description="" Type="Integer" Component="DistanceComponent" DefaultValue="1"/>
     <Field Id="FleetGameplayTagFilter" DisplayName="Fleet Gameplay Tag Filter" Description="" Type="GameplayTag" Component="PowerPerFleetSizeComponent" DefaultValue="Affiliation.BlueWing"/>

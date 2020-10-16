@@ -1,5 +1,5 @@
 {
-  "hash": "ba2eb90bcd22948d49d0d52645db308e",
+  "hash": "0db77015a096adfaf315418f93c81a3d",
   "records": [
     {
       "id": "Agniar",
@@ -131,6 +131,27 @@
         "TargetGameplayTagsConditionComponent"
       ],
       "parent_id": "Abilities"
+    },
+    {
+      "id": "DBHorror",
+      "attributes": {
+        "BasePower": "14",
+        "BaseStructure": "100",
+        "DamageBonus": "1",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "5"
+      },
+      "components": [
+        "PowerComponent",
+        "StructureComponent",
+        "DamageBonusComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
     },
     {
       "id": "Defiance",

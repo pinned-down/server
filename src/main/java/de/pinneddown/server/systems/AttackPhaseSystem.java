@@ -192,6 +192,7 @@ public class AttackPhaseSystem {
         cards.put("DSFCurse", 1);
         cards.put("DSFDecay", 1);
         cards.put("DACDisaster", 1);
+        cards.put("DBHorror", 1);
 
         deckList.setCards(cards);
         return deckList;

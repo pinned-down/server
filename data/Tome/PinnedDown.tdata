@@ -87,6 +87,18 @@
         </AbilityEffects>
         <TargetType Value="AssignedTo"/>
     </Record>
+    <Record Id="DBHorror" DisplayName="DB Horror" Parent="Dra'tar">
+        <BasePower Value="14"/>
+        <BaseStructure Value="100"/>
+        <DamageBonus Value="1"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="5"/>
+    </Record>
     <Record Id="Defiance" DisplayName="Defiance" Parent="BlueWing">
         <Abilities>
             <Item Value="DefianceDefaultAbility"/>

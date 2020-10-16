@@ -75,7 +75,18 @@ public class DamageSystem {
         }
 
         if (!eventData.isOverpowered()) {
-            damageStarship(entityId);
+            int damage = 1;
+
+            DamageBonusComponent damageBonusComponent =
+                    entityManager.getComponent(eventData.getDefeatedBy(), DamageBonusComponent.class);
+
+            if (damageBonusComponent != null) {
+                damage += damageBonusComponent.getDamageBonus();
+            }
+
+            for (int i = 0; i < damage; ++i) {
+                damageStarship(entityId);
+            }
         } else {
             // Destroy immediately.
             destroyStarship(entityId);

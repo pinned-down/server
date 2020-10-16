@@ -66,6 +66,37 @@ public class DamageSystemTests {
     }
 
     @Test
+    void defeatedPlayerShipsTakeBonusDamage() {
+        // ARRANGE
+        // Setup system.
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+        int damage = -10;
+
+        DamageSystem system = createSystem(eventManager, entityManager, damage);
+
+        eventManager.queueEvent(EventType.READY_TO_START, new ReadyToStartEvent());
+
+        // Setup player ship.
+        long playerShipId = createPlayerShip(entityManager, 0);
+
+        // Setup enemy ship.
+        long defeatedBy = entityManager.createEntity();
+        DamageBonusComponent damageBonusComponent = new DamageBonusComponent();
+        damageBonusComponent.setDamageBonus(2);
+        entityManager.addComponent(defeatedBy, damageBonusComponent);
+
+        // ACT
+        eventManager.queueEvent(EventType.STARSHIP_DEFEATED, new StarshipDefeatedEvent(playerShipId, defeatedBy));
+
+        // ASSERT
+        StructureComponent structureComponent = entityManager.getComponent(playerShipId, StructureComponent.class);
+
+        assertThat(structureComponent.getStructureModifier())
+                .isEqualTo(damage * (1 + damageBonusComponent.getDamageBonus()));
+    }
+
+    @Test
     void defeatedPlayerShipsLosePower() {
         // ARRANGE
         // Setup system.

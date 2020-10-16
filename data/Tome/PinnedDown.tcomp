@@ -7,6 +7,7 @@
     <Name>BattleDestinyComponent</Name>
     <Name>CardDiscardComponent</Name>
     <Name>CardDrawComponent</Name>
+    <Name>DamageBonusComponent</Name>
     <Name>DistanceComponent</Name>
     <Name>FleetSizeConditionComponent</Name>
     <Name>GameplayTagsComponent</Name>
