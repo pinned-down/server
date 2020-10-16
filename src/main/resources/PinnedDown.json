@@ -1,5 +1,5 @@
 {
-  "hash": "6c490ae63f3a0f87a894a3bcf4018976",
+  "hash": "8664d05e11a1045f6b5af544aa1dde69",
   "records": [
     {
       "id": "Agniar",
@@ -44,7 +44,7 @@
     {
       "id": "DACDisaster",
       "attributes": {
-        "Abilities": ["DACDisasterDamageBonusAbility"],
+        "Abilities": ["DACDisasterPowerBonusAbility"],
         "BasePower": "12",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -63,10 +63,10 @@
       "parent_id": "Dra'tar"
     },
     {
-      "id": "DACDisasterDamageBonusAbility",
+      "id": "DACDisasterPowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["DACDisasterDamageBonusEffect"],
+        "AbilityEffects": ["DACDisasterPowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -80,7 +80,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "DACDisasterDamageBonusEffect",
+      "id": "DACDisasterPowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "MaxiumumThreat": "0",
@@ -341,7 +341,7 @@
     {
       "id": "DSFBane",
       "attributes": {
-        "Abilities": ["DSFBaneDamageBonusAbility"],
+        "Abilities": ["DSFBanePowerBonusAbility"],
         "BasePower": "7",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -360,10 +360,10 @@
       "parent_id": "Dra'tar"
     },
     {
-      "id": "DSFBaneDamageBonusAbility",
+      "id": "DSFBanePowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["DSFBaneDamageBonusEffect"],
+        "AbilityEffects": ["DSFBanePowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -377,7 +377,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "DSFBaneDamageBonusEffect",
+      "id": "DSFBanePowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "FleetGameplayTagFilter": "Affiliation.DraTar",
@@ -430,7 +430,7 @@
     {
       "id": "DSFDecay",
       "attributes": {
-        "Abilities": ["DSFDecayDamageBonusAbility"],
+        "Abilities": ["DSFDecayPowerBonusAbility"],
         "BasePower": "8",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -449,10 +449,10 @@
       "parent_id": "Dra'tar"
     },
     {
-      "id": "DSFDecayDamageBonusAbility",
+      "id": "DSFDecayPowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["DSFDecayDamageBonusEffect"],
+        "AbilityEffects": ["DSFDecayPowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -466,7 +466,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "DSFDecayDamageBonusEffect",
+      "id": "DSFDecayPowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "AssignedStarshipBlockedTags": [],
@@ -832,7 +832,7 @@
     {
       "id": "TRBArdor",
       "attributes": {
-        "Abilities": ["TRBArdorDamageBonusAbility"],
+        "Abilities": ["TRBArdorPowerBonusAbility"],
         "BasePower": "8",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -851,10 +851,10 @@
       "parent_id": "BlueWing"
     },
     {
-      "id": "TRBArdorDamageBonusAbility",
+      "id": "TRBArdorPowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["TRBArdorDamageBonusEffect"],
+        "AbilityEffects": ["TRBArdorPowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -868,7 +868,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "TRBArdorDamageBonusEffect",
+      "id": "TRBArdorPowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "PowerPerLocation": "1"
@@ -933,7 +933,7 @@
     {
       "id": "TRBJustice",
       "attributes": {
-        "Abilities": ["TRBJusticeDamageBonusAbility"],
+        "Abilities": ["TRBJusticePowerBonusAbility"],
         "BasePower": "9",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -950,10 +950,10 @@
       "parent_id": "BlueWing"
     },
     {
-      "id": "TRBJusticeDamageBonusAbility",
+      "id": "TRBJusticePowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["TRBJusticeDamageBonusEffect"],
+        "AbilityEffects": ["TRBJusticePowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -967,7 +967,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "TRBJusticeDamageBonusEffect",
+      "id": "TRBJusticePowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "PowerPerThreat": "1"
@@ -981,7 +981,7 @@
     {
       "id": "TRBTruth",
       "attributes": {
-        "Abilities": ["TRBTruthDamageBonusAbility"],
+        "Abilities": ["TRBTruthPowerBonusAbility"],
         "BasePower": "7",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -998,10 +998,10 @@
       "parent_id": "BlueWing"
     },
     {
-      "id": "TRBTruthDamageBonusAbility",
+      "id": "TRBTruthPowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["TRBTruthDamageBonusEffect"],
+        "AbilityEffects": ["TRBTruthPowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -1015,7 +1015,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "TRBTruthDamageBonusEffect",
+      "id": "TRBTruthPowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "PowerBonus": "2",
@@ -1032,7 +1032,7 @@
     {
       "id": "TRBUnity",
       "attributes": {
-        "Abilities": ["TRBUnityDamageBonusAbility"],
+        "Abilities": ["TRBUnityPowerBonusAbility"],
         "BasePower": "8",
         "BaseStructure": "100",
         "GlobalGameplayTags": [],
@@ -1049,10 +1049,10 @@
       "parent_id": "BlueWing"
     },
     {
-      "id": "TRBUnityDamageBonusAbility",
+      "id": "TRBUnityPowerBonusAbility",
       "attributes": {
         "AbilityActivationType": "Passive",
-        "AbilityEffects": ["TRBUnityDamageBonusEffect"],
+        "AbilityEffects": ["TRBUnityPowerBonusEffect"],
         "BlockedTags": [],
         "RequiredTags": [],
         "TargetBlockedTags": [],
@@ -1066,7 +1066,7 @@
       "parent_id": "Abilities"
     },
     {
-      "id": "TRBUnityDamageBonusEffect",
+      "id": "TRBUnityPowerBonusEffect",
       "attributes": {
         "AbilityEffectDuration": "Indefinite",
         "MaxFleetSize": "999",

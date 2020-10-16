@@ -37,7 +37,7 @@
     <Record Id="Cards" DisplayName="Cards"/>
     <Record Id="DACDisaster" DisplayName="DAC Disaster" Parent="Dra'tar">
         <Abilities>
-            <Item Value="DACDisasterDamageBonusAbility"/>
+            <Item Value="DACDisasterPowerBonusAbility"/>
         </Abilities>
         <BasePower Value="12"/>
         <BaseStructure Value="100"/>
@@ -49,13 +49,13 @@
         <StructureModifier Value="0"/>
         <Threat Value="4"/>
     </Record>
-    <Record Id="DACDisasterDamageBonusAbility" DisplayName="DAC Disaster (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="DACDisasterPowerBonusAbility" DisplayName="DAC Disaster (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="DACDisasterDamageBonusEffect"/>
+            <Item Value="DACDisasterPowerBonusEffect"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="DACDisasterDamageBonusEffect" DisplayName="DAC Disaster (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="DACDisasterPowerBonusEffect" DisplayName="DAC Disaster (Power Bonus Effect)" Parent="AbilityEffects">
         <MaxiumumThreat Value="0"/>
         <MinimumThreat Value="0"/>
         <PowerBonus Value="2"/>
@@ -209,7 +209,7 @@
     </Record>
     <Record Id="DSFBane" DisplayName="DSF Bane" Parent="Dra'tar">
         <Abilities>
-            <Item Value="DSFBaneDamageBonusAbility"/>
+            <Item Value="DSFBanePowerBonusAbility"/>
         </Abilities>
         <BasePower Value="7"/>
         <BaseStructure Value="100"/>
@@ -221,13 +221,13 @@
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
     </Record>
-    <Record Id="DSFBaneDamageBonusAbility" DisplayName="DSF Bane (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="DSFBanePowerBonusAbility" DisplayName="DSF Bane (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="DSFBaneDamageBonusEffect"/>
+            <Item Value="DSFBanePowerBonusEffect"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="DSFBaneDamageBonusEffect" DisplayName="DSF Bane (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="DSFBanePowerBonusEffect" DisplayName="DSF Bane (Power Bonus Effect)" Parent="AbilityEffects">
         <FleetGameplayTagFilter Value="Affiliation.DraTar"/>
         <PowerPerFleetSize Value="1"/>
     </Record>
@@ -250,7 +250,7 @@
     </Record>
     <Record Id="DSFDecay" DisplayName="DSF Decay" Parent="Dra'tar">
         <Abilities>
-            <Item Value="DSFDecayDamageBonusAbility"/>
+            <Item Value="DSFDecayPowerBonusAbility"/>
         </Abilities>
         <BasePower Value="8"/>
         <BaseStructure Value="100"/>
@@ -262,14 +262,14 @@
         <StructureModifier Value="0"/>
         <Threat Value="2"/>
     </Record>
-    <Record Id="DSFDecayDamageBonusAbility" DisplayName="DSF Decay (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="DSFDecayPowerBonusAbility" DisplayName="DSF Decay (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="DSFDecayDamageBonusEffect"/>
+            <Item Value="DSFDecayPowerBonusEffect"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="DSFDecayDamageBonusEffect" DisplayName="DSF Decay (Damage Bonus Effect)" Parent="AbilityEffects">
-        <AssignedStarshipBlockedTags/>
+    <Record Id="DSFDecayPowerBonusEffect" DisplayName="DSF Decay (Power Bonus Effect)" Parent="AbilityEffects">
+        <AssignedStarshipBlockedTags Value=""/>
         <AssignedStarshipRequiredTags>
             <Item Value="Status.Damaged"/>
         </AssignedStarshipRequiredTags>
@@ -468,7 +468,7 @@
     </Record>
     <Record Id="TRBArdor" DisplayName="TRB Ardor" Parent="BlueWing">
         <Abilities>
-            <Item Value="TRBArdorDamageBonusAbility"/>
+            <Item Value="TRBArdorPowerBonusAbility"/>
         </Abilities>
         <BasePower Value="8"/>
         <BaseStructure Value="100"/>
@@ -482,15 +482,15 @@
         <StructureModifier Value="0"/>
         <Upkeep Value="1"/>
     </Record>
-    <Record Id="TRBArdorDamageBonusAbility" DisplayName="TRB Ardor (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="TRBArdorPowerBonusAbility" DisplayName="TRB Ardor (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="TRBArdorDamageBonusEffect"/>
+            <Item Value="TRBArdorPowerBonusEffect"/>
         </AbilityEffects>
         <BlockedTags Value=""/>
         <RequiredTags Value=""/>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="TRBArdorDamageBonusEffect" DisplayName="TRB Ardor (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="TRBArdorPowerBonusEffect" DisplayName="TRB Ardor (Power Bonus Effect)" Parent="AbilityEffects">
         <PowerPerLocation Value="1"/>
     </Record>
     <Record Id="TRBFaith" DisplayName="TRB Faith" Parent="BlueWing">
@@ -521,7 +521,7 @@
     </Record>
     <Record Id="TRBJustice" DisplayName="TRB Justice" Parent="BlueWing">
         <Abilities>
-            <Item Value="TRBJusticeDamageBonusAbility"/>
+            <Item Value="TRBJusticePowerBonusAbility"/>
         </Abilities>
         <BasePower Value="9"/>
         <BaseStructure Value="100"/>
@@ -532,18 +532,18 @@
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
     </Record>
-    <Record Id="TRBJusticeDamageBonusAbility" DisplayName="TRB Justice (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="TRBJusticePowerBonusAbility" DisplayName="TRB Justice (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="TRBJusticeDamageBonusEffect"/>
+            <Item Value="TRBJusticePowerBonusEffect"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="TRBJusticeDamageBonusEffect" DisplayName="TRB Justice (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="TRBJusticePowerBonusEffect" DisplayName="TRB Justice (Power Bonus Effect)" Parent="AbilityEffects">
         <PowerPerThreat Value="1"/>
     </Record>
     <Record Id="TRBTruth" DisplayName="TRB Truth" Parent="BlueWing">
         <Abilities>
-            <Item Value="TRBTruthDamageBonusAbility"/>
+            <Item Value="TRBTruthPowerBonusAbility"/>
         </Abilities>
         <BasePower Value="7"/>
         <BaseStructure Value="100"/>
@@ -554,13 +554,13 @@
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
     </Record>
-    <Record Id="TRBTruthDamageBonusAbility" DisplayName="TRB Truth (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="TRBTruthPowerBonusAbility" DisplayName="TRB Truth (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="TRBTruthDamageBonusEffect"/>
+            <Item Value="TRBTruthPowerBonusEffect"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="TRBTruthDamageBonusEffect" DisplayName="TRB Truth (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="TRBTruthPowerBonusEffect" DisplayName="TRB Truth (Power Bonus Effect)" Parent="AbilityEffects">
         <PowerBonus Value="2"/>
         <TargetBlockedTags Value=""/>
         <TargetRequiredTags>
@@ -569,7 +569,7 @@
     </Record>
     <Record Id="TRBUnity" DisplayName="TRB Unity" Parent="BlueWing">
         <Abilities>
-            <Item Value="TRBUnityDamageBonusAbility"/>
+            <Item Value="TRBUnityPowerBonusAbility"/>
         </Abilities>
         <BasePower Value="8"/>
         <BaseStructure Value="100"/>
@@ -580,13 +580,13 @@
         <PowerModifier Value="0"/>
         <StructureModifier Value="0"/>
     </Record>
-    <Record Id="TRBUnityDamageBonusAbility" DisplayName="TRB Unity (Damage Bonus Ability)" Parent="Abilities">
+    <Record Id="TRBUnityPowerBonusAbility" DisplayName="TRB Unity (Power Bonus Ability)" Parent="Abilities">
         <AbilityEffects>
-            <Item Value="TRBUnityDamageBonusEffect"/>
+            <Item Value="TRBUnityPowerBonusEffect"/>
         </AbilityEffects>
         <TargetType Value="Self"/>
     </Record>
-    <Record Id="TRBUnityDamageBonusEffect" DisplayName="TRB Unity (Damage Bonus Effect)" Parent="AbilityEffects">
+    <Record Id="TRBUnityPowerBonusEffect" DisplayName="TRB Unity (Power Bonus Effect)" Parent="AbilityEffects">
         <MaxFleetSize Value="999"/>
         <MinFleetSize Value="3"/>
         <PowerBonus Value="2"/>
