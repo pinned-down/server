@@ -129,7 +129,8 @@ public class JumpPhaseSystem {
                 new CurrentLocationChangedEvent(currentLocationEntityId, topLocation);
         eventManager.queueEvent(EventType.CURRENT_LOCATION_CHANGED, currentLocationChangedEvent);
 
-        eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(currentLocationEntityId, topLocation, 0L));
+        eventManager.queueEvent(EventType.CARD_PLAYED,
+                new CardPlayedEvent(currentLocationEntityId, topLocation, EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY));
 
         // Update total distance.
         DistanceComponent totalDistanceComponent = entityManager.getComponent(locationDeckEntityId, DistanceComponent.class);

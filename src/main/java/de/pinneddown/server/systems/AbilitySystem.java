@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
+import de.pinneddown.server.util.GameplayTagUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,13 +15,16 @@ public class AbilitySystem {
     private EventManager eventManager;
     private EntityManager entityManager;
     private BlueprintManager blueprintManager;
+    private GameplayTagUtils gameplayTagUtils;
 
     private HashSet<Long> fightAbilityEntities;
 
-    public AbilitySystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager) {
+    public AbilitySystem(EventManager eventManager, EntityManager entityManager, BlueprintManager blueprintManager,
+                         GameplayTagUtils gameplayTagUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.blueprintManager = blueprintManager;
+        this.gameplayTagUtils = gameplayTagUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(ActionType.ACTIVATE_ABILITY, this::onActivateAbility);
@@ -37,9 +41,7 @@ public class AbilitySystem {
     private void onActivateAbility(GameEvent gameEvent) {
         ActivateAbilityAction eventData = (ActivateAbilityAction)gameEvent.getEventData();
 
-        AbilitiesComponent abilitiesComponent =
-                entityManager.getComponent(eventData.getEntityId(), AbilitiesComponent.class);
-        ArrayList<Long> abilityEntities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
+        ArrayList<Long> abilityEntities = getOrCreateAbilityEntities(eventData.getEntityId());
         long abilityEntityId = abilityEntities.get(eventData.getAbilityIndex());
 
         activateAbility(abilityEntityId, eventData.getTargetEntityId());
@@ -48,6 +50,9 @@ public class AbilitySystem {
     private void onCardPlayed(GameEvent gameEvent) {
         CardPlayedEvent cardPlayedEvent = (CardPlayedEvent)gameEvent.getEventData();
         long entityId = cardPlayedEvent.getEntityId();
+        long targetEntityId = cardPlayedEvent.getTargetEntityId() != EntityManager.INVALID_ENTITY
+                ? cardPlayedEvent.getTargetEntityId()
+                : entityId;
 
         AbilitiesComponent abilitiesComponent =
                 entityManager.getComponent(entityId, AbilitiesComponent.class);
@@ -56,7 +61,7 @@ public class AbilitySystem {
             return;
         }
 
-        ArrayList<Long> abilityEntities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
+        ArrayList<Long> abilityEntities = getOrCreateAbilityEntities(entityId);
 
         for (long abilityEntityId : abilityEntities) {
             AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
@@ -66,11 +71,12 @@ public class AbilitySystem {
                 continue;
             }
 
-            if (abilityComponent.getAbilityActivationTypeEnum() != AbilityActivationType.PASSIVE) {
+            if (abilityComponent.getAbilityActivationTypeEnum() != AbilityActivationType.PASSIVE &&
+                abilityComponent.getAbilityActivationTypeEnum() != AbilityActivationType.IMMEDIATE) {
                 continue;
             }
 
-            activateAbility(abilityEntityId, entityId);
+            activateAbility(abilityEntityId, targetEntityId);
         }
     }
 
@@ -106,7 +112,7 @@ public class AbilitySystem {
             return;
         }
 
-        ArrayList<Long> abilityEntities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
+        ArrayList<Long> abilityEntities = getOrCreateAbilityEntities(eventData.getDefeatedBy());
 
         for (long abilityEntityId : abilityEntities) {
             AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
@@ -130,10 +136,7 @@ public class AbilitySystem {
 
         // Active fight abilities.
         for (long entityId : fightAbilityEntities) {
-            AbilitiesComponent abilitiesComponent =
-                    entityManager.getComponent(entityId, AbilitiesComponent.class);
-
-            ArrayList<Long> abilityEntities = abilitiesComponent.getOrCreateAbilityEntities(blueprintManager);
+            ArrayList<Long> abilityEntities = getOrCreateAbilityEntities(entityId);
 
             for (long abilityEntityId : abilityEntities) {
                 AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
@@ -147,8 +150,36 @@ public class AbilitySystem {
         }
     }
 
+    public ArrayList<Long> getOrCreateAbilityEntities(long entityId) {
+        AbilitiesComponent abilitiesComponent = entityManager.getComponent(entityId, AbilitiesComponent.class);
+
+        if (abilitiesComponent.getAbilityEntities() == null) {
+            ArrayList<Long> abilityEntities = new ArrayList<>();
+
+            for (String abilityBlueprintId : abilitiesComponent.getAbilities()) {
+                // Instantiate ability.
+                long abilityEntityId = blueprintManager.createEntity(abilityBlueprintId);
+                abilityEntities.add(abilityEntityId);
+
+                // Set owning entity.
+                OwnerComponent ownerComponent = new OwnerComponent();
+                ownerComponent.setOwner(entityId);
+                entityManager.addComponent(abilityEntityId, ownerComponent);
+            }
+
+            abilitiesComponent.setAbilityEntities(abilityEntities);
+        }
+
+        return abilitiesComponent.getAbilityEntities();
+    }
+
     private void activateAbility(long abilityEntityId, long targetEntityId) {
         AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
+
+        // Check target.
+        if (!isValidTarget(abilityEntityId, targetEntityId)) {
+            return;
+        }
 
         // Apply effects.
         for (String effectBlueprintId : abilityComponent.getAbilityEffects()) {
@@ -173,4 +204,23 @@ public class AbilitySystem {
             eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED, abilityEffectAppliedEvent);
         }
     }
+
+    private boolean isValidTarget(long abilityEntityId, long targetEntityId) {
+        AbilityComponent abilityComponent = entityManager.getComponent(abilityEntityId, AbilityComponent.class);
+        TargetGameplayTagsConditionComponent targetGameplayTagsConditionComponent =
+                entityManager.getComponent(abilityEntityId, TargetGameplayTagsConditionComponent.class);
+
+        if (targetGameplayTagsConditionComponent == null) {
+            return true;
+        }
+
+        ArrayList<String> requiredTags = gameplayTagUtils.combineGameplayTags(abilityComponent.getRequiredTags(),
+                targetGameplayTagsConditionComponent.getTargetRequiredTags());
+        ArrayList<String> blockedTags = gameplayTagUtils.combineGameplayTags(abilityComponent.getBlockedTags(),
+                targetGameplayTagsConditionComponent.getTargetBlockedTags());
+
+        return gameplayTagUtils.matchesTagRequirements(targetEntityId,
+                requiredTags, blockedTags);
+    }
+
 }

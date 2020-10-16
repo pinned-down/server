@@ -1,17 +1,21 @@
 package de.pinneddown.server.events;
 
+import de.pinneddown.server.EntityManager;
+
 public class CardPlayedEvent {
     private long entityId;
     private String blueprintId;
     private long ownerEntityId;
+    private long targetEntityId;
 
     public CardPlayedEvent() {
     }
 
-    public CardPlayedEvent(long entityId, String blueprintId, long ownerEntityId) {
+    public CardPlayedEvent(long entityId, String blueprintId, long ownerEntityId, long targetEntityId) {
         this.entityId = entityId;
         this.blueprintId = blueprintId;
         this.ownerEntityId = ownerEntityId;
+        this.targetEntityId = targetEntityId;
     }
 
     public long getEntityId() {
@@ -36,5 +40,13 @@ public class CardPlayedEvent {
 
     public void setOwnerEntityId(long ownerEntityId) {
         this.ownerEntityId = ownerEntityId;
+    }
+
+    public long getTargetEntityId() {
+        return targetEntityId;
+    }
+
+    public void setTargetEntityId(long targetEntityId) {
+        this.targetEntityId = targetEntityId;
     }
 }

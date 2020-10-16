@@ -123,7 +123,8 @@ public class JumpPhaseSystemTests {
         upkeepComponent.setUpkeep(1);
         entityManager.addComponent(upkeepEntityId, upkeepComponent);
 
-        eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(upkeepEntityId, null, 0L));
+        eventManager.queueEvent(EventType.CARD_PLAYED,
+                new CardPlayedEvent(upkeepEntityId, null, EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY));
         int oldThreat = threatUtils.getThreat();
 
         // ACT

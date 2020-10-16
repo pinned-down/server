@@ -52,7 +52,8 @@ public class GlobalGameplayTagsSystemTests {
         gameplayTagsComponent.getGlobalGameplayTags().add(TEST_GAMEPLAY_TAG);
         entityManager.addComponent(entityId, gameplayTagsComponent);
 
-        eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(entityId, null, 0));
+        eventManager.queueEvent(EventType.CARD_PLAYED,
+                new CardPlayedEvent(entityId, null, EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY));
 
         // ASSERT
         assertThat(gameplayTagUtils.getGameplayTags(0)).contains(TEST_GAMEPLAY_TAG);

@@ -7,5 +7,6 @@ public enum ThreatChangeReason {
     UPKEEP,
     PLAYER_CARD_PLAYED,
     TOTAL_DISTANCE,
-    FLEET_SIZE
+    FLEET_SIZE,
+    EFFECT
 }

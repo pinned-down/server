@@ -182,6 +182,27 @@
         <StructureModifier Value="0"/>
         <Threat Value="4"/>
     </Record>
+    <Record Id="DratarSwarmFrigate" DisplayName="Dra'tar Swarm Frigate" Parent="Dra'tar">
+        <Abilities>
+            <Item Value="DratarSwarmFrigateThreatChangeAbility"/>
+        </Abilities>
+        <BasePower Value="6"/>
+        <BaseStructure Value="100"/>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="1"/>
+    </Record>
+    <Record Id="DratarSwarmFrigateThreatChangeAbility" DisplayName="Dra'tar Swarm Frigate (Threat Change Ability)" Parent="Abilities">
+        <AbilityActivationType Value="Immediate"/>
+        <AbilityEffects>
+            <Item Value="DratarSwarmFrigateThreatChangeEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Global"/>
+    </Record>
+    <Record Id="DratarSwarmFrigateThreatChangeEffect" DisplayName="Dra'tar Swarm Frigate (Threat Change Effect)" Parent="AbilityEffects">
+        <AbilityEffectDuration Value="Instant"/>
+        <ThreatChange Value="1"/>
+    </Record>
     <Record Id="DrawBattleDestiny" DisplayName="Draw Battle Destiny" Parent="AbilityEffects">
         <AbilityEffectDuration Value="EndOfFight"/>
         <BattleDestinyCardsDrawn Value="1"/>

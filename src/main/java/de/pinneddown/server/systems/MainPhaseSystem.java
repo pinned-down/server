@@ -56,7 +56,7 @@ public class MainPhaseSystem {
         }
 
         // Play card.
-        long entityId = playerUtils.playCard(playerEntityId, eventData.getBlueprintId());
+        long entityId = playerUtils.playCard(playerEntityId, eventData.getBlueprintId(), EntityManager.INVALID_ENTITY);
 
         // Add additional components.
         OwnerComponent ownerComponent = new OwnerComponent();

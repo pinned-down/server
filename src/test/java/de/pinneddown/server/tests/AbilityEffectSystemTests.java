@@ -3,13 +3,11 @@ package de.pinneddown.server.tests;
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.ActivateAbilityAction;
 import de.pinneddown.server.components.*;
-import de.pinneddown.server.events.AbilityEffectActivatedEvent;
-import de.pinneddown.server.events.AbilityEffectDeactivatedEvent;
-import de.pinneddown.server.events.AttackDeckInitializedEvent;
-import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.*;
 import de.pinneddown.server.systems.effects.*;
 import de.pinneddown.server.util.GameplayTagUtils;
 import de.pinneddown.server.util.PowerUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -193,7 +191,8 @@ public class AbilityEffectSystemTests {
             gameplayTagsComponent.setInitialGameplayTags(Lists.newArrayList(GameplayTags.CARDTYPE_STARSHIP, testFilterTag));
             entityManager.addComponent(fleetEntityId, gameplayTagsComponent);
 
-            eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(fleetEntityId, null, 0L));
+            eventManager.queueEvent(EventType.CARD_PLAYED,
+                    new CardPlayedEvent(fleetEntityId, null, EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY));
         }
 
         // Create target.
@@ -282,6 +281,36 @@ public class AbilityEffectSystemTests {
 
         // ASSERT
         assertThat(overloaded).isTrue();
+    }
+
+    @Test
+    void appliesThreatChangeEffect() {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
+
+        ThreatChangeEffectSystem system = new ThreatChangeEffectSystem(eventManager, entityManager, threatUtils);
+
+        // Create effect.
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
+        ThreatChangeComponent threatChangeComponent = new ThreatChangeComponent();
+        threatChangeComponent.setThreatChange(7);
+        entityManager.addComponent(effectEntityId, threatChangeComponent);
+
+        // Setup threat pool.
+        long threatPoolEntityId = entityManager.createEntity();
+        ThreatComponent threatComponent = new ThreatComponent();
+        entityManager.addComponent(threatPoolEntityId, threatComponent);
+
+        eventManager.queueEvent(EventType.THREAT_POOL_INITIALIZED, new ThreatPoolInitializedEvent(threatPoolEntityId));
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_ACTIVATED,
+                new AbilityEffectActivatedEvent(effectEntityId, null, null, EntityManager.INVALID_ENTITY));
+
+        // ASSERT
+        assertThat(threatComponent.getThreat()).isEqualTo(threatChangeComponent.getThreatChange());
     }
 
     private void onStarshipOverloaded(GameEvent gameEvent) {

@@ -358,7 +358,7 @@ public class AbilityEffectConditionSystemTests {
         entityManager.addComponent(entityId, gameplayTagsComponent);
 
         eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(entityId, null,
-                ownerComponent.getOwner()));
+                ownerComponent.getOwner(), EntityManager.INVALID_ENTITY));
 
         return entityId;
     }

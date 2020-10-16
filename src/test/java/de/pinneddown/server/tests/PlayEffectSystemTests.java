@@ -128,10 +128,7 @@ public class PlayEffectSystemTests {
         ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
         PlayerUtils playerUtils = new PlayerUtils(eventManager, entityManager, blueprintManager, threatUtils);
 
-        GameplayTagUtils gameplayTagUtils = new GameplayTagUtils(eventManager, entityManager);
-
-        PlayEffectSystem system = new PlayEffectSystem(eventManager, entityManager, blueprintManager, playerUtils,
-                gameplayTagUtils);
+        PlayEffectSystem system = new PlayEffectSystem(eventManager, entityManager, playerUtils);
 
         eventManager.queueEvent(EventType.READY_TO_START, null);
 

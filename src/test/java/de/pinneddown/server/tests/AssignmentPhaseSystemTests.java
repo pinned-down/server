@@ -65,10 +65,12 @@ public class AssignmentPhaseSystemTests {
         long playerStarship = createStarshipEntity(entityManager);
         entityManager.addComponent(playerStarship, new OwnerComponent());
         entityManager.addComponent(playerStarship, new AssignmentComponent());
-        eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(playerStarship, null, 0L));
+        eventManager.queueEvent(EventType.CARD_PLAYED,
+                new CardPlayedEvent(playerStarship, null, EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY));
 
         long enemyStarship = createStarshipEntity(entityManager);
-        eventManager.queueEvent(EventType.CARD_PLAYED, new CardPlayedEvent(enemyStarship, null, 0L));
+        eventManager.queueEvent(EventType.CARD_PLAYED,
+                new CardPlayedEvent(enemyStarship, null, EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY));
 
         // Listen for resulting event.
         assignmentPhaseEnded = false;

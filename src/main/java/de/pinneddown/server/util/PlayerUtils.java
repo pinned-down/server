@@ -67,7 +67,7 @@ public class PlayerUtils {
         eventManager.queueEvent(EventType.PLAYER_DISCARD_PILE_CHANGED, playerDiscardPileChangedEvent);
     }
 
-    public long playCard(long playerEntityId, String card) {
+    public long playCard(long playerEntityId, String card, long targetEntityId) {
         // Remove card.
         if (!removeHandCard(playerEntityId, card)) {
             return EntityManager.INVALID_ENTITY;
@@ -81,7 +81,7 @@ public class PlayerUtils {
         threatUtils.addThreat(threat, ThreatChangeReason.PLAYER_CARD_PLAYED, entityId);
 
         // Notify listeners.
-        CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, card, playerEntityId);
+        CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, card, playerEntityId, targetEntityId);
         eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
         return entityId;

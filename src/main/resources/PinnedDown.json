@@ -1,5 +1,5 @@
 {
-  "hash": "0db77015a096adfaf315418f93c81a3d",
+  "hash": "6c490ae63f3a0f87a894a3bcf4018976",
   "records": [
     {
       "id": "Agniar",
@@ -275,6 +275,56 @@
         "ThreatComponent"
       ],
       "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DratarSwarmFrigate",
+      "attributes": {
+        "Abilities": ["DratarSwarmFrigateThreatChangeAbility"],
+        "BasePower": "6",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "1"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DratarSwarmFrigateThreatChangeAbility",
+      "attributes": {
+        "AbilityActivationType": "Immediate",
+        "AbilityEffects": ["DratarSwarmFrigateThreatChangeEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Global"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "DratarSwarmFrigateThreatChangeEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Instant",
+        "ThreatChange": "1"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "ThreatChangeComponent"
+      ],
+      "parent_id": "AbilityEffects"
     },
     {
       "id": "DrawBattleDestiny",

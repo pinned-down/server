@@ -21,19 +21,6 @@ public class AbilitiesComponent implements EntityComponent {
         return abilityEntities;
     }
 
-    public ArrayList<Long> getOrCreateAbilityEntities(BlueprintManager blueprintManager) {
-        if (abilityEntities == null) {
-            abilityEntities = new ArrayList<>();
-
-            for (String abilityBlueprintId : abilities) {
-                long abilityEntityId = blueprintManager.createEntity(abilityBlueprintId);
-                abilityEntities.add(abilityEntityId);
-            }
-        }
-
-        return abilityEntities;
-    }
-
     public void setAbilityEntities(ArrayList<Long> abilityEntities) {
         this.abilityEntities = abilityEntities;
     }

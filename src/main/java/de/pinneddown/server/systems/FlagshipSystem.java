@@ -42,7 +42,7 @@ public class FlagshipSystem {
 
         // Notify listeners.
         CardPlayedEvent cardPlayedEventData =
-                new CardPlayedEvent(entityId, flagshipBlueprintId, eventData.getEntityId());
+                new CardPlayedEvent(entityId, flagshipBlueprintId, eventData.getEntityId(), entityManager.INVALID_ENTITY);
         eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
     }
 }

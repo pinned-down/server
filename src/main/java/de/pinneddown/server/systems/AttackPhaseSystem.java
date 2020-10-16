@@ -109,7 +109,8 @@ public class AttackPhaseSystem {
             }
 
             // Play card.
-            CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, cardBlueprintId, 0L);
+            CardPlayedEvent cardPlayedEventData = new CardPlayedEvent(entityId, cardBlueprintId,
+                    EntityManager.INVALID_ENTITY, EntityManager.INVALID_ENTITY);
             eventManager.queueEvent(EventType.CARD_PLAYED, cardPlayedEventData);
 
             newThreat -= cardThreat;
@@ -184,6 +185,7 @@ public class AttackPhaseSystem {
         DeckList deckList = new DeckList();
         HashMap<String, Integer> cards = new HashMap<>();
 
+        cards.put("DratarSwarmFrigate", 4);
         cards.put("DratarAssaultFrigate", 4);
         cards.put("DratarAssaultCruiser", 4);
         cards.put("DratarBehemoth", 3);
