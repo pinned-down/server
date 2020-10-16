@@ -35,6 +35,31 @@
         <RequiredPowerDifference Value="1"/>
     </Record>
     <Record Id="Cards" DisplayName="Cards"/>
+    <Record Id="DACDisaster" DisplayName="DAC Disaster" Parent="Dra'tar">
+        <Abilities>
+            <Item Value="DACDisasterDamageBonusAbility"/>
+        </Abilities>
+        <BasePower Value="12"/>
+        <BaseStructure Value="100"/>
+        <InitialGameplayTags>
+            <Item Value="Affiliation.DraTar"/>
+            <Item Value="CardType.Starship"/>
+        </InitialGameplayTags>
+        <PowerModifier Value="0"/>
+        <StructureModifier Value="0"/>
+        <Threat Value="4"/>
+    </Record>
+    <Record Id="DACDisasterDamageBonusAbility" DisplayName="DAC Disaster (Damage Bonus Ability)" Parent="Abilities">
+        <AbilityEffects>
+            <Item Value="DACDisasterDamageBonusEffect"/>
+        </AbilityEffects>
+        <TargetType Value="Self"/>
+    </Record>
+    <Record Id="DACDisasterDamageBonusEffect" DisplayName="DAC Disaster (Damage Bonus Effect)" Parent="AbilityEffects">
+        <MaxiumumThreat Value="0"/>
+        <MinimumThreat Value="0"/>
+        <PowerBonus Value="2"/>
+    </Record>
     <Record Id="Damage" DisplayName="Damage" Parent="Cards">
         <GlobalGameplayTags Value=""/>
         <InitialGameplayTags>

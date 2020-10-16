@@ -1,5 +1,5 @@
 {
-  "hash": "611391d6a1fa50ae5f5f79cecb974deb",
+  "hash": "ba2eb90bcd22948d49d0d52645db308e",
   "records": [
     {
       "id": "Agniar",
@@ -38,6 +38,59 @@
         "AbilityEffectComponent",
         "CardDrawComponent",
         "PowerDifferenceConditionComponent"
+      ],
+      "parent_id": "AbilityEffects"
+    },
+    {
+      "id": "DACDisaster",
+      "attributes": {
+        "Abilities": ["DACDisasterDamageBonusAbility"],
+        "BasePower": "12",
+        "BaseStructure": "100",
+        "GlobalGameplayTags": [],
+        "InitialGameplayTags": ["Affiliation.DraTar", "CardType.Starship"],
+        "PowerModifier": "0",
+        "StructureModifier": "0",
+        "Threat": "4"
+      },
+      "components": [
+        "AbilitiesComponent",
+        "PowerComponent",
+        "StructureComponent",
+        "GameplayTagsComponent",
+        "ThreatComponent"
+      ],
+      "parent_id": "Dra'tar"
+    },
+    {
+      "id": "DACDisasterDamageBonusAbility",
+      "attributes": {
+        "AbilityActivationType": "Passive",
+        "AbilityEffects": ["DACDisasterDamageBonusEffect"],
+        "BlockedTags": [],
+        "RequiredTags": [],
+        "TargetBlockedTags": [],
+        "TargetRequiredTags": [],
+        "TargetType": "Self"
+      },
+      "components": [
+        "AbilityComponent",
+        "TargetGameplayTagsConditionComponent"
+      ],
+      "parent_id": "Abilities"
+    },
+    {
+      "id": "DACDisasterDamageBonusEffect",
+      "attributes": {
+        "AbilityEffectDuration": "Indefinite",
+        "MaxiumumThreat": "0",
+        "MinimumThreat": "0",
+        "PowerBonus": "2"
+      },
+      "components": [
+        "AbilityEffectComponent",
+        "ThreatPoolConditionComponent",
+        "PowerBonusComponent"
       ],
       "parent_id": "AbilityEffects"
     },

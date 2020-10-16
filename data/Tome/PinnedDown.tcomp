@@ -21,5 +21,6 @@
     <Name>TargetGameplayTagsConditionComponent</Name>
     <Name>ThreatComponent</Name>
     <Name>ThreatModifierComponent</Name>
+    <Name>ThreatPoolConditionComponent</Name>
     <Name>UpkeepComponent</Name>
 </Components>

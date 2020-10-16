@@ -5,9 +5,11 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.AbilityEffectAppliedEvent;
 import de.pinneddown.server.events.CardPlayedEvent;
+import de.pinneddown.server.events.ThreatChangedEvent;
+import de.pinneddown.server.events.ThreatPoolInitializedEvent;
 import de.pinneddown.server.systems.AbilityEffectConditionSystem;
 import de.pinneddown.server.util.GameplayTagUtils;
-import org.junit.jupiter.api.BeforeAll;
+import de.pinneddown.server.util.ThreatUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -195,10 +197,27 @@ public class AbilityEffectConditionSystemTests {
         assertThat(effectActivated).isFalse();
     }
 
+    @Test
+    void applyEffectIfThreatPoolConditionFulfilled() {
+        activateEffectWithThreatPoolConditionAndAssertEffectApplied(2, 1,3,true);
+    }
+
+    @Test
+    void doesNotApplyEffectIfThreatPoolTooEmpty() {
+        activateEffectWithThreatPoolConditionAndAssertEffectApplied(1, 2,3,false);
+    }
+
+    @Test
+    void doesNotApplyEffectIfThreatPoolTooFull() {
+        activateEffectWithThreatPoolConditionAndAssertEffectApplied(3, 1,2,false);
+    }
+
     private AbilityEffectConditionSystem createSystem(EventManager eventManager, EntityManager entityManager) {
         GameplayTagUtils gameplayTagUtils = new GameplayTagUtils(eventManager, entityManager);
+        ThreatUtils threatUtils = new ThreatUtils(eventManager, entityManager);
 
-        AbilityEffectConditionSystem system = new AbilityEffectConditionSystem(eventManager, entityManager, gameplayTagUtils);
+        AbilityEffectConditionSystem system =
+                new AbilityEffectConditionSystem(eventManager, entityManager, gameplayTagUtils, threatUtils);
 
         eventManager.queueEvent(EventType.READY_TO_START, null);
 
@@ -270,6 +289,45 @@ public class AbilityEffectConditionSystemTests {
         for (int i = 1; i < fleetSize; ++i) {
             playStarship(entityManager, eventManager);
         }
+
+        // Register for event.
+        effectActivated = false;
+
+        eventManager.addEventHandler(EventType.ABILITY_EFFECT_ACTIVATED, this::onAbilityEffectActivated);
+
+        // ACT
+        eventManager.queueEvent(EventType.ABILITY_EFFECT_APPLIED,
+                new AbilityEffectAppliedEvent(effectEntityId, targetEntityId));
+
+        // ASSERT
+        assertThat(effectActivated).isEqualTo(assertActivated);
+    }
+
+    private void activateEffectWithThreatPoolConditionAndAssertEffectApplied(int threat, int minimumThreat,
+                                                                             int maximumThreat, boolean assertActivated) {
+        // ARRANGE
+        EventManager eventManager = new EventManager();
+        EntityManager entityManager = new EntityManager(eventManager);
+
+        AbilityEffectConditionSystem system = createSystem(eventManager, entityManager);
+
+        // Create effect.
+        long effectEntityId = testUtils.createIndefiniteEffect(entityManager);
+        ThreatPoolConditionComponent threatPoolConditionComponent = new ThreatPoolConditionComponent();
+        threatPoolConditionComponent.setMinimumThreat(minimumThreat);
+        threatPoolConditionComponent.setMaximumThreat(maximumThreat);
+        entityManager.addComponent(effectEntityId, threatPoolConditionComponent);
+
+        // Create target.
+        long targetEntityId = playStarship(entityManager, eventManager);
+
+        // Set threat.
+        long threatPoolEntityId = entityManager.createEntity();
+        ThreatComponent threatComponent = new ThreatComponent();
+        threatComponent.setThreat(threat);
+        entityManager.addComponent(threatPoolEntityId, threatComponent);
+
+        eventManager.queueEvent(EventType.THREAT_POOL_INITIALIZED, new ThreatPoolInitializedEvent(threatPoolEntityId));
 
         // Register for event.
         effectActivated = false;

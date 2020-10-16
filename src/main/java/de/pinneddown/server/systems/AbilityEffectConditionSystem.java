@@ -4,6 +4,7 @@ import de.pinneddown.server.*;
 import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
 import de.pinneddown.server.util.GameplayTagUtils;
+import de.pinneddown.server.util.ThreatUtils;
 import jdk.nashorn.internal.ir.Assignment;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +17,17 @@ public class AbilityEffectConditionSystem {
     private EventManager eventManager;
     private EntityManager entityManager;
     private GameplayTagUtils gameplayTagUtils;
+    private ThreatUtils threatUtils;
 
     private HashMap<Long, Long> indefiniteEffects;
     private ArrayList<Long> starshipEntities;
 
     public AbilityEffectConditionSystem(EventManager eventManager, EntityManager entityManager,
-                                        GameplayTagUtils gameplayTagUtils) {
+                                        GameplayTagUtils gameplayTagUtils, ThreatUtils threatUtils) {
         this.eventManager = eventManager;
         this.entityManager = entityManager;
         this.gameplayTagUtils = gameplayTagUtils;
+        this.threatUtils = threatUtils;
 
         this.eventManager.addEventHandler(EventType.READY_TO_START, this::onReadyToStart);
         this.eventManager.addEventHandler(EventType.ABILITY_EFFECT_APPLIED, this::onAbilityEffectApplied);
@@ -35,6 +38,7 @@ public class AbilityEffectConditionSystem {
         this.eventManager.addEventHandler(EventType.GLOBAL_GAMEPLAY_TAGS_CHANGED, this::onGlobalGameplayTagsChanged);
         this.eventManager.addEventHandler(EventType.CARD_PLAYED, this::onCardPlayed);
         this.eventManager.addEventHandler(EventType.CARD_REMOVED, this::onCardRemoved);
+        this.eventManager.addEventHandler(EventType.THREAT_CHANGED, this::onThreatChanged);
     }
 
     private void onReadyToStart(GameEvent gameEvent) {
@@ -87,6 +91,10 @@ public class AbilityEffectConditionSystem {
             starshipEntities.add(eventData.getEntityId());
         }
 
+        updateAllEffects();
+    }
+
+    private void onThreatChanged(GameEvent gameEvent) {
         updateAllEffects();
     }
 
@@ -162,6 +170,10 @@ public class AbilityEffectConditionSystem {
         }
 
         if (!checkAssignedStarshipGameplayTagsCondition(effectEntityId, targetEntityId)) {
+            return false;
+        }
+
+        if (!checkThreatPoolCondition(effectEntityId, targetEntityId)) {
             return false;
         }
 
@@ -260,5 +272,17 @@ public class AbilityEffectConditionSystem {
                 assignedTo,
                 assignedStarshipGameplayTagsConditionComponent.getAssignedStarshipRequiredTags(),
                 assignedStarshipGameplayTagsConditionComponent.getAssignedStarshipBlockedTags());
+    }
+
+    private boolean checkThreatPoolCondition(long effectEntityId, long targetEntityId) {
+        ThreatPoolConditionComponent threatPoolConditionComponent =
+                entityManager.getComponent(effectEntityId, ThreatPoolConditionComponent.class);
+
+        if (threatPoolConditionComponent == null) {
+            return true;
+        }
+
+        return threatUtils.getThreat() >= threatPoolConditionComponent.getMinimumThreat() &&
+                threatUtils.getThreat() <= threatPoolConditionComponent.getMaximumThreat();
     }
 }

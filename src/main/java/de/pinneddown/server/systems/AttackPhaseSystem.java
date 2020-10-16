@@ -191,6 +191,7 @@ public class AttackPhaseSystem {
         cards.put("DSFBane", 1);
         cards.put("DSFCurse", 1);
         cards.put("DSFDecay", 1);
+        cards.put("DACDisaster", 1);
 
         deckList.setCards(cards);
         return deckList;
