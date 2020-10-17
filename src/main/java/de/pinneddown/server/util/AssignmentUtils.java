@@ -35,6 +35,12 @@ public class AssignmentUtils {
             // Set new assignment.
             AssignmentComponent assignedToAssignmentComponent = entityManager.getComponent(assignedTo,
                     AssignmentComponent.class);
+
+            if (assignedToAssignmentComponent.getAssignedTo() != EntityManager.INVALID_ENTITY) {
+                // Remove old assignment.
+                assignTo(assignedToAssignmentComponent.getAssignedTo(), EntityManager.INVALID_ENTITY);
+            }
+            
             assignedToAssignmentComponent.setAssignedTo(assignedEntityId);
         }
 
