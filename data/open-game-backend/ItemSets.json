@@ -1,0 +1,33 @@
+{
+  "itemSets": [
+    {
+      "id": "InitialItems",
+      "items": [
+        {
+          "itemDefinitionId": "Defiance",
+          "count": 4
+        },
+        {
+          "itemDefinitionId": "EvasionManeuver",
+          "count": 4
+        },
+        {
+          "itemDefinitionId": "RaiseTheStakes",
+          "count": 4
+        },
+        {
+          "itemDefinitionId": "TRBArdor",
+          "count": 1
+        },
+        {
+          "itemDefinitionId": "TRBFaith",
+          "count": 4
+        },
+        {
+          "itemDefinitionId": "TRBTruth",
+          "count": 4
+        }
+      ]
+    }
+  ]
+}

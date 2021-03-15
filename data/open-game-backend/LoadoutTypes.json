@@ -1,0 +1,21 @@
+{
+  "loadoutTypes": [
+    {
+      "id": "BlueWingDeck",
+      "rules": [
+        {
+          "itemTag": "Card",
+          "minTotal": 21,
+          "maxTotal": 21,
+          "maxCopies": 4
+        },
+        {
+          "itemTag": "BlueWing",
+          "minTotal": 21,
+          "maxTotal": 21,
+          "maxCopies": 4
+        }
+      ]
+    }
+  ]
+}

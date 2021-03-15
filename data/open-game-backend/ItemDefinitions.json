@@ -1,0 +1,91 @@
+{
+  "itemDefinitions": [
+    {
+      "id": "Defiance",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "EvasionManeuver",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "FireAtWill",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "RaiseTheStakes",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "TRBArdor",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "TRBFaith",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "TRBJustice",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "TRBTruth",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "TRBUnity",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "TargetEliminated",
+      "tags": [
+        "Card",
+        "BlueWing"
+      ]
+    },
+    {
+      "id": "PremiereCardPack",
+      "tags": [
+        "CardPack"
+      ],
+      "containers": [
+        {
+          "itemCount": 5,
+          "containedItems": [
+            {
+              "requiredTags": ["Card"],
+              "relativeProbability": 1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
