@@ -1,0 +1,11 @@
+{
+  "questDefinitions": [
+    {
+      "id": "ThreeWins",
+      "category": "DailyQuest",
+      "requiredProgress": 3,
+      "rewardItemDefinitionId": "PremiereCardPack",
+      "rewardItemCount": 1
+    }
+  ]
+}

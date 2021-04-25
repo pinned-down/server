@@ -1,0 +1,13 @@
+{
+  "categories": [
+    {
+      "id": "DailyQuest",
+      "generationHourOfDay": 8
+    },
+    {
+      "id": "WeeklyQuest",
+      "generationHourOfDay": 8,
+      "generationDayOfWeek": 1
+    }
+  ]
+}
