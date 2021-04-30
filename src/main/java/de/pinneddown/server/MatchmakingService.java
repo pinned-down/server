@@ -6,11 +6,11 @@ import de.opengamebackend.matchmaking.model.responses.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,9 +24,6 @@ import java.util.List;
 @Component
 public class MatchmakingService implements ApplicationListener<ApplicationReadyEvent> {
     @Autowired
-    private Environment environment;
-
-    @Autowired
     private DiscoveryClient discoveryClient;
 
     @Autowired
@@ -39,6 +36,9 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
 
     private URI matchmakingUri;
     private String serverId;
+
+    @Value("${server.port}")
+    private String serverPort;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
@@ -64,7 +64,7 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
 
         int port = 0;
         try {
-            port = Integer.parseInt(environment.getProperty("local.server.port"));
+            port = Integer.parseInt(serverPort);
         } catch (NumberFormatException e) {
             logger.error(e.toString());
         }
