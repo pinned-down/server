@@ -1,5 +1,6 @@
 package de.pinneddown.server.controllers;
 
+import de.opengamebackend.matchmaking.model.responses.ServerNotifyPlayerJoinedResponse;
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.JoinGameAction;
 import de.pinneddown.server.actions.LeaveGameAction;
@@ -56,7 +57,7 @@ public class PlayerController extends WebSocketController {
     @MessageMapping("/join")
     public void join(SimpMessageHeaderAccessor headerAccessor, JoinGameAction message) {
         // Verify player.
-        matchmakingService.notifyPlayerJoined(message.getPlayerId());
+        matchmakingService.notifyPlayerJoined(message.getTicket());
 
         // Add player.
         String remoteAddress = getRemoteAddressFromSession(headerAccessor);
