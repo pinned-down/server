@@ -66,7 +66,7 @@ public class PlayerController extends WebSocketController {
 
         // Check player count.
         Collection<String> playerIds = playerManager.getPlayers().stream()
-                .map(Player::getPlayerId)
+                .map(Player::getProviderUserId)
                 .collect(Collectors.toList());
 
         if (playerIds.size() >= playerManager.getMaxPlayers()) {
