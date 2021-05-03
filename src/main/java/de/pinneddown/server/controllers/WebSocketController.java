@@ -2,6 +2,7 @@ package de.pinneddown.server.controllers;
 
 import de.pinneddown.server.ActionType;
 import de.pinneddown.server.EventManager;
+import de.pinneddown.server.Player;
 import de.pinneddown.server.PlayerManager;
 import de.pinneddown.server.actions.PlayerAction;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -17,8 +18,8 @@ public class WebSocketController {
 
     protected void relayActionToGame(ActionType actionType, PlayerAction action, SimpMessageHeaderAccessor headerAccessor) {
         String remoteAddress = getRemoteAddressFromSession(headerAccessor);
-        String playerId = playerManager.getPlayerIdFromRemoteAddress(remoteAddress);
-        action.setPlayerId(playerId);
+        Player player = playerManager.getPlayerByRemoteAddress(remoteAddress);
+        action.setPlayerId(player.getPlayerId());
 
         eventManager.queueEvent(actionType, action);
     }

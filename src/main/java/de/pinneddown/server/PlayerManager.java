@@ -6,28 +6,32 @@ import java.util.*;
 
 @Component
 public class PlayerManager {
-    private HashMap<String, String> remoteAddressToPlayerIds;
+    private HashMap<String, Player> remoteAddressToPlayers;
     private int maxPlayers;
 
     public PlayerManager() {
-        this.remoteAddressToPlayerIds = new HashMap<>();
+        this.remoteAddressToPlayers = new HashMap<>();
         this.maxPlayers = 1;
     }
 
-    public void addPlayer(String remoteAddress, String playerId) {
-        this.remoteAddressToPlayerIds.put(remoteAddress, playerId);
+    public void addPlayer(String remoteAddress, String playerId, String providerUserId) {
+        Player player = new Player();
+        player.setRemoteAddress(remoteAddress);
+        player.setPlayerId(playerId);
+        player.setProviderUserId(providerUserId);
+        this.remoteAddressToPlayers.put(remoteAddress, player);
     }
 
     public void removePlayer(String remoteAddress) {
-        this.remoteAddressToPlayerIds.remove(remoteAddress);
+        this.remoteAddressToPlayers.remove(remoteAddress);
     }
 
-    public Collection<String> getPlayerIds() {
-        return remoteAddressToPlayerIds.values();
+    public Collection<Player> getPlayers() {
+        return remoteAddressToPlayers.values();
     }
 
-    public String getPlayerIdFromRemoteAddress(String remoteAddress) {
-        return remoteAddressToPlayerIds.getOrDefault(remoteAddress, null);
+    public Player getPlayerByRemoteAddress(String remoteAddress) {
+        return remoteAddressToPlayers.getOrDefault(remoteAddress, null);
     }
 
     public int getMaxPlayers() {

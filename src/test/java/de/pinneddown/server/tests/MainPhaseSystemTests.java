@@ -31,7 +31,7 @@ public class MainPhaseSystemTests {
 
         // Add single player.
         String playerId = "PlayerA";
-        playerManager.addPlayer("", playerId);
+        playerManager.addPlayer("", playerId, null);
 
         // Listen for resulting event.
         mainPhaseEnded = false;

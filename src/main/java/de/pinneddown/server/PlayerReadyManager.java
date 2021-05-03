@@ -23,8 +23,8 @@ public class PlayerReadyManager {
     }
 
     public boolean allPlayersAreReady() {
-        for (String playerId : playerManager.getPlayerIds()) {
-            if (!readyPlayers.contains(playerId)) {
+        for (Player player : playerManager.getPlayers()) {
+            if (!readyPlayers.contains(player.getPlayerId())) {
                 return false;
             }
         }

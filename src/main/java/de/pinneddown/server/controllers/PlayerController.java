@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Controller
 public class PlayerController extends WebSocketController {
@@ -57,14 +58,16 @@ public class PlayerController extends WebSocketController {
     @MessageMapping("/join")
     public void join(SimpMessageHeaderAccessor headerAccessor, JoinGameAction message) {
         // Verify player.
-        matchmakingService.notifyPlayerJoined(message.getTicket());
+        String playerId = matchmakingService.notifyPlayerJoined(message.getTicket());
 
         // Add player.
         String remoteAddress = getRemoteAddressFromSession(headerAccessor);
-        playerManager.addPlayer(remoteAddress, message.getPlayerId());
+        playerManager.addPlayer(remoteAddress, playerId, message.getPlayerId());
 
         // Check player count.
-        Collection<String> playerIds = playerManager.getPlayerIds();
+        Collection<String> playerIds = playerManager.getPlayers().stream()
+                .map(Player::getPlayerId)
+                .collect(Collectors.toList());
 
         if (playerIds.size() >= playerManager.getMaxPlayers()) {
             ReadyToStartEvent eventData = new ReadyToStartEvent(playerIds);
@@ -75,16 +78,15 @@ public class PlayerController extends WebSocketController {
     @MessageMapping("/leave")
     public void leave(SimpMessageHeaderAccessor headerAccessor, LeaveGameAction message) {
         // Verify player.
-        matchmakingService.notifyPlayerLeft(message.getPlayerId());
+        String remoteAddress = getRemoteAddressFromSession(headerAccessor);
+        Player player = playerManager.getPlayerByRemoteAddress(remoteAddress);
+        matchmakingService.notifyPlayerLeft(player.getPlayerId());
 
         // Remove player.
-        String remoteAddress = getRemoteAddressFromSession(headerAccessor);
         playerManager.removePlayer(remoteAddress);
 
         // Check player count.
-        Collection<String> playerIds = playerManager.getPlayerIds();
-
-        if (playerIds.size() <= 0) {
+        if (playerManager.getPlayers().size() <= 0) {
             // Reset game.
             entityManager.clear();
 

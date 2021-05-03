@@ -107,9 +107,9 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
         logger.info("Sent heartbeat for: " + response.getUpdatedId());
     }
 
-    public void notifyPlayerJoined(String ticket) {
+    public String notifyPlayerJoined(String ticket) {
         if (!isInitialized()) {
-            return;
+            return null;
         }
 
         ServerNotifyPlayerJoinedRequest request = new ServerNotifyPlayerJoinedRequest();
@@ -120,6 +120,8 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
                 sendRequest("/server/notifyPlayerJoined", request, ServerNotifyPlayerJoinedResponse.class);
 
         logger.info("Player joined: " + response.getPlayerId());
+
+        return response.getPlayerId();
     }
 
     public void notifyPlayerLeft(String playerId) {

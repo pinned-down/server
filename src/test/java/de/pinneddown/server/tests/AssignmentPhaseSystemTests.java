@@ -31,7 +31,7 @@ public class AssignmentPhaseSystemTests {
 
         // Add single player.
         String playerId = "PlayerA";
-        playerManager.addPlayer("", playerId);
+        playerManager.addPlayer("", playerId, null);
 
         // Listen for resulting event.
         assignmentPhaseEnded = false;
@@ -59,7 +59,7 @@ public class AssignmentPhaseSystemTests {
 
         // Add single player.
         String playerId = "PlayerA";
-        playerManager.addPlayer("", playerId);
+        playerManager.addPlayer("", playerId, null);
 
         // Add unassigned starships.
         long playerStarship = createStarshipEntity(entityManager);
