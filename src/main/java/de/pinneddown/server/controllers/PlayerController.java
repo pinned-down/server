@@ -1,5 +1,6 @@
 package de.pinneddown.server.controllers;
 
+import de.opengamebackend.matchmaking.model.ServerStatus;
 import de.opengamebackend.matchmaking.model.responses.ServerNotifyPlayerJoinedResponse;
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.JoinGameAction;
@@ -70,6 +71,8 @@ public class PlayerController extends WebSocketController {
                 .collect(Collectors.toList());
 
         if (playerIds.size() >= playerManager.getMaxPlayers()) {
+            matchmakingService.setServerStatus(ServerStatus.CLOSED);
+
             ReadyToStartEvent eventData = new ReadyToStartEvent(playerIds);
             eventManager.queueEvent(EventType.READY_TO_START, eventData);
         }
@@ -91,6 +94,8 @@ public class PlayerController extends WebSocketController {
             entityManager.clear();
 
             logger.info("Removed all entities.");
+
+            matchmakingService.setServerStatus(ServerStatus.OPEN);
         }
     }
 

@@ -1,6 +1,7 @@
 package de.pinneddown.server;
 
 import com.google.common.base.Strings;
+import de.opengamebackend.matchmaking.model.ServerStatus;
 import de.opengamebackend.matchmaking.model.requests.*;
 import de.opengamebackend.matchmaking.model.responses.*;
 import org.slf4j.Logger;
@@ -137,6 +138,20 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
                 sendRequest("/server/notifyPlayerLeft", request, ServerNotifyPlayerLeftResponse.class);
 
         logger.info("Player left: " + playerId);
+    }
+
+    public void setServerStatus(ServerStatus status) {
+        if (!isInitialized()) {
+            return;
+        }
+
+        ServerSetStatusRequest request = new ServerSetStatusRequest();
+        request.setId(serverId);
+        request.setStatus(status);
+
+        sendRequest("/server/setStatus", request, ServerSetStatusResponse.class);
+
+        logger.info("Status changed: " + status);
     }
 
     private boolean isInitialized() {
