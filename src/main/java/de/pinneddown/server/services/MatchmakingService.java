@@ -1,60 +1,47 @@
-package de.pinneddown.server;
+package de.pinneddown.server.services;
 
 import com.google.common.base.Strings;
 import de.opengamebackend.matchmaking.model.ServerStatus;
 import de.opengamebackend.matchmaking.model.requests.*;
 import de.opengamebackend.matchmaking.model.responses.*;
+import de.pinneddown.server.PlayerManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PreDestroy;
-import java.net.URI;
-import java.util.List;
 
 @Component
-public class MatchmakingService implements ApplicationListener<ApplicationReadyEvent> {
-    @Autowired
-    private DiscoveryClient discoveryClient;
+public class MatchmakingService extends BackendService implements ApplicationListener<ApplicationReadyEvent> {
+    private final PlayerManager playerManager;
 
-    @Autowired
-    private HttpHeaders httpHeaders;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private PlayerManager playerManager;
-
-    private Logger logger = LoggerFactory.getLogger(ServerApplication.class);
-
-    private URI matchmakingUri;
     private String serverId;
 
     @Value("${server.port}")
     private String serverPort;
 
+    @Autowired
+    public MatchmakingService(DiscoveryClient discoveryClient, HttpHeaders httpHeaders, PlayerManager playerManager) {
+        super(discoveryClient, httpHeaders);
+
+        this.playerManager = playerManager;
+    }
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         // Get matchmaking service.
-        List<ServiceInstance> instances = this.discoveryClient.getInstances("open-game-backend-matchmaking");
-
-        if (instances.isEmpty()) {
-            logger.error("Unable to connect to matchmaking service.");
+        if (!discoverService("open-game-backend-matchmaking")) {
             return;
         }
-
-        ServiceInstance instance = instances.get(0);
-        matchmakingUri = instance.getUri();
-
-        logger.info("Found " + instance.getServiceId() + " at " + matchmakingUri);
 
         // Build request.
         String version = "0.1";
@@ -134,8 +121,7 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
         request.setServerId(serverId);
         request.setPlayerId(playerId);
 
-        ServerNotifyPlayerLeftResponse response =
-                sendRequest("/server/notifyPlayerLeft", request, ServerNotifyPlayerLeftResponse.class);
+        sendRequest("/server/notifyPlayerLeft", request, ServerNotifyPlayerLeftResponse.class);
 
         logger.info("Player left: " + playerId);
     }
@@ -155,12 +141,6 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
     }
 
     private boolean isInitialized() {
-        return matchmakingUri != null && !Strings.isNullOrEmpty(serverId);
-    }
-
-    private <TRequest, TResponse> TResponse sendRequest(String relativeUri, TRequest request, Class<TResponse> responseClass) {
-        HttpEntity<TRequest> httpEntity = new HttpEntity<>(request, httpHeaders);
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject(matchmakingUri + relativeUri, httpEntity, responseClass);
+        return !Strings.isNullOrEmpty(serverId);
     }
 }

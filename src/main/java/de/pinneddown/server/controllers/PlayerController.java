@@ -1,11 +1,11 @@
 package de.pinneddown.server.controllers;
 
 import de.opengamebackend.matchmaking.model.ServerStatus;
-import de.opengamebackend.matchmaking.model.responses.ServerNotifyPlayerJoinedResponse;
 import de.pinneddown.server.*;
 import de.pinneddown.server.actions.JoinGameAction;
 import de.pinneddown.server.actions.LeaveGameAction;
 import de.pinneddown.server.events.ReadyToStartEvent;
+import de.pinneddown.server.services.MatchmakingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
