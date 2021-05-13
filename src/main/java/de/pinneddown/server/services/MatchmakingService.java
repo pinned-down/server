@@ -10,36 +10,39 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.HttpHeaders;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
+import java.net.URI;
 
 @Component
-public class MatchmakingService extends BackendService implements ApplicationListener<ApplicationReadyEvent> {
+public class MatchmakingService implements ApplicationListener<ApplicationReadyEvent> {
+    private final BackendServiceInterface serviceInterface;
     private final PlayerManager playerManager;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private URI serviceUri;
     private String serverId;
 
     @Value("${server.port}")
     private String serverPort;
 
     @Autowired
-    public MatchmakingService(DiscoveryClient discoveryClient, HttpHeaders httpHeaders, PlayerManager playerManager) {
-        super(discoveryClient, httpHeaders);
-
+    public MatchmakingService(BackendServiceInterface serviceInterface, PlayerManager playerManager) {
+        this.serviceInterface = serviceInterface;
         this.playerManager = playerManager;
     }
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
         // Get matchmaking service.
-        if (!discoverService("open-game-backend-matchmaking")) {
+        serviceUri = serviceInterface.discoverService("open-game-backend-matchmaking").orElse(null);
+
+        if (serviceUri == null) {
             return;
         }
 
@@ -59,8 +62,8 @@ public class MatchmakingService extends BackendService implements ApplicationLis
 
         ServerRegisterRequest request = new ServerRegisterRequest
                 (version, gameMode, region, ipV4Address, port, maxPlayers);
-        ServerRegisterResponse response =
-                sendRequest("/server/register", request, ServerRegisterResponse.class);
+        ServerRegisterResponse response = serviceInterface.sendRequest
+                (serviceUri,"/server/register", request, ServerRegisterResponse.class);
 
         serverId = response.getId();
 
@@ -74,8 +77,8 @@ public class MatchmakingService extends BackendService implements ApplicationLis
         }
 
         ServerDeregisterRequest request = new ServerDeregisterRequest(serverId);
-        ServerDeregisterResponse response =
-                sendRequest("/server/deregister", request, ServerDeregisterResponse.class);
+        ServerDeregisterResponse response = serviceInterface.sendRequest
+                (serviceUri, "/server/deregister", request, ServerDeregisterResponse.class);
 
         logger.info("Unregistered server: " + response.getRemovedId());
 
@@ -89,8 +92,8 @@ public class MatchmakingService extends BackendService implements ApplicationLis
         }
 
         ServerSendHeartbeatRequest request = new ServerSendHeartbeatRequest(serverId);
-        ServerSendHeartbeatResponse response =
-                sendRequest("/server/sendHeartbeat", request, ServerSendHeartbeatResponse.class);
+        ServerSendHeartbeatResponse response = serviceInterface.sendRequest
+                (serviceUri, "/server/sendHeartbeat", request, ServerSendHeartbeatResponse.class);
 
         logger.info("Sent heartbeat for: " + response.getUpdatedId());
     }
@@ -104,8 +107,8 @@ public class MatchmakingService extends BackendService implements ApplicationLis
         request.setServerId(serverId);
         request.setTicket(ticket);
 
-        ServerNotifyPlayerJoinedResponse response =
-                sendRequest("/server/notifyPlayerJoined", request, ServerNotifyPlayerJoinedResponse.class);
+        ServerNotifyPlayerJoinedResponse response = serviceInterface.sendRequest
+                (serviceUri, "/server/notifyPlayerJoined", request, ServerNotifyPlayerJoinedResponse.class);
 
         logger.info("Player joined: " + response.getPlayerId());
 
@@ -121,7 +124,8 @@ public class MatchmakingService extends BackendService implements ApplicationLis
         request.setServerId(serverId);
         request.setPlayerId(playerId);
 
-        sendRequest("/server/notifyPlayerLeft", request, ServerNotifyPlayerLeftResponse.class);
+        serviceInterface.sendRequest
+                (serviceUri, "/server/notifyPlayerLeft", request, ServerNotifyPlayerLeftResponse.class);
 
         logger.info("Player left: " + playerId);
     }
@@ -135,7 +139,7 @@ public class MatchmakingService extends BackendService implements ApplicationLis
         request.setId(serverId);
         request.setStatus(status);
 
-        sendRequest("/server/setStatus", request, ServerSetStatusResponse.class);
+        serviceInterface.sendRequest(serviceUri, "/server/setStatus", request, ServerSetStatusResponse.class);
 
         logger.info("Status changed: " + status);
     }

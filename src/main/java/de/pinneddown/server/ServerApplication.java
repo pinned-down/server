@@ -20,18 +20,6 @@ public class ServerApplication {
 	}
 
 	@Bean
-	public HttpHeaders httpHeaders() {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-		List<MediaType> acceptedTypes = new ArrayList<>();
-		acceptedTypes.add(MediaType.APPLICATION_JSON);
-		httpHeaders.setAccept(acceptedTypes);
-
-		return httpHeaders;
-	}
-
-	@Bean
 	public Random random() {
 		return new Random();
 	}
