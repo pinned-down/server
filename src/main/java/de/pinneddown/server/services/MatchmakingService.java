@@ -19,6 +19,7 @@ import javax.annotation.PreDestroy;
 import java.net.URI;
 
 @Component
+@DependsOn({"AuthService"})
 public class MatchmakingService implements ApplicationListener<ApplicationReadyEvent> {
     private final BackendServiceInterface serviceInterface;
     private final PlayerManager playerManager;

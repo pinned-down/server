@@ -65,4 +65,7 @@ public class BackendServiceInterface {
         restTemplate.postForLocation(serviceUri + relativeUri, httpEntity);
     }
 
+    public void setAuthToken(String token) {
+        httpHeaders.setBearerAuth(token);
+    }
 }

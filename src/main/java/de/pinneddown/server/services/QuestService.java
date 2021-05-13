@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.net.URI;
 
 @Component
+@DependsOn({"AuthService"})
 public class QuestService implements ApplicationListener<ApplicationReadyEvent> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
