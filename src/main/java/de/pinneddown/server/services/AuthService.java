@@ -3,7 +3,7 @@ package de.pinneddown.server.services;
 import de.opengamebackend.auth.model.AuthRole;
 import de.opengamebackend.auth.model.requests.LoginRequest;
 import de.opengamebackend.auth.model.responses.AuthTokenResponse;
-import de.pinneddown.server.ServerConfig;
+import de.pinneddown.server.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

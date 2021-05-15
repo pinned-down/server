@@ -5,11 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.*;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @EnableDiscoveryClient
