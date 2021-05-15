@@ -5,7 +5,6 @@ import de.pinneddown.server.components.*;
 import de.pinneddown.server.events.*;
 import de.pinneddown.server.util.GameplayTagUtils;
 import de.pinneddown.server.util.ThreatUtils;
-import jdk.nashorn.internal.ir.Assignment;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
