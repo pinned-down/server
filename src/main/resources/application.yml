@@ -10,3 +10,8 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
       registerWithEureka: false
+
+de:
+  pinneddown:
+    server:
+      version: @project.version@
