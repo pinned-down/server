@@ -84,20 +84,17 @@
 
 	<repositories>
 		<repository>
-			<id>gitlab-maven</id>
-			<url>https://gitlab.com/api/v4/projects/20039919/packages/maven</url>
+			<id>github-net</id>
+			<name>GitHub Packages (net)</name>
+			<url>https://maven.pkg.github.com/open-game-backend/net</url>
 		</repository>
 	</repositories>
 
 	<distributionManagement>
 		<repository>
-			<id>gitlab-maven</id>
-			<url>https://gitlab.com/api/v4/projects/20039919/packages/maven</url>
+			<id>github</id>
+			<name>GitHub Packages)</name>
+			<url>https://maven.pkg.github.com/pinned-down/server</url>
 		</repository>
-
-		<snapshotRepository>
-			<id>gitlab-maven</id>
-			<url>https://gitlab.com/api/v4/projects/20039919/packages/maven</url>
-		</snapshotRepository>
 	</distributionManagement>
 </project>
