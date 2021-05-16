@@ -5,6 +5,11 @@ spring:
   application:
     name: pinned-down-server
 
+eureka:
+  client:
+    serviceUrl:
+      registerWithEureka: false
+
 de:
   pinneddown:
     server:
