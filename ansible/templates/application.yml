@@ -1,0 +1,9 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: {{ registry_url }}
+
+de:
+  pinneddown:
+    server:
+      secretKey: {{ server_secret_key }}

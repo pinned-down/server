@@ -1,0 +1,68 @@
+---
+- name: Install Pinned Down Server
+  hosts: server
+  remote_user: "{{ system_user }}"
+  vars_files:
+    - group_vars/vars
+    - group_vars/vault
+  tasks:
+    # Required for downloading the package.
+    - name: Install Maven
+      become: yes
+      apt:
+        name: maven
+        state: present
+
+    # Required for maven_artifact.
+    - name: Install PIP
+      become: yes
+      apt:
+        name: python-pip
+        state: present
+
+    # Required for maven_artifact.
+    - name: Install lxml
+      become: yes
+      pip:
+        name: lxml
+        state: present
+
+    - name: Stop servers
+      become: yes
+      command: pkill -f pinned-down-server
+      register: pkill
+      failed_when: pkill.rc not in [ 0, 1 ]
+      changed_when: pkill.rc == 0
+
+    - name: Create application directory if it does not exist
+      become: yes
+      file:
+        path: /usr/local/bin/pinned-down
+        state: directory
+        mode: '0755'
+
+    - name: Download package
+      become: yes
+      community.general.maven_artifact:
+        group_id: de.pinneddown
+        artifact_id: server
+        version: latest
+        repository_url: https://maven.pkg.github.com/pinned-down/server
+        username: "{{ github_user }}"
+        password: "{{ github_token }}"
+        dest: /usr/local/bin/pinned-down/pinned-down-server.jar
+        mode: '0755'
+        state: present
+        verify_checksum: always
+
+    - name: Copy configuration file
+      become: yes
+      template:
+        src: templates/application.yml
+        dest: /usr/local/bin/pinned-down/application.yml
+        mode: '0555'
+
+    - name: Start servers
+      become: yes
+      shell: nohup java -DLOG_PATH=/var/log -jar /usr/local/bin/pinned-down/pinned-down-server.jar --spring.config.additional-location=/usr/local/bin/pinned-down/application.yml --server.port={{ item }} >> /var/log/pinned-down-server-{{ item }}.out 2>&1&
+      loop: "{{ ports }}"

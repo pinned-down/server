@@ -1,0 +1,7 @@
+---
+vault_system_user:
+
+vault_github_user:
+vault_github_token:
+
+vault_server_secret_key:
