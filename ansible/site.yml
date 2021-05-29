@@ -9,14 +9,14 @@
     # Required for downloading the package.
     - name: Install Maven
       become: yes
-      apt:
+      yum:
         name: maven
         state: present
 
     # Required for maven_artifact.
     - name: Install PIP
       become: yes
-      apt:
+      yum:
         name: python-pip
         state: present
 
