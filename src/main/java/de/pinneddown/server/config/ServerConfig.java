@@ -16,9 +16,17 @@ public class ServerConfig {
     @NotNull
     private String secretKey;
 
-    public ServerConfig(String version, String secretKey) {
+    @NotNull
+    private String region;
+
+    @NotNull
+    private String ipV4Address;
+
+    public ServerConfig(String version, String secretKey, String region, String ipV4Address) {
         this.version = version;
         this.secretKey = secretKey;
+        this.region = region;
+        this.ipV4Address = ipV4Address;
     }
 
     public String getVersion() {
@@ -27,5 +35,13 @@ public class ServerConfig {
 
     public String getSecretKey() {
         return secretKey;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getIpV4Address() {
+        return ipV4Address;
     }
 }

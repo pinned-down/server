@@ -7,3 +7,5 @@ de:
   pinneddown:
     server:
       secretKey: {{ server_secret_key }}
+      region: {{ server_region }}
+      ipV4Address: {{ server_ipv4_address }}

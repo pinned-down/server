@@ -7,3 +7,5 @@ github_token: "{{ vault_github_token }}"
 registry_url: http://localhost:8761/eureka/
 
 server_secret_key: "{{ vault_server_secret_key }}"
+server_region: "{{ vault_server_region }}"
+server_ipv4_address: "{{ vault_server_ipv4_address }}"

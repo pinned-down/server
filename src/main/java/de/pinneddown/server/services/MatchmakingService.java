@@ -5,6 +5,7 @@ import de.opengamebackend.matchmaking.model.ServerStatus;
 import de.opengamebackend.matchmaking.model.requests.*;
 import de.opengamebackend.matchmaking.model.responses.*;
 import de.pinneddown.server.PlayerManager;
+import de.pinneddown.server.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.net.URI;
 public class MatchmakingService implements ApplicationListener<ApplicationReadyEvent> {
     private final BackendServiceInterface serviceInterface;
     private final PlayerManager playerManager;
+    private final ServerConfig serverConfig;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -33,9 +35,11 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
     private String serverPort;
 
     @Autowired
-    public MatchmakingService(BackendServiceInterface serviceInterface, PlayerManager playerManager) {
+    public MatchmakingService(BackendServiceInterface serviceInterface, PlayerManager playerManager,
+                              ServerConfig serverConfig) {
         this.serviceInterface = serviceInterface;
         this.playerManager = playerManager;
+        this.serverConfig = serverConfig;
     }
 
     @Override
@@ -48,11 +52,11 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
         }
 
         // Build request.
-        String version = "0.1";
+        String version = serverConfig.getVersion();
         String gameMode = "PD";
         int maxPlayers = playerManager.getMaxPlayers();
-        String region = "EU";
-        String ipV4Address = "localhost";
+        String region = serverConfig.getRegion();
+        String ipV4Address = serverConfig.getIpV4Address();
 
         int port = 0;
         try {
@@ -60,6 +64,9 @@ public class MatchmakingService implements ApplicationListener<ApplicationReadyE
         } catch (NumberFormatException e) {
             logger.error(e.toString());
         }
+
+        logger.info("Registering server - Version: {}, Game Mode: {}, Region: {}, IpV4Address: {}, Port: {}, Max Players: {}",
+                version, gameMode, region, ipV4Address, port, maxPlayers);
 
         ServerRegisterRequest request = new ServerRegisterRequest
                 (version, gameMode, region, ipV4Address, port, maxPlayers);
