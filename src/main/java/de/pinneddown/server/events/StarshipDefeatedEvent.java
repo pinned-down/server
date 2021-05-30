@@ -36,4 +36,13 @@ public class StarshipDefeatedEvent {
     public void setDefeatedBy(long defeatedBy) {
         this.defeatedBy = defeatedBy;
     }
+
+    @Override
+    public String toString() {
+        return "StarshipDefeatedEvent{" +
+                "entityId=" + entityId +
+                ", overpowered=" + overpowered +
+                ", defeatedBy=" + defeatedBy +
+                '}';
+    }
 }

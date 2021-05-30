@@ -49,4 +49,14 @@ public class ThreatChangedEvent {
     public void setReasonEntityBlueprintId(String reasonEntityBlueprintId) {
         this.reasonEntityBlueprintId = reasonEntityBlueprintId;
     }
+
+    @Override
+    public String toString() {
+        return "ThreatChangedEvent{" +
+                "oldThreat=" + oldThreat +
+                ", newThreat=" + newThreat +
+                ", reason=" + reason +
+                ", reasonEntityBlueprintId='" + reasonEntityBlueprintId + '\'' +
+                '}';
+    }
 }

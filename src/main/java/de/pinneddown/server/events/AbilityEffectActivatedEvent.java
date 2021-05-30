@@ -47,4 +47,14 @@ public class AbilityEffectActivatedEvent {
     public void setTargetEntityId(long targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
+
+    @Override
+    public String toString() {
+        return "AbilityEffectActivatedEvent{" +
+                "effectEntityId=" + effectEntityId +
+                ", effectBlueprintId='" + effectBlueprintId + '\'' +
+                ", abilityBlueprintId='" + abilityBlueprintId + '\'' +
+                ", targetEntityId=" + targetEntityId +
+                '}';
+    }
 }

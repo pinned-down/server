@@ -29,4 +29,12 @@ public class GameplayTagsChangedEvent {
     public void setGameplayTags(ArrayList<String> gameplayTags) {
         this.gameplayTags = new ArrayList<>(gameplayTags);
     }
+
+    @Override
+    public String toString() {
+        return "GameplayTagsChangedEvent{" +
+                "entityId=" + entityId +
+                ", gameplayTags=" + gameplayTags +
+                '}';
+    }
 }

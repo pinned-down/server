@@ -37,4 +37,13 @@ public class StarshipPowerChangedEvent {
     public void setNewPowerModifier(int newPowerModifier) {
         this.newPowerModifier = newPowerModifier;
     }
+
+    @Override
+    public String toString() {
+        return "StarshipPowerChangedEvent{" +
+                "entityId=" + entityId +
+                ", oldPowerModifier=" + oldPowerModifier +
+                ", newPowerModifier=" + newPowerModifier +
+                '}';
+    }
 }

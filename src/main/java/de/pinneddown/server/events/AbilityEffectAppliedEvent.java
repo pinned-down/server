@@ -27,4 +27,12 @@ public class AbilityEffectAppliedEvent {
     public void setTargetEntityId(long targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
+
+    @Override
+    public String toString() {
+        return "AbilityEffectAppliedEvent{" +
+                "effectEntityId=" + effectEntityId +
+                ", targetEntityId=" + targetEntityId +
+                '}';
+    }
 }

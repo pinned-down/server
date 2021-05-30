@@ -19,4 +19,11 @@ public class ThreatModifiersChangedEvent {
     public void setThreatModifiers(HashMap<String, Integer> threatModifiers) {
         this.threatModifiers = new HashMap<>(threatModifiers);
     }
+
+    @Override
+    public String toString() {
+        return "ThreatModifiersChangedEvent{" +
+                "threatModifiers=" + threatModifiers +
+                '}';
+    }
 }

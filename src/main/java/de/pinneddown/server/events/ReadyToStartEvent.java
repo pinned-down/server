@@ -20,4 +20,11 @@ public class ReadyToStartEvent {
     public void setPlayers(Collection<String> players) {
         this.players = new ArrayList<>(players);
     }
+
+    @Override
+    public String toString() {
+        return "ReadyToStartEvent{" +
+                "players=" + players +
+                '}';
+    }
 }

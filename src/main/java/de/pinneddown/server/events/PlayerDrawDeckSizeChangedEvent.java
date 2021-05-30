@@ -27,4 +27,12 @@ public class PlayerDrawDeckSizeChangedEvent {
     public void setDrawDeckSize(int drawDeckSize) {
         this.drawDeckSize = drawDeckSize;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerDrawDeckSizeChangedEvent{" +
+                "playerEntityId=" + playerEntityId +
+                ", drawDeckSize=" + drawDeckSize +
+                '}';
+    }
 }

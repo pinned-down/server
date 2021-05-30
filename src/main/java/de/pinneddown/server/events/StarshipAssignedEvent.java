@@ -27,4 +27,12 @@ public class StarshipAssignedEvent {
     public void setAssignedTo(long assignedTo) {
         this.assignedTo = assignedTo;
     }
+
+    @Override
+    public String toString() {
+        return "StarshipAssignedEvent{" +
+                "assignedStarship=" + assignedStarship +
+                ", assignedTo=" + assignedTo +
+                '}';
+    }
 }

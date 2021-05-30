@@ -29,4 +29,12 @@ public class ErrorEvent {
     public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
+
+    @Override
+    public String toString() {
+        return "ErrorEvent{" +
+                "actionId='" + actionId + '\'' +
+                ", errorCode=" + errorCode +
+                '}';
+    }
 }

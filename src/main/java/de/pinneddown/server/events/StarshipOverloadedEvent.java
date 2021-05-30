@@ -17,4 +17,11 @@ public class StarshipOverloadedEvent {
     public void setEntityId(long entityId) {
         this.entityId = entityId;
     }
+
+    @Override
+    public String toString() {
+        return "StarshipOverloadedEvent{" +
+                "entityId=" + entityId +
+                '}';
+    }
 }

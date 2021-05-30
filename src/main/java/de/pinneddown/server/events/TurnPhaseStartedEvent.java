@@ -19,4 +19,11 @@ public class TurnPhaseStartedEvent {
     public void setTurnPhase(TurnPhase turnPhase) {
         this.turnPhase = turnPhase;
     }
+
+    @Override
+    public String toString() {
+        return "TurnPhaseStartedEvent{" +
+                "turnPhase=" + turnPhase +
+                '}';
+    }
 }

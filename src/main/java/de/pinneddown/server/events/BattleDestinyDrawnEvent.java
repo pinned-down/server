@@ -37,4 +37,13 @@ public class BattleDestinyDrawnEvent {
     public void setBattleDestiny(int battleDestiny) {
         this.battleDestiny = battleDestiny;
     }
+
+    @Override
+    public String toString() {
+        return "BattleDestinyDrawnEvent{" +
+                "targetEntityId=" + targetEntityId +
+                ", battleDestinyCardBlueprintId='" + battleDestinyCardBlueprintId + '\'' +
+                ", battleDestiny=" + battleDestiny +
+                '}';
+    }
 }

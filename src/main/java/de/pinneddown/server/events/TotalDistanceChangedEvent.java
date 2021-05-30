@@ -10,4 +10,11 @@ public class TotalDistanceChangedEvent {
     public void setTotalDistance(int totalDistance) {
         this.totalDistance = totalDistance;
     }
+
+    @Override
+    public String toString() {
+        return "TotalDistanceChangedEvent{" +
+                "totalDistance=" + totalDistance +
+                '}';
+    }
 }

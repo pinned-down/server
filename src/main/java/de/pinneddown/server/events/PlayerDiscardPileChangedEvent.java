@@ -29,4 +29,12 @@ public class PlayerDiscardPileChangedEvent {
     public void setCards(ArrayList<String> cards) {
         this.cards = new ArrayList<>(cards);
     }
+
+    @Override
+    public String toString() {
+        return "PlayerDiscardPileChangedEvent{" +
+                "playerEntityId=" + playerEntityId +
+                ", cards=" + cards +
+                '}';
+    }
 }

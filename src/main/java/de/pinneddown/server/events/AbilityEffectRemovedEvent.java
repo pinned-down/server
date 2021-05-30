@@ -27,4 +27,12 @@ public class AbilityEffectRemovedEvent {
     public void setTargetEntityId(long targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
+
+    @Override
+    public String toString() {
+        return "AbilityEffectRemovedEvent{" +
+                "effectEntityId=" + effectEntityId +
+                ", targetEntityId=" + targetEntityId +
+                '}';
+    }
 }

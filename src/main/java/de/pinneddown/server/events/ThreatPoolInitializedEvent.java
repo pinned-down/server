@@ -17,4 +17,11 @@ public class ThreatPoolInitializedEvent {
     public void setEntityId(long entityId) {
         this.entityId = entityId;
     }
+
+    @Override
+    public String toString() {
+        return "ThreatPoolInitializedEvent{" +
+                "entityId=" + entityId +
+                '}';
+    }
 }

@@ -17,4 +17,11 @@ public class CardRemovedEvent {
     public void setEntityId(long entityId) {
         this.entityId = entityId;
     }
+
+    @Override
+    public String toString() {
+        return "CardRemovedEvent{" +
+                "entityId=" + entityId +
+                '}';
+    }
 }

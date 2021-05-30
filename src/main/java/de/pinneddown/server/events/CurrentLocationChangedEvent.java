@@ -27,4 +27,12 @@ public class CurrentLocationChangedEvent {
     public void setBlueprintId(String blueprintId) {
         this.blueprintId = blueprintId;
     }
+
+    @Override
+    public String toString() {
+        return "CurrentLocationChangedEvent{" +
+                "entityId=" + entityId +
+                ", blueprintId='" + blueprintId + '\'' +
+                '}';
+    }
 }

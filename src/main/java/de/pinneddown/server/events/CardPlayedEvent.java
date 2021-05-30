@@ -49,4 +49,14 @@ public class CardPlayedEvent {
     public void setTargetEntityId(long targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
+
+    @Override
+    public String toString() {
+        return "CardPlayedEvent{" +
+                "entityId=" + entityId +
+                ", blueprintId='" + blueprintId + '\'' +
+                ", ownerEntityId=" + ownerEntityId +
+                ", targetEntityId=" + targetEntityId +
+                '}';
+    }
 }

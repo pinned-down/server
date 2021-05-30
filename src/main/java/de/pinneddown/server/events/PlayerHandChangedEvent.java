@@ -29,4 +29,12 @@ public class PlayerHandChangedEvent {
     public void setCards(ArrayList<String> cards) {
         this.cards = new ArrayList<>(cards);
     }
+
+    @Override
+    public String toString() {
+        return "PlayerHandChangedEvent{" +
+                "playerEntityId=" + playerEntityId +
+                ", cards=" + cards +
+                '}';
+    }
 }

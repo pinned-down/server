@@ -19,4 +19,11 @@ public class GlobalGameplayTagsChangedEvent {
     public void setGlobalGameplayTags(ArrayList<String> globalGameplayTags) {
         this.globalGameplayTags = new ArrayList<>(globalGameplayTags);
     }
+
+    @Override
+    public String toString() {
+        return "GlobalGameplayTagsChangedEvent{" +
+                "globalGameplayTags=" + globalGameplayTags +
+                '}';
+    }
 }

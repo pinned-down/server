@@ -27,4 +27,12 @@ public class AbilityEffectDeactivatedEvent {
     public void setTargetEntityId(long targetEntityId) {
         this.targetEntityId = targetEntityId;
     }
+
+    @Override
+    public String toString() {
+        return "AbilityEffectDeactivatedEvent{" +
+                "effectEntityId=" + effectEntityId +
+                ", targetEntityId=" + targetEntityId +
+                '}';
+    }
 }

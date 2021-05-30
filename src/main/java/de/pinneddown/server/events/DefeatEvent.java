@@ -29,4 +29,12 @@ public class DefeatEvent {
     public void setEntityId(long entityId) {
         this.entityId = entityId;
     }
+
+    @Override
+    public String toString() {
+        return "DefeatEvent{" +
+                "reason=" + reason +
+                ", entityId=" + entityId +
+                '}';
+    }
 }

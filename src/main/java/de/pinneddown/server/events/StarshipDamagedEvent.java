@@ -37,4 +37,13 @@ public class StarshipDamagedEvent {
     public void setDamageBlueprintId(String damageBlueprintId) {
         this.damageBlueprintId = damageBlueprintId;
     }
+
+    @Override
+    public String toString() {
+        return "StarshipDamagedEvent{" +
+                "starshipEntityId=" + starshipEntityId +
+                ", damageEntityId=" + damageEntityId +
+                ", damageBlueprintId='" + damageBlueprintId + '\'' +
+                '}';
+    }
 }
